@@ -89,7 +89,7 @@
   /* ---------- 모의 화면에서 되풀이하는 조각 ---------- */
   const GITIGNORE = src(['.env', '.venv/']);
   const ENV = 'UPSTAGE_API_KEY=up_••••••••7f3a';
-  const T0 = ['$ git init', 'Initialized empty Git repository'];
+  const T0 = ['$ git log --oneline', 'a1b2c3d 실습 폴더 준비'];
   const HELLO = src([
     'import os',
     'from dotenv import load_dotenv',
@@ -112,7 +112,7 @@
     'print(resp.choices[0].message.content)',
     'print("토큰:", resp.usage.total_tokens)'
   ]);
-  const LAB_FILES = ['.venv/', '.env', '.gitignore', 'hello_solar.py'];
+  const LAB_FILES = ['.venv/', '.env', '.env.example', '.gitignore', 'hello_solar.py'];
   const EMPTY_PANEL = { mode: 'Agent', model: 'Auto', msgs: [], input: '' };
   const panel = o => Object.assign({}, EMPTY_PANEL, o);
   const MODE_MENU = { title: 'Mode', items: ['Agent', 'Ask', 'Plan', 'Debug'] };
@@ -159,9 +159,9 @@
         why: 'Solar는 OpenAI 호환 API라서 SDK는 그대로 쓰고 <b>주소(base_url)만</b> 업스테이지로 바꿔요. 빼면 요청이 OpenAI 서버로 가요.',
         ex: ['organization은 OpenAI 쪽 조직을 고르는 칸이에요. 요청을 업스테이지로 보내 주지 않아요.', 'model에는 <code>solar-pro4</code> 같은 업스테이지 모델 이름을 적어요. 그리고 어디로 갈지는 주소가 정해요.', '', '따로 더할 패키지는 없어요. openai 패키지 하나로 불러요.'] },
       { t: 'q', kind: 'mc', fig: 'k_keySafe', q: 'upstage-lab에서 API 키를 다루는 방법으로 가장 알맞은 것은?',
-        opts: ['hello_solar.py 맨 위에 <code>KEY = "up_…"</code>로 적어 둔다', '<code>.env</code>에 적고 <code>.gitignore</code>에 <code>.env</code>를 넣은 뒤 <code>os.environ</code>으로 읽는다', 'AGENTS.md에 적어 두어 에이전트가 알아서 쓰게 한다', '실행할 때마다 <code>input()</code>으로 키를 쳐 넣는다'], a: 1,
+        opts: ['hello_solar.py 맨 위에 <code>KEY = "up_…"</code>로 적고 저장소는 비공개로 둔다', '<code>.env</code>에 두고 Git에서 빼고, <code>os.environ</code>으로 읽는다', 'AGENTS.md에 적어 두어 에이전트가 코드를 만들 때 알아서 넣게 한다', '실행할 때마다 <code>input()</code>으로 키를 쳐 넣는다'], a: 1,
         why: '키는 코드 밖 <code>.env</code>에, <code>.env</code>는 Git이 모른 척하게 <code>.gitignore</code>에 넣어요. 코드는 <code>load_dotenv()</code> 뒤 <code>os.environ["UPSTAGE_API_KEY"]</code>로 읽어요.',
-        ex: ['코드에 쓴 키는 커밋·공유·화면 공유 때 함께 새요.', '', 'AGENTS.md는 커밋되고, 에이전트가 읽을 때 모델 쪽으로 보내져요. 키를 적는 곳이 아니에요.', '치는 동안 키가 화면에 그대로 보이고, 매번 치기도 번거로워요. 키는 .env에 두고 읽어요.'] },
+        ex: ['비공개 저장소라도 함께 쓰는 사람에게 보이고, 화면 공유나 복사 때 함께 새요. 키는 코드 밖에 둬요.', '', 'AGENTS.md는 커밋되고, 에이전트가 읽을 때 모델 쪽으로 보내져요. 키를 적는 곳이 아니에요.', '치는 동안 키가 화면에 그대로 보이고, 매번 치기도 번거로워요. 키는 .env에 두고 읽어요.'] },
       { t: 'q', kind: 'mc', fig: 'k_memory', q: 'Solar API로 만든 챗봇이 "예를 하나 들어 줘"에서 앞에서 무슨 이야기를 했는지 몰라요. 가장 알맞은 고침은?',
         opts: ['<code>stream=True</code>를 켜서 대화를 이어 받는다', 'temperature를 0으로 내려 기억을 또렷하게 한다', '같은 키로 부르면 서버가 기억하니 키를 바꾸지 않는다', '주고받은 메시지를 리스트에 모아 요청마다 통째로 보낸다'], a: 3,
         why: 'API는 앞 대화를 기억하지 않아요. user 질문과 assistant 답을 리스트(history)에 차례로 붙여 두고, 요청마다 그 리스트를 통째로 보내요.',
@@ -846,8 +846,8 @@
       { t: 'say', h: '연수 실습은 upstage-lab 폴더 하나에서 자라요', fig: 'labTree', p: [
         '기반연수 1일차 13:00 「Solar로 보는 LLM의 원리」 실습부터 2일차 트랙 실습까지, 이 과정은 <b>연습 폴더 <code>upstage-lab</code> 하나</b>에서 해요. 첫 파일은 이번 단원의 <code>hello_solar.py</code>이고, 단원마다 <code>parse.py</code>, <code>search.py</code>, <code>app.py</code>처럼 하나씩 늘어나요.',
         '폴더가 하나면 좋은 점이 셋이에요. 가상 환경과 키(<code>.env</code>)를 한 번만 준비하면 되고, 단원마다 커밋해 두면 되돌릴 수 있고, 에이전트 규칙(<code>AGENTS.md</code>)도 한곳에 모여요.',
-        '폴더는 커서한입에서 익힌 대로 Cursor <b>IDE 창</b>으로 열고, 명령은 아래 터미널에서 쳐요. 터미널과 Git은 코딩한입에서 배운 그대로예요.'
-      ], code: { lang: 'plain', src: src(['upstage-lab/', '  .venv/         ← 가상 환경, 커밋 안 함', '  .env           ← API 키, 커밋 안 함', '  .gitignore     ← Git이 모른 척할 목록', '  AGENTS.md      ← 에이전트 규칙(레슨 5)', '  hello_solar.py ← 오늘의 첫 파일']) } },
+        '단원 1 미션을 했다면 폴더, <code>.gitignore</code>, <code>.env</code>가 이미 있으니 오늘은 <b>가상 환경부터</b> 해요. 아직이면 이번 미션 첫 할 일에서 처음부터 만들어요. 폴더는 Cursor <b>IDE 창</b>으로 열고 명령은 아래 터미널에서 쳐요.'
+      ], code: { lang: 'plain', src: src(['upstage-lab/', '  .venv/         ← 가상 환경, 커밋 안 함', '  .env           ← API 키, 커밋 안 함', '  .env.example   ← 값 없는 본보기', '  .gitignore     ← Git이 모른 척할 목록', '  AGENTS.md      ← 에이전트 규칙(레슨 5)', '  hello_solar.py ← 오늘의 첫 파일']) } },
       { t: 'say', h: '가상 환경: 이 폴더만 쓰는 파이썬 상자', fig: 'venvBox', p: [
         '<b>가상 환경</b>은 프로젝트 폴더 안에 따로 만든 파이썬 상자예요. 여기에 깐 패키지는 이 폴더에서만 보여서 다른 프로젝트와 버전이 섞이지 않아요. 컴퓨터 전체에 깔 권한이 없는 학교 PC에서도 내 폴더 안에는 깔 수 있어요.',
         '<code>venv</code>로 <code>.venv</code> 폴더를 만들고, 터미널을 새로 열 때마다 <b>켜고</b> 써요. 켜지면 줄 앞에 <code>(.venv)</code>가 붙고, 끌 때는 <code>deactivate</code>를 쳐요.'
@@ -865,16 +865,16 @@
         ['<code>python-dotenv</code>', '<code>from dotenv import load_dotenv</code>', '<code>.env</code>를 환경 변수로 올리기'],
         ['<code>requests</code>', '<code>import requests</code>', '파일 보내기(과정 2)'] ] } },
       { t: 'say', h: '키는 .env에, .env는 .gitignore에', fig: 'envGit', p: [
-        '단원 1에서 콘솔 <b>API keys</b>에서 만든 키를 <code>.env</code> 파일에 <code>UPSTAGE_API_KEY=키</code> 한 줄로 적어요. 코드는 키 대신 이 <b>이름</b>만 알고, 실행할 때 <code>load_dotenv()</code>가 값을 채워 줘요.',
-        '<code>.gitignore</code>에는 <code>.env</code>와 <code>.venv/</code>를 적어요. 그러면 커밋해도 키와 무거운 가상 환경 폴더가 올라가지 않아요. <code>git status</code>에 <code>.env</code>가 안 보이면 잘 된 거예요.',
+        '단원 1 미션에서 <code>.env</code>에 <code>UPSTAGE_API_KEY=키</code> 한 줄을 넣어 두었어요(아직이면 콘솔 <b>API keys</b>에서 만든 키로 지금 넣어요). 코드는 키 대신 이 <b>이름</b>만 알고, 실행할 때 <code>load_dotenv()</code>가 값을 채워 줘요.',
+        '<code>.gitignore</code>에는 <code>.env</code>와 <code>.venv/</code>가 이미 들어 있어서, 오늘 만드는 무거운 <code>.venv/</code> 폴더도 커밋되지 않아요. 값 없는 <code>.env.example</code>은 키 이름을 알려 주는 본보기라 커밋해도 돼요.',
         '학교 PC에 설치가 막혀 있으면 브라우저에서 도는 <b>Google Colab</b> 노트북을 대안으로 써요. 셀에서 <code>!pip install openai</code>처럼 깔고, 키는 셀에 적지 말고 Colab의 비밀 보관 기능에 넣어 읽어요. 다만 연수와 이 과정은 Cursor와 <code>upstage-lab</code>이 기준이에요.'
-      ], code: { lang: 'plain', src: src(['# .env  (따옴표·빈칸 없이 한 줄)', ENV, '', '# .gitignore', '.env', '.venv/']) },
+      ], code: { lang: 'plain', src: src(['# .env  (따옴표·빈칸 없이 한 줄)', ENV, '', '# .env.example (값 없이 커밋해도 돼요)', 'UPSTAGE_API_KEY=', '', '# .gitignore', '.env', '.venv/']) },
         tip: '키가 보이는 스크린샷, 채팅방에 붙인 코드, GitHub에 올린 파일은 모두 "샌 키"예요. 샜다면 콘솔 API keys에서 바로 지우고 새로 만들어요.' },
-      { t: 'sim', h: 'upstage-lab을 준비해 봐요', p: 'upstage-lab을 연 IDE 창이에요(Mac 기준). 아래 터미널에서 가상 환경을 만들어 켜고, 패키지를 깔고, .env를 만들어 확인해 보세요.',
-        scene: { win: 'ide', folder: 'upstage-lab', files: ['.gitignore'], open: '.gitignore', lang: 'plain', code: GITIGNORE, term: T0, prompt: '' },
+      { t: 'sim', h: 'upstage-lab에 가상 환경을 더해 봐요', p: '단원 1 미션에서 만든 upstage-lab을 IDE 창으로 열었어요(Mac 기준). 아래 터미널에서 가상 환경을 만들어 켜고, 패키지를 깔고, .env와 Git 상태를 확인해 보세요.',
+        scene: { win: 'ide', folder: 'upstage-lab', files: ['.env', '.env.example', '.gitignore'], open: '.gitignore', lang: 'plain', code: GITIGNORE, term: T0, prompt: '' },
         steps: [
           { goal: '가상 환경을 만들어요', type: 'python3 -m venv .venv', into: 'term',
-            then: { files: ['.venv/', '.gitignore'], term: [...T0, '$ python3 -m venv .venv'], prompt: '' },
+            then: { files: ['.venv/', '.env', '.env.example', '.gitignore'], term: [...T0, '$ python3 -m venv .venv'], prompt: '' },
             say: '<code>.venv</code> 폴더가 생겼어요. 이 폴더만 쓰는 파이썬 상자예요. 학교 Windows에서는 <code>python -m venv .venv</code>예요.' },
           { goal: '가상 환경을 켜요', type: 'source .venv/bin/activate', into: 'term',
             then: { term: ['$ python3 -m venv .venv', '$ source .venv/bin/activate'], prompt: '' },
@@ -882,15 +882,12 @@
           { goal: '패키지 셋을 깔아요', type: 'pip install openai python-dotenv requests', into: 'term',
             then: { term: ['$ source .venv/bin/activate', '$ pip install openai python-dotenv requests', 'Successfully installed … openai-… python-dotenv-… requests-…'], prompt: '' },
             say: '켜진 상자 안에 깔렸어요. 함께 쓰는 패키지도 몇 개 따라 들어와요.' },
-          { goal: '빈 .env 파일을 만들어요', type: 'touch .env', into: 'term',
-            then: { files: ['.venv/', '.env', '.gitignore'], term: ['$ pip install openai python-dotenv requests', 'Successfully installed … openai-… python-dotenv-… requests-…', '$ touch .env'], prompt: '' },
-            say: '파일 목록에 <code>.env</code>가 생겼어요. Windows라면 Cursor 탐색기의 새 파일 버튼으로 만들어요.' },
-          { goal: '.env를 열어요', click: 'file:.env', then: { open: '.env', lang: 'plain', code: ENV },
-            say: '콘솔에서 복사한 키를 붙여 넣었다고 쳐요(화면의 키는 가짜예요). 따옴표·빈칸 없이 한 줄, 이름은 <code>UPSTAGE_API_KEY</code>예요.' },
-          { goal: 'Git이 .env를 모른 척하는지 봐요', type: 'git status --short', into: 'term',
-            then: { term: ['$ touch .env', '$ git status --short', '?? .gitignore'], prompt: '' },
-            say: '목록에 <code>.gitignore</code>만 있고 <code>.env</code>와 <code>.venv/</code>는 없어요. 커밋해도 키가 올라가지 않아요.' } ],
-        end: '.env와 .venv/가 git status에 안 보이면 준비 끝이에요.' },
+          { goal: '.env를 열어 키 이름을 확인해요', click: 'file:.env', then: { open: '.env', lang: 'plain', code: ENV },
+            say: '단원 1 미션에서 붙여 넣은 키예요(화면의 키는 가짜예요). 이름이 <code>UPSTAGE_API_KEY</code>와 똑같은지, 따옴표·빈칸이 없는지만 봐요.' },
+          { goal: 'Git 상태를 봐요', type: 'git status --short', into: 'term',
+            then: { term: ['$ pip install openai python-dotenv requests', 'Successfully installed … openai-… python-dotenv-… requests-…', '$ git status --short'], prompt: '' },
+            say: '아무것도 안 나와요. 새로 생긴 <code>.venv/</code>와 <code>.env</code>를 Git이 모른 척해서 커밋할 것이 없어요.' } ],
+        end: 'git status에 아무것도 안 나오면 준비 끝이에요.' },
       { t: 'q', kind: 'mc', fig: 'q_winAct', q: '학교 Windows 노트북의 터미널에서 upstage-lab의 가상 환경을 <b>켜는</b> 명령은?',
         opts: ['<code>source .venv/bin/activate</code>', '<code>python -m venv .venv</code>', '<code>.venv\\Scripts\\activate</code>', '<code>pip install venv</code>'], a: 2,
         why: 'Windows는 <code>.venv\\Scripts\\activate</code>, Mac은 <code>source .venv/bin/activate</code>예요. 켜지면 줄 앞에 <code>(.venv)</code>가 붙어요.',
@@ -948,7 +945,7 @@
             say: '같은 질문인데 답이 조금 달라졌어요. 단원 2에서 본 대로 다음 토큰을 확률로 골라서 그래요. 토큰 수도 따라 달라져요.' } ],
         end: '미션에서는 질문을 내 수업 단원 것으로 바꿔 돌려 봐요.' },
       { t: 'q', kind: 'mc', fig: 'q_modelVar', q: 'hello_solar.py는 모델 이름을 <code>MODEL = "solar-pro4"</code> 한 줄에 모아 두고 <code>model=MODEL</code>로 써요. 왜 그럴까요?',
-        opts: ['모델 이름이 바뀔 때 한 곳만 고치면 돼서', '변수로 두면 요청이 더 빨리 가서', '대문자 변수만 API가 알아들어서', '키처럼 숨겨야 하는 비밀이라서'], a: 0,
+        opts: ['모델 이름이 바뀔 때 한 곳만 고치면 돼서', '변수로 두면 요청이 가벼워져 서버에 더 빨리 가서', '대문자 변수에 담아야 API가 모델 이름으로 알아들어서', '키처럼 숨겨야 하는 비밀이라 한곳에 모아 두려고'], a: 0,
         why: '모델 이름은 자주 바뀌어요. <code>solar-pro3</code>도 2026-10-30에 끝나요. 이름을 한 줄에 모아 두면 새 모델로 옮길 때 그 줄만 고치면 돼요.',
         ex: ['', '속도와는 상관없어요. 서버로 가는 글자는 똑같아요.', '대문자는 "바꾸지 않을 값"이라는 파이썬 관례일 뿐이에요. API는 글자만 받아요.', '모델 이름은 공개된 이름이라 숨길 필요 없어요. 숨겨야 하는 건 키예요.'] },
       { t: 'q', kind: 'blank', fig: 'q_contentBlank', q: '응답에서 <b>답 글만</b> 꺼내 출력하려 해요. 빈칸에 들어갈 것은?', lang: 'py', code: 'print(resp.[[1]])',
@@ -971,11 +968,11 @@
         why: 'SDK는 base_url이 없으면 OpenAI 서버로 보내요. 거기서는 업스테이지 키를 모르니 <b>인증 오류(401)</b>가 나요. 키가 맞는데 401이 나면 base_url부터 봐요.',
         ex: ['SDK는 키 모양으로 주소를 고르지 않아요. 기본 주소는 OpenAI예요.', '', '모델 이름은 요청 안에 담긴 글자일 뿐, 어느 서버로 갈지는 base_url이 정해요.', '문법은 맞아요. 실행은 되고, 서버에 다녀온 뒤에 오류가 나요.'] },
       { t: 'q', kind: 'mc', fig: 'qa_keyErr', q: '<code>.env</code>에 <code>UPSTAGE_KEY=up_••••7f3a</code>라고 적고 실행했더니 <code>KeyError: \'UPSTAGE_API_KEY\'</code>가 나요. 알맞은 설명은?',
-        opts: ['키가 삭제돼서 서버가 401을 돌려준 것이다', '크레딧이 떨어져 서버가 막은 것이다', '.env의 이름이 코드가 찾는 이름과 달라 파이썬이 못 찾은 것이다', 'openai 패키지가 안 깔려서 생긴 오류다'], a: 2,
+        opts: ['콘솔에서 키를 지운 뒤라 서버가 401로 거절한 것이다', '크레딧이 떨어져 서버가 403으로 막은 것이다', '.env의 이름이 코드와 달라 못 찾은 것이다', 'openai 패키지가 가상 환경에 안 깔려서 난 오류다'], a: 2,
         why: 'KeyError는 서버에 가기도 전에 <b>내 컴퓨터에서</b> 난 파이썬 오류예요. 코드는 <code>UPSTAGE_API_KEY</code>를 찾는데 .env에는 <code>UPSTAGE_KEY</code>가 있어요. 이름을 한 글자도 다르지 않게 맞춰요.',
         ex: ['401은 서버가 키를 거절할 때예요. KeyError는 요청을 보내기 전에 났어요.', '크레딧 부족은 서버가 주는 403이에요. 이번엔 서버까지 가지도 못했어요.', '', '패키지가 없으면 ModuleNotFoundError가 나요.'] },
       { t: 'q', kind: 'mc', fig: 'qa_printResp', q: '<code>print(resp)</code>를 했더니 <code>ChatCompletion(id=…, choices=[Choice(…)], usage=…)</code> 같은 긴 글이 나왔어요. 답 글만 보려면?',
-        opts: ['<code>print(resp.choices[0].message.content)</code>', '<code>print(resp.content)</code>', '<code>print(resp["content"])</code>', '<code>print(str(resp)[:50])</code>'], a: 0,
+        opts: ['<code>print(resp.choices[0].message.content)</code>', '<code>print(resp.choices.message.content)</code>', '<code>print(resp["choices"][0]["message"]["content"])</code>', '<code>print(resp.message.content)</code>'], a: 0,
         why: 'resp는 응답 전체를 담은 객체예요. 답 글은 <code>choices[0].message.content</code>에 있어요. <code>print(resp)</code>는 구조를 살펴볼 때만 써요.',
         ex: ['', 'choices는 목록이라 [0]으로 칸을 먼저 골라야 해요.', '연습장의 흉내 딕셔너리라면 맞지만, 진짜 응답은 점(.)으로 읽는 객체라 대괄호로 읽으면 오류가 나요.', 'message는 resp 바로 아래가 아니라 choices[0] 안에 있어요.'] }
     ]},
@@ -1050,7 +1047,7 @@
         '수업 도구라면 여기에 학생당 횟수 제한을 더해요. 과정 3 단원 3에서 해요.'
       ]},
       { t: 'q', kind: 'mc', fig: 'q_length', q: '정보 수업 퀴즈 10문제를 부탁했는데 7번에서 답이 끊겼고, <code>finish_reason</code>이 <code>"length"</code>예요. 무슨 뜻일까요?',
-        opts: ['모델이 10문제를 다 썼다는 정상 신호다', '키가 틀려 서버가 답을 막았다', '모델이 도구를 부르려고 멈췄다', '<code>max_tokens</code>에 걸려 답이 중간에 잘렸다'], a: 3,
+        opts: ['모델이 10문제를 다 쓰고 정상으로 끝냈다는 신호다', '키가 틀려 서버가 7번에서 답을 막고 끊었다', '모델이 계산 도구를 부르려고 7번에서 멈췄다', '<code>max_tokens</code>에 닿아 잘렸다'], a: 3,
         why: '<code>length</code>는 만들 수 있는 토큰 상한(<code>max_tokens</code>)에 닿아 멈췄다는 뜻이에요. 상한을 늘리거나 5문제씩 나눠 부탁해요. 추론을 켰다면 추론 토큰도 이 상한에 들어가요.',
         ex: ['정상으로 끝나면 stop이에요.', '키가 틀리면 답 자체가 오지 않고 401 오류가 나요.', '도구를 부를 땐 tool_calls예요. 과정 5에서 만나요.', ''] },
       { t: 'q', kind: 'line', fig: 'q_errTable', q: '오류 번호별 할 일을 정리한 메모예요. <b>틀린 줄</b>을 눌러 보세요.', lang: 'plain',
@@ -1126,7 +1123,7 @@
         why: '요청은 그 순간의 history만 보내요. 이번 질문을 붙이기 전에 보내면 모델은 지난 대화까지만 보고 답해요. 순서는 user 붙이기 → 요청 → assistant 붙이기예요.',
         ex: ['보내는 순간의 기록이 답을 정하니 순서가 중요해요.', '', '문법은 맞아서 오류 없이 돌아요. 그래서 더 찾기 어려워요.', '서버는 질문을 기다려 주지 않아요. 받은 기록에 바로 답해요.'] },
       { t: 'q', kind: 'mc', fig: 'qb_envVsVar', q: '<code>.env</code> 파일과 환경 변수의 관계로 맞는 것은?',
-        opts: ['.env를 만들면 컴퓨터 전체 환경 변수에 영구히 등록된다', 'os.environ은 .env 파일만 읽는 함수다', '.env가 같은 폴더에 있으면 load_dotenv() 없이도 읽힌다', 'load_dotenv()가 .env를 읽어 실행 중인 프로그램의 환경 변수로 올린다'], a: 3,
+        opts: ['.env를 만들면 컴퓨터를 다시 켜도 남도록 전체 환경 변수에 영구히 등록된다', 'os.environ은 .env 파일 하나만 골라 읽어 주는 함수다', '.env가 같은 폴더에 있으면 load_dotenv() 없이도 저절로 읽힌다', 'load_dotenv()가 읽어 그 실행 동안만 환경 변수로 올린다'], a: 3,
         why: '.env는 그냥 글 파일이에요. <code>load_dotenv()</code>가 읽어서 <b>그 프로그램이 도는 동안</b> 환경 변수로 올려 주고, 코드는 <code>os.environ</code>으로 꺼내요. 터미널에서 직접 정한 환경 변수도 os.environ으로 읽혀요.',
         ex: ['프로그램이 끝나면 사라져요. 컴퓨터 설정은 그대로예요.', 'os.environ은 환경 변수 전체를 담은 사전 같은 것이에요. .env는 load_dotenv()가 올려 줄 때만 들어가요.', '파이썬은 .env를 저절로 읽지 않아요. load_dotenv()를 불러야 해요.', ''] }
     ]},
@@ -1199,7 +1196,7 @@
         items: ['AGENTS.md에 업스테이지 규칙을 적고 커밋한다', 'Plan 모드로 quiz.py를 부탁해 계획을 받는다', '계획에서 모델 이름과 키 읽는 법을 확인하고 고친다', 'Build를 눌러 코드를 만들게 한다', '내 터미널에서 python quiz.py를 돌려 확인한다'],
         why: '규칙이 먼저 있어야 계획에 반영되고, 계획에서 잡은 실수가 가장 싸요. Build 뒤 결과는 내 손으로 돌려 봐요.' },
       { t: 'q', kind: 'mc', fig: 'q_trustRun', q: '에이전트가 "quiz.py를 만들었고 잘 돌아요!"라고 했어요. 다음에 할 일로 가장 알맞은 것은?',
-        opts: ['내 터미널에서 실행하고, 모델 이름과 git status를 직접 확인한다', '잘 된다니 바로 GitHub에 올린다', '같은 부탁을 한 번 더 해서 답이 같은지 본다', 'Ask 모드로 바꿔 정말 잘 되냐고 묻는다'], a: 0,
+        opts: ['내 터미널에서 직접 돌려 보고 확인한다', '에이전트가 확인했다니 바로 커밋해 GitHub에 올린다', '같은 부탁을 한 번 더 해서 답이 같은지 본다', 'Ask 모드로 바꿔 정말 잘 되냐고 묻는다'], a: 0,
         why: '에이전트의 말은 확인이 아니에요. 내 터미널에서 돌려 보고, 모델 이름이 지금 것인지, <code>.env</code>가 커밋 목록에 없는지 직접 봐요. 그다음 커밋해요.',
         ex: ['', '확인 없이 올리면 옛 모델 이름이나 키가 섞여 있어도 모르고 지나가요.', '같은 부탁을 다시 해도 결과를 확인한 게 아니에요. 돌려 봐야 알아요.', '말로 다시 묻는 것도 확인이 아니에요. 내 터미널에서 돌려 봐요.'] },
       { t: 'sum', pts: ['인터넷·옛 쿡북의 <code>solar-pro3</code>·<code>/v1/solar</code>를 에이전트가 따라 쓸 수 있다. 지금 이름을 AGENTS.md 규칙으로 알려 준다(키 값은 적지 않는다).', '큰 일은 Plan으로: 계획에서 모델 이름·키 읽는 법·base_url을 확인하고 고친 뒤 Build.', '결과는 내 터미널에서 실행·검색·git status로 확인하고 커밋한다.'] }
@@ -1208,14 +1205,14 @@
     /* =================== M1 =================== */
     { id: 'M1', type: 'mission', title: 'upstage-lab에서 Solar 부르기', sub: '내 Cursor와 터미널에서 직접', min: 40,
       where: '업스테이지 콘솔(키) + upstage-lab 폴더',
-      intro: '이번 단원에서 배운 것을 내 컴퓨터에서 진짜로 해 봐요. 연수 1일차 실습의 바탕이 되는 폴더예요. 키는 단원 1에서 만든 연수용 키를 쓰고, 끝낸 것부터 체크하며 한 줄 메모도 남겨요.',
+      intro: '이번 단원에서 배운 것을 내 컴퓨터에서 진짜로 해 봐요. 연수 1일차 실습의 바탕이 되는 폴더예요. 단원 1 미션에서 이미 한 일(폴더·Git·.env)은 다시 하지 않고 확인만 해요. 끝낸 것부터 체크하며 한 줄 메모도 남겨요.',
       tasks: [
-        { do: 'upstage-lab을 만들고 첫 커밋을 해요',
-          how: 'Cursor IDE 창에서 새 폴더 <code>upstage-lab</code>을 열고 터미널에서 <code>git init</code>. <code>.gitignore</code>에 <code>.env</code>와 <code>.venv/</code> 두 줄을 적고 <code>git add .gitignore</code> → <code>git commit -m "시작"</code>. 이후 단계도 시작 전에 커밋해 두면 언제든 돌아올 수 있어요.',
-          check: '<code>git log</code>에 첫 커밋이 보이면 성공.' },
-        { do: '가상 환경을 켜고 패키지 셋과 .env를 갖춰요',
-          how: 'Mac은 <code>python3 -m venv .venv</code> → <code>source .venv/bin/activate</code>, Windows는 <code>python -m venv .venv</code> → <code>.venv\\Scripts\\activate</code>. 켠 터미널에서 <code>pip install openai python-dotenv requests</code>. <code>.env</code>에 <code>UPSTAGE_API_KEY=</code> 뒤로 콘솔 <b>API keys</b>에서 복사한 키를 붙여요. 학교 PC가 막혀 있으면 Colab을 대안으로 써요.',
-          check: '줄 앞에 <code>(.venv)</code>가 있고, <code>git status --short</code>에 <code>.env</code>와 <code>.venv/</code>가 안 보이면 성공.' },
+        { do: 'upstage-lab이 준비됐는지 확인해요',
+          how: '단원 1 미션을 했다면 Cursor IDE 창으로 <code>upstage-lab</code>을 열고, <code>git log --oneline</code>에 "실습 폴더 준비" 커밋이 있는지, 폴더에 <code>.env</code>가 있는지만 봐요. 아직이면 단원 1 미션의 "키 자리 마련" 부탁을 에이전트에게 맡기고, 콘솔 <b>API keys</b>에서 만든 키를 <code>.env</code>에 직접 붙여 넣어요.',
+          check: '<code>git log --oneline</code>에 커밋이 있고 <code>git check-ignore .env</code>가 <code>.env</code>를 출력하면 성공.' },
+        { do: '가상 환경을 만들어 켜고 패키지 셋을 깔아요',
+          how: 'Mac은 <code>python3 -m venv .venv</code> → <code>source .venv/bin/activate</code>, Windows는 <code>python -m venv .venv</code> → <code>.venv\\Scripts\\activate</code>. 켠 터미널에서 <code>pip install openai python-dotenv requests</code>. 학교 PC가 막혀 있으면 Colab을 대안으로 써요.',
+          check: '줄 앞에 <code>(.venv)</code>가 있고, <code>git status --short</code>에 <code>.venv/</code>가 안 보이면 성공.' },
         { do: 'hello_solar.py로 첫 호출을 해요',
           how: '레슨 2의 코드를 한 줄씩 직접 쳐요. 질문은 내 수업 단원 것으로 바꾸고(학생 이름은 넣지 않아요), 두세 번 돌려 답이 어떻게 달라지는지 봐요.',
           check: '답 글과 토큰 수가 찍히면 성공. <code>KeyError</code>면 .env의 이름, <code>401</code>이면 키 값과 base_url, <code>403</code>이면 Billing의 Credit을 확인해요.' },
@@ -1240,7 +1237,7 @@
         why: '패키지는 가상 환경(<code>.venv</code>) 안에 깔렸는데, 터미널을 새로 열면 가상 환경이 꺼져 있어요. Mac은 <code>source .venv/bin/activate</code>, Windows는 <code>.venv\\Scripts\\activate</code>로 켜고 다시 실행해요.',
         ex: ['키는 서버에 가서야 확인돼요. 이 오류는 모듈을 못 찾은 것이라 키와 상관없어요.', '', '코드는 멀쩡해요. 파이썬이 패키지를 못 찾을 뿐이에요.', '바꿀 필요 없어요. 켜진 가상 환경 안에서는 openai가 보여요.'] },
       { t: 'q', kind: 'mc', fig: 't_class429', q: '수업에서 학생 30명이 내 키 하나로 만든 질문 도우미를 동시에 쓰자 몇 명에게 <code>429</code>가 떴어요. 가장 알맞은 대처는?',
-        opts: ['키가 샌 것이니 바로 지우고 새로 만든다', '크레딧을 충전한다', '모델 이름을 solar-pro3로 바꿔 부담을 나눈다', '잠시 기다렸다 간격을 늘려 다시 보내고, 한 사람당 호출 수를 줄인다'], a: 3,
+        opts: ['누가 키를 몰래 쓰는 것이니 바로 지우고 새로 만든다', '크레딧이 바닥난 것이니 Billing에서 충전한다', '모델 이름을 solar-pro3로 바꿔 부담을 나눈다', '간격을 늘려 다시 보내고, 학생당 호출 수를 줄인다'], a: 3,
         why: '429는 분당 요청·토큰 한도를 넘었다는 뜻이에요. 한 키로 반 전체가 동시에 부르면 금방 걸릴 수 있어요. 지수 백오프로 다시 하고, 학생당 횟수 제한(과정 3 단원 3)을 둬요.',
         ex: ['키 문제는 401이에요. 429는 너무 빨리, 많이 보냈다는 신호예요.', '크레딧 부족은 403이에요.', 'solar-pro3는 2026-10-30에 끝나는 옛 모델이에요. 한도를 나누는 방법도 아니에요.', ''] },
       { t: 'q', kind: 'blank', fig: 't_streamBlank', q: '스트리밍 답을 화면에 찍으면서 <code>answer</code>에 모으는 코드예요. 두 빈칸을 채워 보세요.', lang: 'py',
@@ -1255,25 +1252,25 @@
         code: src(['import os', 'from dotenv import load_dotenv', 'from openai import OpenAI', 'load_dotenv()', 'client = OpenAI(', '  api_key=os.environ["UPSTAGE_API_KEY"],', '  base_url="https://api.upstage.ai/v1")', 'resp = client.chat.completions.create(', '  model="solar-pro3",', '  messages=msgs,', '  reasoning_effort="none")']), a: 8,
         why: '<code>solar-pro3</code>는 2026-10-30(KST)에 서비스가 끝나요. 11월에 이 이름으로 부르면 오류가 나요. <code>MODEL = "solar-pro4"</code>를 위에 두고 <code>model=MODEL</code>로 바꿔요.' },
       { t: 'q', kind: 'mc', fig: 't_cutQuiz', q: '학습지 20문항을 한 번에 만들어 달랬더니 15번 중간에서 끊겼어요. <code>reasoning_effort="high"</code>, <code>max_tokens=2000</code>으로 불렀어요. 가장 알맞은 설명과 고침은?',
-        opts: ['키가 만료됐다. 새 키로 바꾼다', 'temperature가 높아서 끊겼다. 0으로 내린다', '추론 토큰도 max_tokens에 들어가 상한에 닿았다. 상한을 늘리거나 나눠 부탁한다', '모델이 문항 수를 세지 못해서다. 문항 번호를 지운다'], a: 2,
+        opts: ['키가 만료돼 서버가 15번에서 끊었다. 새 키로 바꾼다', 'temperature가 높아 답이 흩어지다 끊겼다. 0으로 내리고 다시 부른다', '추론 토큰까지 max_tokens에 닿았다. 상한을 늘리거나 나눈다', '모델이 문항 수를 세지 못해서다. 문항 번호를 지운다'], a: 2,
         why: 'finish_reason이 length였을 거예요. 추론을 켜면 생각에 쓴 토큰도 max_tokens에 들어가 보이는 답이 일찍 끊겨요. 상한을 넉넉히 하거나, 10문항씩 나누거나, 이런 만들기에는 추론을 끄는(none) 것도 방법이에요.',
         ex: ['키가 문제면 답이 아예 오지 않고 401이 나요.', 'temperature는 답의 무작위성이에요. 길이가 잘리는 것과 상관없어요.', '', '번호를 지워도 쓸 수 있는 토큰 상한은 그대로예요.'] },
       { t: 'q', kind: 'mc', fig: 't_untracked', q: 'GitHub에 올리기 전에 <code>git status</code>를 보니 Untracked files에 <code>.env</code>가 보여요. 어떻게 할까요?',
-        opts: ['그대로 커밋한다. 저장소를 비공개로 하면 괜찮다', '.env를 지우고 키를 코드에 옮겨 적는다', '.gitignore에 .env를 넣고 git status에서 사라졌는지 확인한다', '커밋 메시지에 "키 있음"이라고 적어 둔다'], a: 2,
+        opts: ['그대로 커밋한다. 저장소를 비공개로 두면 아무도 못 보니 괜찮다', '.env를 지우고 키를 hello_solar.py 맨 위로 옮겨 적는다', '.gitignore에 .env를 넣고 다시 확인한다', '커밋 메시지에 "키 있음"이라고 적어 둔다'], a: 2,
         why: '.env가 목록에 보이면 Git이 커밋할 수 있다는 뜻이에요. <code>.gitignore</code>에 <code>.env</code>를 넣으면 목록에서 사라져요. 이미 커밋해 올렸다면 콘솔에서 그 키를 지우고 새로 만들어요.',
         ex: ['비공개여도 함께 쓰는 사람, 나중에 공개로 바꿀 때 키가 새요.', '키를 코드에 옮기면 더 쉽게 새요.', '', '적어 둔다고 키가 지켜지지 않아요. 아예 올라가지 않게 해야 해요.'] },
       { t: 'q', kind: 'mc', fig: 't_credit403', q: '연수 2일차 오후, 잘 되던 코드가 갑자기 <code>403</code>을 돌려줘요. 키 이름도 주소도 그대로예요. 먼저 볼 곳은?',
-        opts: ['콘솔 Billing의 Credit에서 크레딧 잔액과 결제 상태', '<code>.gitignore</code> 파일', 'AGENTS.md의 모델 이름', '<code>max_tokens</code> 값'], a: 0,
+        opts: ['콘솔 Billing의 Credit', '<code>.gitignore</code>에 <code>.env</code>가 들어 있는지', 'AGENTS.md에 적어 둔 모델 이름과 base_url', '요청에 넣은 <code>max_tokens</code> 값이 너무 작은지'], a: 0,
         why: '403은 크레딧이 모자라거나 결제가 실패했을 때 와요. 콘솔 <b>Billing</b>의 <b>Credit</b>에서 잔액을 확인해요.',
         ex: ['', '.gitignore는 Git이 모른 척할 파일 목록이에요. 서버 응답과 상관없어요.', 'AGENTS.md는 에이전트에게 주는 안내예요. 이미 돌던 코드의 403과는 상관없어요.', 'max_tokens가 작으면 답이 잘릴(length) 뿐 403이 나지 않아요.'] },
       { t: 'q', kind: 'mc', fig: 't_404', q: '에이전트가 만든 quiz.py가 내 터미널에서 <code>404</code>를 내요. 에이전트는 "잘 돌아요"라고 했었어요. 먼저 확인할 것은?',
-        opts: ['키를 새로 만든다', 'base_url 같은 주소가 AGENTS.md 규칙(https://api.upstage.ai/v1)과 같은지', '크레딧을 충전한다', 'reasoning_effort를 high로 올린다'], a: 1,
+        opts: ['키가 지워졌을 수 있으니 콘솔에서 새로 만든다', 'base_url 주소가 AGENTS.md 규칙과 같은지', '크레딧이 떨어졌을 수 있으니 Billing에서 충전한다', 'reasoning_effort를 high로 올려 다시 돌린다'], a: 1,
         why: '404는 주소가 틀렸다는 뜻이에요. 오타 난 주소나 옛 예제에서 베낀 주소가 흔한 까닭이에요. AGENTS.md 규칙의 <code>https://api.upstage.ai/v1</code>과 대조해 고치고, 다음부터는 계획 단계에서 주소도 확인해요.',
         ex: ['키 문제는 401이에요.', '', '크레딧 문제는 403이에요.', '추론은 주소와 상관없어요. 느려지고 비싸지기만 해요.'] },
       { t: 'q', kind: 'mc', fig: 't_effortGone', q: 'hello_solar.py에서 <code>reasoning_effort="none"</code> 줄을 지웠더니 답이 느려지고 토큰이 크게 늘었어요. 왜일까요?',
-        opts: ['그 줄을 지우면 스트리밍이 꺼져서', '빼면 temperature가 2로 올라가서', '빼면 다른 모델로 바뀌어서', '빼면 추론이 켜질 수 있어서(공식 쿡북 실측은 high)'], a: 3,
+        opts: ['그 줄이 스트리밍을 켜 두는 줄이라 지우면 꺼져서', '빼면 temperature가 2로 올라가서', '빼면 SDK가 더 큰 기본 모델로 바꿔 불러서', '빼면 추론이 켜질 수 있어서'], a: 3,
         why: 'solar-pro4는 값을 빼면 추론이 켜진다고 공식 쿡북이 실측했어요(문서끼리 설명이 달라요). 그래서 이 과정은 <code>reasoning_effort</code>를 <b>늘 직접</b> 적어요. 간단한 설명·채점은 none, 어려운 여러 단계 문제는 high.',
-        ex: ['스트리밍은 stream=True로 따로 켜요. reasoning_effort와 상관없어요.', 'temperature는 따로 정하는 값이에요. 빼도 2가 되지 않아요.', '모델은 model=MODEL이 정해요. 그대로 solar-pro4예요.', ''] }
+        ex: ['스트리밍은 stream=True로 따로 켜요. reasoning_effort와 상관없어요.', 'temperature는 따로 정하는 값이에요. 빼도 2가 되지 않아요.', 'SDK는 모델을 바꾸지 않아요. 모델은 model=MODEL이 정해서 그대로 solar-pro4예요.', ''] }
     ]}
     ]
   });
