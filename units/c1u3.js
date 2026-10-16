@@ -977,7 +977,7 @@
       { t: 'q', kind: 'mc', fig: 'qa_printResp', q: '<code>print(resp)</code>를 했더니 <code>ChatCompletion(id=…, choices=[Choice(…)], usage=…)</code> 같은 긴 글이 나왔어요. 답 글만 보려면?',
         opts: ['<code>print(resp.choices[0].message.content)</code>', '<code>print(resp.content)</code>', '<code>print(resp["content"])</code>', '<code>print(str(resp)[:50])</code>'], a: 0,
         why: 'resp는 응답 전체를 담은 객체예요. 답 글은 <code>choices[0].message.content</code>에 있어요. <code>print(resp)</code>는 구조를 살펴볼 때만 써요.',
-        ex: ['', 'content는 resp 바로 아래에 있지 않아요. choices[0].message 안에 있어요.', '진짜 응답은 딕셔너리가 아니라 점(.)으로 읽는 객체예요. 대괄호로 읽으면 오류가 나요.', '앞 50글자를 자르면 답 대신 ChatCompletion(id=… 같은 구조 글이 보여요.'] }
+        ex: ['', 'choices는 목록이라 [0]으로 칸을 먼저 골라야 해요.', '연습장의 흉내 딕셔너리라면 맞지만, 진짜 응답은 점(.)으로 읽는 객체라 대괄호로 읽으면 오류가 나요.', 'message는 resp 바로 아래가 아니라 choices[0] 안에 있어요.'] }
     ]},
 
     /* =================== L3 =================== */
