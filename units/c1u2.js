@@ -62,6 +62,11 @@
     P.circle(cx, bottom - 90 * s, 62 * s, { fill: 'paper' });
     P.face(cx, bottom - 88 * s, 50 * s, { mood: mood || 'smile' });
   }
+  // 동그란 얼굴(머리 + 표정). s = 표정 크기
+  function head(P, cx, cy, s, o) {
+    P.circle(cx, cy, s * 1.25, { fill: 'paper' });
+    P.face(cx, cy + s * 0.04, s, o);
+  }
   // 글 쪽지(제목 + 줄)
   function doc(P, x, y, w, h, title, fill) {
     P.note(x, y, w, h, { fill: fill || 'paper' });
@@ -223,7 +228,7 @@
         P.text(258, 84, '"length"', { mono: true, size: 13, weight: 700, c: 'bad' });
         P.text(258, 124, 'max_tokens=100', { mono: true, size: 12 });
         P.text(150, 190, '왜 비었을까?', { size: 13, c: 'ink2' });
-        P.face(290, 166, 34, { mood: 'wow' });
+        head(P, 290, 166, 34, { mood: 'wow' });
       }},
 
       /* ---------- L1 설명 그림 ---------- */
@@ -311,7 +316,7 @@
         P.arrow(146, 94, 196, 94, { c: 'accent', w: 2.4, head: 9 });
         P.rrect(206, 60, 120, 68, 10, { fill: 'hi', gap: 6 });
         P.text(266, 102, '? 토큰', { size: 20, weight: 700 });
-        P.face(266, 160, 34, { mood: 'wow' });
+        head(P, 266, 160, 34, { mood: 'wow' });
       }},
       q_usageBlank: { w: 340, h: 200, label: 'usage 상자에 보낸 쪽 이름은 있고, 만든 쪽 이름 칸은 비어 있는 모습', draw(P) {
         P.rrect(20, 24, 200, 130, 10, { fill: 'paper', w: 2 });
@@ -399,7 +404,7 @@
           for (let k = 0; k <= i; k++) P.rect(x, 150 - (k + 1) * 18, 40, 16, { fill: k % 2 ? 'good' : 'sky', gap: 4, w: 1.2 });
           P.text(x + 20, 168, (i + 1) + '번째', { size: 12, weight: 700 });
         }
-        P.face(318, 38, 28, { mood: 'dizzy' });
+        head(P, 318, 38, 28, { mood: 'dizzy' });
         P.drop(330, 62, 6);
         P.text(170, 192, '대화가 길수록 요청이 무거워져요', { size: 13, c: 'accent' });
       }},
@@ -444,7 +449,7 @@
         P.arrow(150, 64, 196, 64, { c: 'accent', w: 2.4, head: 9 });
         P.rrect(206, 44, 116, 40, 8, { c: 'accent', w: 1.8 });
         P.text(264, 71, '? 토큰', { size: 18, weight: 700 });
-        P.face(170, 158, 44, { mood: 'wow' });
+        head(P, 170, 158, 44, { mood: 'wow' });
       }},
       qa_sysUser: { w: 340, h: 200, label: '"중학생 눈높이로, 세 문장 이내" 쪽지를 세 역할 상자 중 어디에 넣을지 고민', draw(P) {
         P.note(14, 20, 150, 66, { fill: 'hi' });
@@ -640,7 +645,7 @@
         P.note(130, 20, 104, 70, { fill: 'paper' });
         P.text(182, 44, 'Quickstart', { size: 12, weight: 700 });
         P.text(182, 72, '기본 꺼짐', { size: 13, weight: 700, c: 'accent' });
-        P.face(284, 56, 44, { mood: 'dizzy' });
+        head(P, 284, 56, 44, { mood: 'dizzy' });
         P.rrect(40, 112, 260, 50, 8, { fill: 'ink', fs: 'solid' });
         P.text(56, 142, 'reasoning_effort="none"', { mono: true, size: 14, c: 'paper', anchor: 'start' });
         tick(P, 272, 136, 12);
@@ -767,7 +772,7 @@
         P.text(253, 74, '404', { size: 24, weight: 700, c: 'bad' });
         P.text(253, 100, '없는 페이지', { size: 12, c: 'ink2' });
         P.text(253, 140, '주소는 직접 열어 보기', { size: 12, c: 'accent' });
-        P.face(170, 176, 34, { mood: 'dizzy' });
+        head(P, 170, 176, 34, { mood: 'dizzy' });
       }},
       groundDoc: { w: 340, h: 200, label: '공지 자료 쪽지를 함께 받은 로봇이 자료에 있는 것만 답하고 없는 것은 없다고 하는 모습', draw(P) {
         doc(P, 14, 30, 96, 110, '공지 자료', 'hi');
@@ -824,7 +829,7 @@
         card(P, 56, 116);
         P.note(68, 126, 30, 38, { fill: 'paper' });
         P.arrow(102, 146, 122, 146, { c: 'accent', w: 2, head: 7 });
-        P.face(134, 150, 20, { mood: 'happy' });
+        head(P, 134, 150, 20, { mood: 'happy' });
         P.robot(270, 146, 0.5, { mood: 'wow' });
         shuffled(P);
       }},
@@ -851,8 +856,8 @@
         laptop(P, 200, 60, 120, 70);
         P.text(80, 86, 'same.py', { mono: true, size: 12 });
         P.text(260, 86, 'same.py', { mono: true, size: 12 });
-        P.face(80, 110, 24, { mood: 'smile' });
-        P.face(260, 110, 24, { mood: 'wow' });
+        head(P, 80, 110, 24, { mood: 'smile' });
+        head(P, 260, 110, 24, { mood: 'wow' });
         P.text(170, 172, '연수장 옆자리', { size: 13, c: 'ink2' });
       }},
       t_gradeBlank: { w: 340, h: 200, label: '통과·다시 도장과 두 칸이 빈 설정', draw(P) {
@@ -882,10 +887,10 @@
         card(P, 126, 58);
         P.robot(172, 96, 0.3, { mood: 'happy' });
         card(P, 238, 14);
-        P.face(272, 48, 34, { mood: 'smile' });
+        head(P, 272, 48, 34, { mood: 'smile' });
         P.text(306, 54, '1', { size: 16, weight: 700 });
         card(P, 56, 116);
-        P.face(90, 150, 34, { mood: 'wow' });
+        head(P, 90, 150, 34, { mood: 'wow' });
         P.text(124, 156, '2', { size: 16, weight: 700 });
         P.robot(270, 146, 0.5, { mood: 'wink' });
         shuffled(P);
@@ -896,8 +901,8 @@
         P.text(60, 80, 'finish_reason: "length"', { mono: true, size: 14, anchor: 'start', c: 'bad' });
         P.text(60, 108, 'max_tokens=200', { mono: true, size: 13, anchor: 'start', c: 'ink2' });
         P.line(170, 124, 170, 140, { w: 3 });
-        [60, 120, 220, 280].forEach((x, i) => P.face(x, 164, 34, { mood: i === 1 ? 'wow' : 'smile' }));
-        P.text(170, 194, '연수 실습 중', { size: 12, c: 'ink2' });
+        [50, 110, 230, 290].forEach((x, i) => head(P, x, 164, 34, { mood: i === 1 ? 'wow' : 'smile' }));
+        P.text(170, 172, '연수 실습 중', { size: 12, c: 'ink2' });
       }},
       t_slowChat: { w: 340, h: 200, label: '길게 쌓인 대화 기록과 커진 시계, 동전 더미', draw(P) {
         for (let i = 0; i < 6; i++) P.rrect(20 + (i % 2) * 30, 14 + i * 26, 150, 20, 6, { fill: i % 2 ? 'good' : 'sky', gap: 5, w: 1.2 });
@@ -913,11 +918,11 @@
         P.note(120, 20, 206, 90, { fill: 'hi' });
         P.text(223, 52, 'AI가 그랬어요', { size: 14, weight: 700 });
         P.text(223, 84, '3847 × 2961 = 11,389,967', { size: 13 });
-        P.face(240, 158, 44, { mood: 'wink' });
+        head(P, 240, 158, 44, { mood: 'wink' });
         ask(P, 296, 150, 24);
       }},
       t_costCalc: { w: 340, h: 200, label: '학생 얼굴 여섯과 입력·출력 토큰 쪽지, 동전과 물음표', draw(P) {
-        for (let i = 0; i < 6; i++) P.face(30 + (i % 3) * 30, 40 + Math.floor(i / 3) * 30, 24, { mood: 'smile' });
+        for (let i = 0; i < 6; i++) head(P, 30 + (i % 3) * 30, 40 + Math.floor(i / 3) * 30, 22, { mood: 'smile' });
         P.text(60, 104, '학생 30명', { size: 13, weight: 700 });
         P.text(60, 124, '질문 10개씩', { size: 12, c: 'ink2' });
         P.note(130, 20, 120, 110, { fill: 'paper' });

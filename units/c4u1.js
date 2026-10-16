@@ -824,9 +824,9 @@
     /* =================== QA =================== */
     { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '정답 비교와 테스트 케이스, 부분 점수, 정리', min: 4, steps: [
       { t: 'q', kind: 'mc', fig: 'qa_twoWays', q: '단답형 "리스트 길이를 구하는 내장 함수는?"(정답 <code>len</code>)과 코드 과제 "리스트 길이를 구하는 함수 만들기"를 채점해요. 바른 짝은?',
-        opts: ['둘 다 학생이 쓴 글자를 정답 글자와 비교한다', '단답형은 정답 비교, 코드 과제는 학생 함수를 실행해 결과를 비교한다', '단답형은 학생 답을 실행해 보고, 코드 과제는 글자를 비교한다', '둘 다 LLM 루브릭 채점으로 해야 공정하다'], a: 1,
+        opts: ['단답형은 정답 비교, 코드 과제는 학생 함수를 실행해 결과를 비교한다', '둘 다 학생이 쓴 글자를 정답 글자와 비교한다', '단답형은 학생 답을 실행해 보고, 코드 과제는 글자를 비교한다', '둘 다 LLM 루브릭 채점으로 해야 공정하다'], a: 0,
         why: '단답형은 정해진 낱말이라 정리한 뒤 <b>정답 비교</b>, 코드 과제는 여러 모양으로 풀 수 있어 <b>실행 결과</b>를 비교해요.',
-        ex: ['코드 과제를 글자로 비교하면 다르게 푼 맞는 코드가 틀려요.', '', '거꾸로예요. 단답형 낱말은 실행할 코드가 아니에요.', '정답이 정해진 문항은 비교나 실행으로 정확히 매길 수 있어요.'] },
+        ex: ['', '코드 과제를 글자로 비교하면 다르게 푼 맞는 코드가 틀려요.', '거꾸로예요. 단답형 낱말은 실행할 코드가 아니에요.', '정답이 정해진 문항은 비교나 실행으로 정확히 매길 수 있어요.'] },
       { t: 'q', kind: 'mc', fig: 'qa_weight', q: '배점 6점 문제에 케이스가 넷이에요. 보통 케이스 둘은 각 1점, 경계 케이스 둘은 각 2점이에요. 보통 둘과 경계 하나를 통과하면 몇 점일까요?',
         opts: ['3점', '4점', '4.5점', '6점'], a: 1,
         why: '보통 둘(1 + 1)과 경계 하나(2)를 더해 <b>4점</b>이에요. 무게가 다르면 통과한 케이스의 점수를 더해요.',
@@ -851,6 +851,7 @@
         ['<code>cases</code>', '케이스 목록. <code>args</code>는 넣을 인자 목록, <code>expected</code>는 기대값'],
         ['<code>points</code>', '배점'],
         ['<code>hints</code>', '단계별 힌트. c4u2의 튜터가 써요'] ] }, p: [
+        '위는 문제 하나예요. <code>problems.json</code>은 이런 문제들을 <code>[ ]</code>로 묶은 목록이에요.',
         '키 이름은 내가 정하기 나름이지만, 한 번 정하면 <code>grade.py</code>·튜터·에이전트에게 하는 부탁에서 <b>똑같이</b> 써요. 이 단원은 <code>id, title, func, cases, points, hints</code>로 맞춰요.'
       ], tip: 'JSON은 큰따옴표만 쓰고, <code>true</code>·<code>false</code>·<code>null</code>은 소문자, 마지막 항목 뒤에는 쉼표를 붙이지 않아요. 파이썬의 <code>True</code>나 작은따옴표를 그대로 쓰면 읽다가 오류가 나요.' },
       { t: 'say', h: 'args는 인자 목록이라, 리스트 하나도 한 번 더 감싸요', fig: 'f_argsWrap', code: { lang: 'plain', src: src(['add(1, 2)          ← "args": [1, 2]', 'pass_fail(60)      ← "args": [60]', 'average([80, 90])  ← "args": [[80, 90]]']) }, p: [
@@ -934,12 +935,12 @@
       { t: 'say', h: 'importlib·exec는 학생 코드를 채점기 안에서 돌려요', fig: 'f_rooms', code: { lang: 'py', src: src(['import importlib', 'mod = importlib.import_module("s01")', 'print(mod.add(1, 2))  # 함수 부르기', '', 'src = open("s01.py").read()', 'ns = {}', 'exec(src, ns)  # 글자를 코드로 실행', 'print(ns["add"](1, 2))']) }, p: [
         '가장 쉬운 방법은 학생 파일을 모듈처럼 불러오는 <code>importlib</code>나, 글자로 읽은 코드를 그대로 실행하는 <code>exec</code>예요. 몇 줄이면 학생 함수를 부를 수 있어요.',
         '문제는 학생 코드가 <b>채점기와 같은 프로그램 안에서</b> 돈다는 거예요. 불러오는 순간 파일 맨 위 코드가 실행되고, 거기 끝나지 않는 반복이 있으면 채점기 전체가 멈춰요. 파일을 지우는 코드도 내 권한 그대로 실행돼요.',
-        '그래서 이 두 방법을 채점기 안에서 바로 쓰는 건 내가 쓴 코드나 믿을 수 있는 코드에만이에요. 학생 코드는 <b>따로 떼어</b> 돌려요.'
+        '그래서 채점기 안에서 바로 쓰는 건 내가 쓴 코드나 믿을 수 있는 코드에만 해요. 학생 코드는 <b>따로 떼어</b> 돌려요.'
       ]},
       { t: 'say', h: 'subprocess는 학생 코드를 다른 프로그램으로 따로 돌려요', code: { lang: 'py', src: src(['import subprocess, sys', '', 'r = subprocess.run(', '    [sys.executable, "s01.py"],', '    input="5\\n",', '    capture_output=True,', '    text=True,', '    timeout=2,', ')', 'print(r.returncode)  # 0이면 정상 끝', 'print(r.stdout)      # 학생이 print한 글']) }, p: [
         '<code>subprocess.run</code>은 학생 파일을 <b>새 파이썬 프로그램</b>으로 실행해요. 학생 코드가 멈추거나 오류를 내도 채점기는 멀쩡해요.',
         '<code>input</code>은 학생 프로그램의 <code>input()</code>에 넣을 글, <code>capture_output=True</code>는 출력을 화면 대신 받아 두기, <code>text=True</code>는 글자(str)로 받기예요. 결과의 <code>stdout</code>에 출력, <code>stderr</code>에 오류 메시지, <code>returncode</code>에 끝난 상태(0이면 정상)가 담겨요.',
-        '함수 과제도 같은 방법으로 해요. 학생 함수를 불러 결과를 출력하는 작은 실행 파일(<code>runner.py</code>)을 subprocess로 돌리고, 채점기는 그 출력만 받아요. 그 안에서 <code>importlib</code>를 써도 멈추면 그 프로그램만 끝나요.'
+        '함수 과제도 같은 방법으로 해요. 학생 함수를 불러 결과를 출력하는 작은 실행 파일(<code>runner.py</code>)을 subprocess로 돌리고, 채점기는 그 출력만 받아요. <code>runner.py</code> 안에서 <code>importlib</code>를 써도, 멈추면 timeout으로 그 프로그램만 끝내요.'
       ], tip: '<code>sys.executable</code>은 지금 채점기를 돌리는 파이썬(가상 환경 포함)의 경로예요. Mac의 <code>python3</code>, Windows의 <code>python</code>처럼 이름이 달라 헷갈릴 일이 없어요.' },
       { t: 'say', h: 'timeout으로 끝나지 않는 반복을 끊어요', fig: 'f_timer', code: { lang: 'py', src: src(['try:', '    r = subprocess.run(cmd, input=data,', '        capture_output=True, text=True,', '        timeout=2)', 'except subprocess.TimeoutExpired:', '    result = "시간 초과"', 'else:', '    ok = r.stdout.strip() == want', '    result = "통과" if ok else "실패"']) }, p: [
         '<code>timeout=2</code>를 주면 2초 안에 끝나지 않은 학생 프로그램을 <b>끝내고</b> <code>TimeoutExpired</code> 예외를 내요. 잡아서 "시간 초과"로 적고 다음 학생으로 넘어가요.',

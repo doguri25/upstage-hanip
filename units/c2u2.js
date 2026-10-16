@@ -1053,7 +1053,7 @@
         '}']) } },
       { t: 'say', h: 'solar-pro4에 글과 서식을 함께 보내요', p: [
         'client는 c1u3의 <code>hello_solar.py</code>와 같아요(주소 <code>https://api.upstage.ai/v1</code>). 추출에는 <code>reasoning_effort="none"</code>과 낮은 <code>temperature</code>가 어울려요. 추론을 켜면 느려지고 토큰이 늘어요.',
-        '맨 위 서식 <code>SCHEMA</code>도 같은 꼴(<code>title</code>, <code>items</code> 배열에 <code>ITEM</code>, required, additionalProperties)로 만들고, 결과는 IE처럼 <code>json.loads</code>로 풀어요.'
+        '<code>md</code>는 <code>data/quiz3.md</code>를 <code>encoding="utf-8"</code>로 읽은 글이에요. 맨 위 서식 <code>SCHEMA</code>도 같은 꼴(<code>title</code>, <code>items</code> 배열에 <code>ITEM</code>, required, additionalProperties)로 만들고, 결과는 IE처럼 <code>json.loads</code>로 풀어요.'
       ], code: { lang: 'py', src: src([
         'MODEL = "solar-pro4"',
         'JS = {"name": "quiz", "strict": True,',
