@@ -413,10 +413,11 @@ function mapView(){
   const row1 = r => h('li', { class:'srow' + (r.prep ? ' prep-row' : '') },
     h('div', { class:'stime' }, h('b', null, r.time), r.len ? h('small', null, r.len) : null),
     h('div', { class:'sbody' }, h('b', { class:'stitle' }, wb(r.title)),
-      r.units.length ? h('div', { class:'uchips' }, r.units.map(unitChip)) : h('small', { class:'hint' }, '왼쪽(휴대폰은 위) 준비물 체크리스트를 미리 끝내 두면 편해요.')));
+      r.units.length ? h('div', { class:'uchips' }, r.units.map(unitChip)) : h('small', { class:'hint' }, '왼쪽(휴대폰은 위) 준비물 체크리스트를 미리 끝내 두면 편해요.'),
+      r.tip ? h('small', { class:'hint' }, r.tip) : null));
   const row2 = r => h('li', { class:'srow' },
     h('div', { class:'stime' }, h('b', null, r.time)),
-    h('div', { class:'sbody' }, h('small', { class:'stheme' }, wb(r.title)),
+    h('div', { class:'sbody' }, h('small', { class:'stheme' }, wb('차시 주제 · ' + r.title)),
       h('div', { class:'tracks' }, ...(track === 'B' ? [['B', r.b, r.ub], ['A', r.a, r.ua]] : [['A', r.a, r.ua], ['B', r.b, r.ub]]).map(([k, t, us], i) =>
         h('div', { class:'trk' + (i ? ' dim' : ' mine') }, h('span', { class:'tname' }, `트랙 ${k}${i ? '' : ' · 내 반'}`), h('b', null, t), i ? null : h('div', { class:'uchips' }, us.map(unitChip)))))));
   const day = (d, rows) => h('section', { class:'panel tday' }, h('div', { class:'eyebrow' }, `${d.name} · ${d.hours}`), h('h2', null, d.sub), h('ol', { class:'sched' }, rows));

@@ -257,8 +257,10 @@ function statusOf(u, it){
   const pass = it.type === 'test' ? r.best / r.total >= it.pass : false;
   return { done:true, meta:`${r.best}/${r.total}`, pass };
 }
+/* 선택 단원(c4u4 트랙 B)은 내 트랙이 B일 때만 다음 한입·전체 진도에 센다 */
+const myUnits = () => UNITS.filter(u => u.id !== 'c4u4' || (store.track ?? TRAINING.myTrack) === 'B');
 function nextUp(){
-  for (const u of UNITS) for (const it of u.items) if (!store.done[pkey(u, it)]) return [u, it];
+  for (const u of myUnits()) for (const it of u.items) if (!store.done[pkey(u, it)]) return [u, it];
   return null;
 }
 
@@ -466,7 +468,7 @@ function renderHome(opt = {}){
   const old = document.querySelector('.home');
   let snap = opt.keep && old ? homeSnap(old) : opt.back ? homeScroll : null;
   const again = () => renderHome({ keep:true });
-  const all = UNITS.reduce((a, u) => a + u.items.length, 0), allDone = UNITS.reduce((a, u) => a + doneCount(u), 0);
+  const myU = myUnits(), all = myU.reduce((a, u) => a + u.items.length, 0), allDone = myU.reduce((a, u) => a + doneCount(u), 0);
   /* 지금 할 곳: 하다 만 레슨이 있으면 그곳, 없으면 아직 안 한 첫 문항 */
   const lastK = store.last && store.pos[store.last] && !store.done[store.last] ? store.last : null;
   const target = (lastK && lookup(lastK)) || nextUp();
@@ -540,7 +542,7 @@ function renderHome(opt = {}){
       h('span', null, h('small', null, pos ? '이어서 하기' : allDone ? '다음 한입' : '여기서 시작해요'), h('b', null, tIt.title),
         h('span', { class:'how' }, `${tU.course.split(' · ')[0]} · 단원 ${unitNo(tU)} · ${pos ? `${pos.i + 1}/${pos.n} 단계부터` : `${tIt.min}분`}`)),
       h('span', { class:'go' }, pos ? '이어서' : '시작'));
-  })() : h('div', { class:'continue finished' }, h('span', null, h('small', null, '모두 끝!'), h('b', null, `${UNITS.length}단원을 다 먹었어요. 오답 노트로 복습해 봐요`)));
+  })() : h('div', { class:'continue finished' }, h('span', null, h('small', null, '모두 끝!'), h('b', null, `${myU.length}단원을 다 먹었어요. 오답 노트로 복습해 봐요`)));
   const unitMin = cur.items.reduce((a, it) => a + it.min, 0);
   const main = h('div', { class:'mainc' },
     !store.guideSeen ? h('section', { class:'guide' },

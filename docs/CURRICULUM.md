@@ -4,7 +4,7 @@
 단원마다 레슨 5개(L1~L5) + 헷갈림 퀴즈 2개(QA·QB) + 진짜 실습 미션(M1) + 형성평가(T1). 규칙은 `SPEC.md`, 사실은 `docs/FACTS.md`.
 
 연습 폴더 `upstage-lab`이 단원마다 자란다:
-`hello_solar.py`(c1u3) → `parse.py`(c2u1) → `extract.py`·`questions.json`(c2u2) → `chunks.json`·`search.py`(c2u3) → `helper.py`(c3u1) → `app.py`(c3u2) → `guard.py`(c3u3) → `grader/`(c4u1) → `tutor.py`(c4u2) → 루브릭·교사 화면 완성(c4u3) → (선택) `study_bot/`(c4u4) → `agent.py`(c5u1) → `team.py`(c5u2) → 대회용 저장소(c5u3).
+`hello_solar.py`(c1u3) → `parse.py`(c2u1) → `extract.py`·`questions.json`(c2u2) → `chunks.json`·`search.py`(c2u3) → `helper.py`(c3u1) → `app.py`(c3u2) → `guard.py`(c3u3) → `grader/`(c4u1) → `tutor.py`·`check.py`·학생 화면 `app.py`·`teacher.py`(c4u2, 1일차 `app.py`는 먼저 `helper_app.py`로 이름 바꾸기) → `gen_cases.py`·`rubric.json`·`feedback.py`·`checklist.md`(c4u3) → (선택) `study_bot/`(c4u4) → `agent.py`(c5u1) → `team.py`(c5u2) → 대회용 저장소(c5u3).
 
 ---
 

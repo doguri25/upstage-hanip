@@ -1306,7 +1306,7 @@
         opts: [['sqrt', 'length(a) + length(b)'], ['abs', 'length(a) * length(b)'], ['pow', 'dot * dot'], ['sqrt', 'length(a) * length(b)']], a: 3,
         why: '길이는 제곱 합의 제곱근(<code>math.sqrt</code>)이고, 코사인은 내적을 두 길이의 <b>곱</b>으로 나눠요.',
         ex: ['첫 칸은 맞아요. 길이는 더하지 않고 곱해서 나눠요.', '길이는 제곱 합의 제곱근이에요. abs는 절댓값이에요.', 'pow는 거듭제곱이에요. 내적끼리 곱한 값으로 나누면 코사인이 아니에요.', ''] },
-      { t: 'q', kind: 'order', fig: 't_prepOrder', q: '연수 2일차 트랙 B 11:00 「자료 전처리와 검색 설계」 실습이에요. 정보 교과서 PDF 한 단원을 검색할 수 있게 준비하는 순서로 쌓아 보세요.',
+      { t: 'q', kind: 'order', fig: 't_prepOrder', q: '연수 1일차 15:00 「내 수업자료로 대답하는 나만의 보조 agent」 실습이에요. 정보 교과서 PDF 한 단원을 검색할 수 있게 준비하는 순서로 쌓아 보세요.',
         items: ['Document Parse로 PDF를 markdown으로 바꾼다', '머리말·꼬리말을 빼고 제목 단위로 조각을 나눈다', '조각마다 제목·쪽을 붙여 chunks.json에 저장한다', 'passage 모델로 조각을 임베딩해 vectors.json에 저장한다', 'query 모델로 시험 질문을 임베딩해 top-3를 확인한다'],
         why: '글이 있어야 나누고, 조각이 있어야 출처를 붙여 저장하고, 저장한 조각을 임베딩해야 질문과 비교할 수 있어요. 시험 질문은 준비가 다 된 뒤에 해요.' },
       { t: 'q', kind: 'mc', mono: true, fig: 't_cos45', q: '레슨의 <code>cos</code> 함수로 실행하면 무엇이 나올까요?', lang: 'py', code: src(['q = [1, 1, 0]', 'c = [1, 0, 0]', 'print(round(cos(q, c), 3))']),

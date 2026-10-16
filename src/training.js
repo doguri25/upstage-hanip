@@ -6,10 +6,10 @@ const TRAINING = {
   by:'업스테이지·팀모노리스·한국컴퓨터교육학회',
   kind:'2일 출퇴근형 오프라인 연수(총 15차시)',
   days:[
-    { name:'1일차', sub:'등록 · 이론 · 도구 제작 기초', hours:'8차시', rows:[
+    { name:'1일차', sub:'공통 과정 · 이론과 도구 제작 기초', hours:'8차시', rows:[
       { time:'09:50~10:00', len:'', title:'등록, 안전수칙, 이수기준 교육 등', units:[], prep:true },
       { time:'10:00~11:00', len:'1시간', title:'AI 시대의 정보교사 역할과 소버린 AI의 중요성', units:['c1u1'] },
-      { time:'11:00~12:00', len:'1시간', title:'AI 수업도구 사례 시연과 제작 절차', units:['c3u2'] },
+      { time:'11:00~12:00', len:'1시간', title:'AI 수업도구 사례 시연과 제작 절차', units:['c3u2'], tip:'c3u2는 L1(사례)·L3(제작 절차)만 먼저 봐요. 나머지는 16:00 전에 c3u1을 끝내고 이어서 해요.' },
       { time:'13:00~14:00', len:'1시간', title:'Solar로 보는 LLM의 원리', units:['c1u2', 'c1u3'] },
       { time:'14:00~15:00', len:'1시간', title:'수업자료를 데이터로: DocumentParse + Information Extract 활용하기', units:['c2u1', 'c2u2'] },
       { time:'15:00~16:00', len:'1시간', title:'내 수업자료로 대답하는 나만의 보조 agent 제작하기', units:['c2u3', 'c3u1'] },
@@ -29,10 +29,10 @@ const TRAINING = {
   after:{ title:'연수 다음: 대회까지', p:'연수에서 만든 도구를 키워 공모전(기획서·수업 적용)과 해커톤(빠른 제작·시연)에 나가요.', units:['c5u1', 'c5u2', 'c5u3'] },
   /* 연수 전 준비물(이 기기에만 체크가 저장돼요) */
   prep:[
-    { id:'acct', t:'업스테이지 콘솔 계정을 만들고 로그인해 봤어요', unit:'c1u1' },
+    { id:'acct', t:'업스테이지 콘솔 계정을 만들고 로그인해 봤어요. BILLING → Credit에서 잔액과 유효 기간도 확인했어요', unit:'c1u1' },
     { id:'key', t:'API 키를 만들어 .env 파일에 안전하게 적어 뒀어요(코드·채팅방에 붙이지 않기)', unit:'c1u3' },
-    { id:'tools', t:'노트북에 Cursor와 Python 3가 깔려 있고, 연습 폴더에서 Solar를 한 번 불러 봤어요', unit:'c1u3' },
-    { id:'docs', t:'개인정보가 없는 내 수업자료(PDF·이미지) 2~3개를 준비했어요', unit:'c2u1' },
+    { id:'tools', t:'노트북에 Cursor와 Python 3를 깔고, upstage-lab 가상 환경에 openai python-dotenv requests streamlit을 설치해 Solar를 한 번 불러 봤어요(연수장 와이파이에서 설치하지 않게)', unit:'c1u3' },
+    { id:'docs', t:'개인정보가 없는 내 수업자료 2~3개를 준비했어요(하나는 정답·배점이 적힌 형성평가지나 학습지, 하나는 스캔본이면 좋아요)', unit:'c2u1' },
     { id:'track', t:'2일차 트랙 A(파이썬 자동채점 + AI튜터) 반이에요. 내 정보 수업에 쓸 파이썬 문제 3개와 정답 코드를 골라 뒀어요', unit:'c4u1' },
     { id:'power', t:'충전기를 챙기고, 학교·연수장 와이파이가 막힐 때 쓸 휴대폰 핫스팟을 확인했어요', unit:'' },
   ],

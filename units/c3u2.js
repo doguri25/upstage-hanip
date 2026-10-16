@@ -1093,7 +1093,7 @@
           check: '<code>git status</code>가 깨끗하고, <code>.env</code>가 한 번도 목록에 안 보였으면 성공.' },
         { do: '4요소 기획서 plan.md를 써요',
           how: '레슨 2의 캔버스를 <code>plan.md</code>로 옮겨 채워요. 맨 위에 문제 정의 한 문장(누가·언제·무엇에서 막히나), 그다음 학생활동·교사의 할·자료·평가. 학생 이름은 쓰지 않아요.',
-          check: '네 칸이 다 차 있고, 학생활동이 동사로 적혀 있고, 평가가 목표와 맞물리면 성공. 맨 끝에 고른 2일차 트랙(A 또는 B)도 한 줄 적어요.' },
+          check: '네 칸이 다 차 있고, 학생활동이 동사로 적혀 있고, 평가가 목표와 맞물리면 성공. 맨 끝에 2일차 트랙 A(자동채점 + AI 튜터)에서 이 4요소를 어떻게 쓸지 한 줄 적어요.' },
         { do: '에이전트에게 app.py를 맡겨요(Plan → Build)',
           how: 'Agents Window에서 New Agent, 모드를 <b>Plan</b>으로 바꾸고 아래 부탁을 붙여 넣어요. 계획에 키·모델 이름을 건드리는 단계가 있으면 빼 달라고 하고, 괜찮으면 <b>Build</b>.',
           check: 'Changes에 <code>app.py</code>만 생기고 <code>helper.py</code>·<code>.env</code>는 그대로면 성공.',

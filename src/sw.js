@@ -1,7 +1,7 @@
 /* 업스테이지한입 서비스 워커: 한 번 열면 인터넷이 없어도 공부할 수 있게 저장해 둔다.
    화면(index.html)은 인터넷이 되면 새로 받고(안 되면 저장본), 버전이 붙은 단원·글꼴과 바깥 파일(글꼴·rough.js)은 저장본을 먼저 쓴다. */
 const VERSION = '/*VERSION*/';
-const CACHE = 'chanip-' + VERSION, EXT = 'chanip-ext';
+const CACHE = 'uhanip-' + VERSION, EXT = 'uhanip-ext';
 const FILES = /*FILES*/;
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE && k !== EXT).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

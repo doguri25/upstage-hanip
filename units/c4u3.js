@@ -816,15 +816,15 @@
 
     items: [
     /* =================== L1 =================== */
-    { id: 'L1', type: 'lesson', title: '연수 당일 실습 지도', sub: '2일차 트랙 A 7차시, 전날 밤 준비, 자주 막히는 곳', min: 16, win: 'ide', steps: [
+    { id: 'L1', type: 'lesson', title: '연수 당일 실습 지도', sub: '2일차 트랙 A 7차시, 전날 밤 준비, 자주 막히는 곳', min: 17, win: 'ide', steps: [
       { t: 'say', h: '2일차 트랙 A는 채점기에서 튜터까지 하루에 이어요', fig: 'f_dayline', table: { head: ['시간', '차시', '내 폴더에서 만들 것', '미리 볼 단원'], rows: [
         ['09:00', '파이썬 자동채점 기초', '채점 방식 고르기, 첫 케이스', 'c4u1 L1·L2'],
         ['10:00', '자동채점 로직 설계', 'normalize·부분 점수·timeout', 'c4u1 L2·L4'],
         ['11:00', '문제·정답 데이터 구성', '<code>problems.json</code> 3문제', 'c2u2·c4u1 L3'],
         ['13:00', 'AI튜터 대화 흐름 만들기', '힌트 사다리, <code>tutor.py</code>', 'c4u2 L1~L3'],
-        ['14:00', '수업 활동과 자동채점 연결', '학생 화면 8501, 교사 화면 8502', 'c4u2 L4'],
+        ['14:00', '수업 활동과 자동채점 연결', '학생 화면 8501, 교사 화면 8502', 'c3u2 L4, c4u2 L4'],
         ['15:00', '파이썬 자동채점 + AI튜터', '끝까지 잇기, 케이스 늘리기, 피드백', '이 단원 L2~L4'],
-        ['16:00~17:30', 'AI튜터 안전장치 적용', '입력 검사, 기록, 교실 운영', 'c4u2 L5, 이 단원 L5'] ] }, p: [
+        ['16:00~17:30', 'AI튜터 안전장치 적용', '입력 검사, 기록, 교실 운영', 'c3u3 L3·L4, c4u2 L5, 이 단원 L5'] ] }, p: [
         '연수 2일차 트랙 A는 오전에 채점기를, 오후에 그 위에 튜터와 화면을 쌓아요. 이 단원은 오후 15:00 「파이썬 자동채점 + AI튜터」와 16:00 「AI튜터 안전장치 적용」을 대비하는 마무리예요.',
         '실제 실습 순서와 도구는 연수 강사의 안내를 따라요. 이 앱은 같은 흐름을 집에서 미리 한 바퀴 돌아, 연수장에서는 막히지 않고 <b>내 수업에 맞게 고치는 데</b> 시간을 쓰게 도와요.'
       ], tip: '하루 내내 같은 <code>upstage-lab</code> 폴더를 키워요. 점심 전에 한 번, 16:00 전에 한 번 Git 커밋해 두면 되돌아갈 곳이 생겨요.' },
@@ -837,6 +837,7 @@
         '│  └─ check_cases.py  sandbox/',
         '├─ tutor.py  check.py  ← 13·14시',
         '├─ app.py(8501)  teacher.py(8502)',
+        '├─ helper_app.py  ← 1일차(c3u2)',
         '├─ gen_cases.py  feedback.py  ← 15시',
         '├─ rubric.json  tutor_log.jsonl',
         '└─ checklist.md  ← 전날 밤']) }, p: [
@@ -845,13 +846,13 @@
         '파일 이름과 폴더 이름은 영어로 지어요. 한글·띄어쓰기가 든 경로는 일부 도구에서 문제를 일으킬 수 있어요.'
       ]},
       { t: 'say', h: '전날 밤에 다섯 가지를 끝내 둬요', fig: 'f_bag', table: { head: ['준비', '확인하는 법'], rows: [
-        ['가상 환경과 패키지', '<code>.venv</code>를 켜고 <code>pip install openai python-dotenv streamlit</code>까지 집에서'],
+        ['가상 환경과 패키지', '<code>.venv</code>를 켜고 <code>pip install openai python-dotenv requests streamlit</code>까지 집에서'],
         ['<code>.env</code>와 키', '<code>UPSTAGE_API_KEY=up_…</code> 한 줄, <code>python hello_solar.py</code>가 답하면 통과'],
         ['템플릿 폴더', '<code>grader/</code>에 내 수업 문제 3개와 정답 코드, <code>check_cases.py</code>가 모두 "일치"'],
         ['크레딧과 Git', '콘솔 BILLING의 <b>Credit</b>(잔액·유효 기간) 확인, <code>git status</code>가 깨끗하고 <code>.env</code>가 안 보임'],
         ['전원과 인터넷', '충전기, 와이파이가 막힐 때 쓸 휴대폰 핫스팟'] ] }, p: [
         '연수장에서 가장 아까운 시간은 설치를 기다리는 시간이에요. 수십 명이 같은 와이파이로 한꺼번에 패키지를 받으면 느려지고, 그사이 실습이 앞서가요.',
-        '앱의 <b>연수 지도</b>에 있는 준비물 목록과 같아요. 트랙 A만의 준비인 <b>템플릿 폴더</b>(내 문제 3개가 든 <code>grader/</code>)를 더했어요.'
+        '앱의 <b>연수 지도</b> 준비물과 같은 내용에, 2일차용 <b>Git 커밋 확인</b>과 <code>check_cases.py</code> <b>일치 확인</b>(내 문제 3개가 든 <code>grader/</code>)을 더했어요.'
       ]},
       { t: 'say', h: '환경에서 막히면: 가상 환경, .env 이름, 경로·한글', fig: 'f_stuckEnv', table: { head: ['증상', '까닭', '바로 풀기'], rows: [
         ['<code>ModuleNotFoundError</code>', '가상 환경을 안 켜서 다른 파이썬이 돎', 'Mac <code>source .venv/bin/activate</code>, Windows <code>.venv\\Scripts\\activate</code>. 줄 앞에 <code>(.venv)</code>'],
