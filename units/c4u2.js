@@ -89,7 +89,7 @@
   /* ---------- 모의 화면에서 되풀이하는 조각 ---------- */
   const BUGGY = src(['def average(nums):', '    total = 0', '    for n in nums:', '        total += n', '    return total / len(nums)']);
   const FIXED = src(['def average(nums):', '    if not nums:', '        return 0', '    return sum(nums) / len(nums)']);
-  const P_HEAD = { k: 'h', text: '문제 1 · 평균 구하기', sub: '<code>average(nums)</code>: 평균을 돌려줘요. 빈 리스트이면 0이에요.' };
+  const P_HEAD = { k: 'h', text: '문제 p2 · 점수 평균', sub: '<code>average(nums)</code>: 점수 평균을 돌려줘요. 빈 리스트면 0이에요.' };
   const sidField = v => ({ k: 'field', id: 'sid', label: '번호(이름 말고)', value: v });
   const codeField = v => ({ k: 'field', id: 'code', label: '내 코드', area: true, mono: true, value: v, ph: 'def average(nums):' });
   const BTN1 = { k: 'btns', btns: ['채점하기'] };
@@ -181,7 +181,7 @@
         P.text(71, 186, '정답 자판기', { size: 13, c: 'ink2' });
         P.text(170, 100, 'vs', { size: 16, weight: 700, c: 'soft' });
         P.bubble(204, 12, 120, 40, 254, 58);
-        P.text(264, 38, '빈 리스트이면?', { size: 13, weight: 700 });
+        P.text(264, 38, '빈 리스트면?', { size: 13, weight: 700 });
         P.robot(262, 112, 0.5, { mood: 'happy' });
         P.text(262, 186, '힌트 튜터', { size: 13, c: 'ink2' });
         P.sparkle(318, 150, 6, 'hi');
@@ -834,7 +834,7 @@
       ]},
       { t: 'say', h: '힌트는 세 칸 사다리로 올려요', fig: 'ladder', p: [
         '한 번에 다 알려 주지 않고, 학생이 더 원할 때 한 칸씩 올라가요. 아래 칸일수록 학생이 생각할 몫이 커요.',
-        '과제가 "점수 리스트의 평균을 돌려주는 <code>average(nums)</code>, 빈 리스트이면 0"이고, 학생 코드가 빈 리스트에서 <code>ZeroDivisionError</code>를 냈다면 이렇게 올라가요.'
+        'c4u1의 p2 과제가 "점수 리스트의 평균을 돌려주는 <code>average(nums)</code>, 빈 리스트면 0"이고, 학생 코드가 빈 리스트에서 <code>ZeroDivisionError</code>를 냈다면 이렇게 올라가요.'
       ], table: { head: ['단계', '무엇을', '예'], rows: [
         ['1 개념', '다시 볼 개념', '빈 리스트의 <code>len</code>은 얼마일까요? 그 값으로 나누면 어떻게 될까요?'],
         ['2 위치', '틀린 줄과 입력', '<code>average([])</code>에서 5번째 줄의 나누기가 멈춰요.'],
@@ -902,10 +902,11 @@
         ['학생 코드(줄 번호 붙여서)', '넘겨요', '2단계에서 "5번째 줄"처럼 짚으려면 번호가 있어야 해요'],
         ['실패한 케이스', '넘겨요', '입력·기대·학생 결과가 힌트의 근거예요'],
         ['힌트 단계', '넘겨요', '내 코드가 센 단계를 알려 줘요'],
+        ['<code>problems.json</code>의 <code>hints</code>', '넘겨도 좋아요', '선생님이 짚고 싶은 방향을 튜터가 따라가요'],
         ['학생 이름·학번', '안 넘겨요', '힌트에 필요 없어요. 기록은 내 컴퓨터에 번호로만'],
-        ['정답 코드', '처음엔 안 넘겨요', '모델이 정답을 쥐고 있으면 새어 나가기 쉬워요'] ] }, p: [
+        ['정답 코드(<code>solution.py</code>)', '처음엔 안 넘겨요', '모델이 정답을 쥐고 있으면 새어 나가기 쉬워요'] ] }, p: [
         '통과한 케이스는 개수만 알려 줘도 충분해요. 실패한 케이스가 많으면 앞의 2~3개만 넣어요. 글이 길수록 토큰(돈)과 시간이 늘어요.',
-        'c4u1의 채점 함수가 돌려주는 결과에서 필요한 칸만 골라 <code>{"input", "expected", "got"}</code> 모양으로 맞춰 두면 다음 단계가 편해요.'
+        'c4u1의 <code>runner.py</code>는 케이스마다 통과 여부와 실제값(오류면 오류 이름)을 남겨요. 이걸 <code>problems.json</code>의 케이스와 짝지어 <code>{"input", "expected", "got"}</code> 모양으로 맞춰 두면 다음 단계가 편해요.'
       ]},
       { t: 'say', h: 'messages는 이름표로 칸을 나눠 조립해요', fig: 'msgBlocks', code: { lang: 'py', src: src([
         'def build_messages(r, code, level):',
@@ -1143,39 +1144,38 @@
         'c3u2의 4요소로 보면 학생활동은 코드 고치기, 교사의 할은 교사 화면을 보며 돕기, 자료는 <code>problems.json</code>, 평가는 채점 기록이에요.',
         '채점 점수는 연습과 형성평가용으로 먼저 써요. 성적에 넣으려면 학교 평가 규정을 먼저 확인해요.'
       ]},
-      { t: 'say', h: '학생 화면은 위에서 아래로 한 바퀴', fig: 'stuScreen', code: { lang: 'py', src: src([
-        'import json',
-        'import streamlit as st',
-        'from grader.grade import grade  # c4u1',
-        'from tutor import get_hint, reset',
-        '',
-        'with open("grader/problems.json",',
-        '          encoding="utf-8") as f:',
-        '    PROB = json.load(f)[0]',
-        'ss = st.session_state',
-        'st.title("파이썬 연습 튜터")',
-        'sid = st.text_input("번호(예: S07)")',
-        'code = st.text_area("내 코드")']) }, p: [
-        '화면은 위에서 아래로 번호 → 코드 입력 → <b>채점하기</b> → 결과 표 → 튜터 대화예요. c3u2에서 만든 Streamlit 챗봇에 채점기를 붙이는 셈이에요.',
-        '채점 함수는 c4u1에서 만든 것을 가져와요. 이름이나 돌려주는 모양이 다르면 내 파일에 맞춰 써요. 학생은 <b>이름 대신 번호</b>만 적어요.',
-        '키는 이 앱을 돌리는 컴퓨터의 <code>.env</code>에만 있어요. 학생 브라우저로는 화면만 가고 키는 가지 않아요(c3u2).'
+      { t: 'say', h: '채점은 c4u1의 runner.py에 맡겨요', fig: 'stuScreen', code: { lang: 'py', src: src([
+        'def run_one(sid, code, prob):',
+        '    name = f"sandbox/{sid}.py"',
+        '    Path("grader", name).write_text(',
+        '        code, encoding="utf-8")',
+        '    cmd = [sys.executable, "runner.py",',
+        '           name, prob["id"]]',
+        '    # 2초 넘으면 예외: c4u1처럼 잡아요',
+        '    r = subprocess.run(cmd, cwd="grader",',
+        '        capture_output=True, text=True,',
+        '        timeout=2)',
+        '    return to_result(prob, r.stdout)']) }, p: [
+        '화면은 위에서 아래로 번호 → 코드 입력 → <b>채점하기</b> → 결과 표 → 튜터 대화예요. 채점은 새로 만들지 않고 c4u1의 <code>grader/</code>를 그대로 써요. 문제는 <code>grader/problems.json</code>의 p2(점수 평균)를 읽어 <code>PROB</code>에 둬요.',
+        '웹으로 받은 학생 코드는 <b>교사 컴퓨터에서</b> 돌아요. 그래서 앱 안에서 <code>exec</code>로 바로 돌리지 않고, c4u1처럼 <code>sandbox/</code>에 파일로 저장한 뒤 <code>runner.py</code>를 subprocess로 따로, 시간 제한을 걸어 돌려요.',
+        '<code>to_result</code>는 <code>runner.py</code>가 케이스마다 남긴 결과(통과 여부·실제값)를 <code>problems.json</code>의 케이스와 짝지어, 튜터가 받을 <code>{"pid", "problem", "cases", "failed"}</code> 모양으로 바꿔요. 미션에서 에이전트에게 맡겨요.'
       ]},
       { t: 'say', h: '버튼을 누를 때마다 처음부터 다시 돌아요', fig: 'rerun', code: { lang: 'py', src: src([
         'if st.button("채점하기") and sid:',
-        '    ss.r, ss.chat = grade(code, PROB), []',
-        'r = ss.get("r")',
-        'if r:',
-        '    st.dataframe(r["cases"])',
-        '    if not r["failed"]:',
-        '        reset(sid, r["pid"])',
+        '    ss.r = run_one(sid, code, PROB)',
+        '    ss.chat = []',
+        'if "r" in ss:',
+        '    st.dataframe(ss.r["cases"])',
+        '    if not ss.r["failed"]:',
+        '        reset(sid, PROB["id"])',
         '    elif st.button("힌트 받기"):',
-        '        h = get_hint(sid, r, code)',
+        '        h = get_hint(sid, ss.r, code)',
         '        ss.chat.append(h["message"])',
         'for m in ss.get("chat", []):',
         '    st.chat_message("ai").write(m)']) }, p: [
-        'Streamlit은 버튼을 누를 때마다 <b>파일을 위에서부터 다시 실행</b>해요. 그래서 채점 결과와 힌트 대화는 <code>st.session_state</code>(c3u2)에 넣어 둬야 다음 실행에도 남아요.',
-        '<b>힌트 받기</b> 버튼은 채점 결과에 실패가 있을 때만 보여요. 학생이 먼저 써 보고 채점을 받아야 힌트가 열려요. 모두 통과하면 <code>reset</code>으로 단계를 지워요.',
-        '<code>st.dataframe</code>은 결과를 표로, <code>st.chat_message</code>는 대화 말풍선으로 보여 줘요. <code>streamlit run app.py</code>로 켜면 주소는 <code>localhost:8501</code>이에요.'
+        'Streamlit은 버튼을 누를 때마다 <b>파일을 위에서부터 다시 실행</b>해요. 그래서 채점 결과와 힌트 대화는 <code>ss = st.session_state</code>(c3u2)에 넣어 둬야 다음 실행에도 남아요. 그 위에는 <code>sid = st.text_input("번호")</code>, <code>code = st.text_area("내 코드")</code>가 있어요.',
+        '<b>힌트 받기</b> 버튼은 채점 결과에 실패가 있을 때만 보여요. 학생이 먼저 써 보고 채점을 받아야 힌트가 열려요. 모두 통과하면 <code>reset</code>으로 단계를 지워요. 학생은 <b>이름 대신 번호</b>만 적어요.',
+        '<code>streamlit run app.py</code>로 켜면 주소는 <code>localhost:8501</code>이에요. 키는 앱을 돌리는 컴퓨터의 <code>.env</code>에만 있고, 학생 브라우저로는 화면만 가요(c3u2).'
       ]},
       { t: 'sim', h: '학생이 되어 한 바퀴 돌아요', p: '빈 리스트에서 틀리는 코드를 채점받고, 힌트를 받아 스스로 고쳐 다시 채점해 봐요.',
         scene: { win: 'web', url: 'localhost:8501', title: '파이썬 연습 튜터', blocks: stu('', [BTN1, chatB([SEEN])]) },
