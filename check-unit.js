@@ -244,6 +244,7 @@ Object.keys(figs).forEach(n => { if (!usedFigs.has(n) && n !== 'hero') warn(`그
   const optLen = o => (Array.isArray(o) ? o.join(' ') : String(o)).replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, 'x').length;
   const mcs = [...(Array.isArray(U.skip) ? U.skip : []), ...items.flatMap(it => it.steps || [])].filter(s => s.t === 'q' && s.kind === 'mc' && Array.isArray(s.opts) && s.opts.length === 4);
   const longest = mcs.filter(q => { const L = q.opts.map(optLen), m = Math.max(...L); return L[q.a] === m && L.filter(x => x === m).length === 1; });
+  if (mcs.length >= 8 && longest.length < mcs.length * 0.1) warn(`객관식 ${mcs.length}개 중 정답이 혼자 가장 긴 보기가 ${longest.length}개뿐이에요. 가장 긴 보기는 늘 오답이라고 거를 수 있으니 10~35%가 되게, 몇 문제는 정답이 가장 길어도 돼요`);
   if (mcs.length >= 8 && longest.length > mcs.length * 0.35) warn(`객관식 ${mcs.length}개 중 ${longest.length}개(${Math.round(longest.length / mcs.length * 100)}%)에서 정답이 혼자 가장 긴 보기예요. 35% 이하로: 오답도 정답만큼 구체적으로 쓰거나 정답을 줄여요. 예: ${longest.slice(0, 3).map(q => '"' + String(q.q).replace(/<[^>]+>/g, '').slice(0, 24) + '…"').join(', ')}`);
 }
 
