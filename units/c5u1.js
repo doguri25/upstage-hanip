@@ -830,7 +830,7 @@
 
     items: [
     /* =================== L1 =================== */
-    { id: 'L1', type: 'lesson', title: '워크플로와 에이전트', sub: '정해진 레일과 갈림길, 에이전트 루프', min: 12, steps: [
+    { id: 'L1', type: 'lesson', title: '워크플로와 에이전트', sub: '정해진 레일과 갈림길, 에이전트 루프', min: 8, steps: [
       { t: 'say', h: 'helper.py는 정해진 레일을 달려요', fig: 'rail', p: [
         'c3u1에서 만든 <code>helper.py</code>를 떠올려 봐요. 질문이 오면 <b>검색 → 프롬프트 조립 → Solar 답</b>을 늘 같은 순서로 했죠. 그 순서를 정한 건 Solar가 아니라 <b>내 코드</b>예요.',
         '이렇게 단계와 순서를 코드가 미리 정해 둔 흐름을 <b>워크플로</b>(workflow)라고 해요. c3u1 레슨 4에서 살펴본 "보조 agent의 정체"가 바로 이 워크플로예요.',
@@ -873,7 +873,7 @@
     ]},
 
     /* =================== L2 =================== */
-    { id: 'L2', type: 'lesson', title: '도구 정의하기: tools', sub: '이름·설명·매개변수, tool_choice, 도구 호출 응답 읽기', min: 12, steps: [
+    { id: 'L2', type: 'lesson', title: '도구 정의하기: tools', sub: '이름·설명·매개변수, tool_choice, 도구 호출 응답 읽기', min: 11, steps: [
       { t: 'say', h: '도구는 이름·설명·매개변수로 알려요', fig: 'toolCard', code: { lang: 'py', src: TOOL_DEF }, p: [
         'Solar에게 도구를 알려 줄 때는 요청에 <code>tools</code> 목록을 넣어요. 도구 하나는 <code>"type": "function"</code>과 <code>function</code> 안의 <b>name</b>(이름), <b>description</b>(설명), <b>parameters</b>(받을 값)로 이뤄져요.',
         '<code>parameters</code>는 c2u2에서 쓴 <b>JSON Schema</b>예요. 맨 위는 <code>object</code>, 받을 값마다 <code>type</code>과 <code>description</code>, 꼭 필요한 값은 <code>required</code>에 적어요.',
@@ -915,7 +915,7 @@
     ]},
 
     /* =================== QA =================== */
-    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: 'tool_calls와 content, auto와 required, 함수는 누가 돌리나', min: 4, steps: [
+    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: 'tool_calls와 content, auto와 required, 함수는 누가 돌리나', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qa_emptyAns', q: '학생 질문을 보냈더니 화면에 아무 답도 안 나와요. 응답을 찍어 보니 <code>content</code>는 <code>None</code>, <code>finish_reason</code>은 <code>"tool_calls"</code>예요. 무슨 일일까요?',
         opts: ['Solar가 답 대신 도구 실행을 요청했다. 결과를 붙여 다시 보내야 한다', '<code>max_tokens</code>가 모자라 답이 잘렸다. 값을 늘려야 한다', '키가 틀려 빈 응답이 왔다. <code>.env</code>를 고쳐야 한다', '안전장치에 걸려 답이 지워졌다. 질문을 바꿔야 한다'], a: 0,
         why: '<code>finish_reason="tool_calls"</code>는 "이 도구들을 먼저 실행해 주세요"라는 뜻이에요. 답은 도구 결과를 붙여 다시 요청한 <b>다음 턴</b>에 와요.',
@@ -931,7 +931,7 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: 'agent.py 루프 짜기', sub: '순서대로 붙이기, 호출마다 결과, 최대 턴', min: 16, steps: [
+    { id: 'L3', type: 'lesson', title: 'agent.py 루프 짜기', sub: '순서대로 붙이기, 호출마다 결과, 최대 턴', min: 17, steps: [
       { t: 'say', h: '순서가 어긋나면 API가 대화를 거절해요', fig: 'msgStack', code: { lang: 'py', src: LOOP }, p: [
         '공식 순서는 이래요. ① <code>tools</code>와 함께 요청 → ② <code>tool_calls</code>가 오면 그 <b>assistant 메시지를 먼저</b> 대화에 붙이고 → ③ 호출마다 함수를 실행해 <code>"role": "tool"</code> 결과를 붙이고 → ④ 다시 요청해 최종 답을 받아요.',
         'tool 결과에는 어느 호출의 답인지 알려 주는 <code>tool_call_id</code>와 함수 <code>name</code>을 적어요. 앞의 assistant 메시지 속 호출과 이 id로 짝이 맞아야 해요.',
@@ -978,7 +978,7 @@
     ]},
 
     /* =================== L4 =================== */
-    { id: 'L4', type: 'lesson', title: '수업 에이전트의 도구 설계', sub: '세 도구, 최소 권한, 사람 확인, 설명 쓰기', min: 13, steps: [
+    { id: 'L4', type: 'lesson', title: '수업 에이전트의 도구 설계', sub: '세 도구, 최소 권한, 사람 확인, 설명 쓰기', min: 11, steps: [
       { t: 'say', h: '지금까지 만든 것이 그대로 도구가 돼요', fig: 'classTools', table: { head: ['도구', '하는 일', '안에서 쓰는 것', '돌려주는 것'], rows: [
         ['<code>search_materials(query)</code>', '수업자료에서 근거 찾기', 'c2u3 <code>search.py</code>, c3u1 검색', '조각 글 + 출처(파일·쪽)'],
         ['<code>grade_code(problem_id, code)</code>', '학생 코드 채점', 'c4u1 <code>grader/</code>(시간 제한 실행)', '통과·실패한 테스트 케이스'],
@@ -1025,7 +1025,7 @@
     ]},
 
     /* =================== QB =================== */
-    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '최소 권한, 확인 단계, 도구 설명', min: 4, steps: [
+    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '최소 권한, 확인 단계, 도구 설명', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qb_bigTool', q: '도구를 하나로 줄이려고 <code>run_python(code)</code>(아무 파이썬 코드나 실행)를 만들어 검색·채점·퀴즈를 다 하게 하자는 제안이 나왔어요. 어떻게 볼까요?',
         opts: ['도구 수가 적을수록 Solar가 덜 헷갈리니 이 제안이 가장 낫다', '시간 제한만 걸면 무엇이든 실행해도 안전하다', '설명만 잘 쓰면 위험한 코드는 Solar가 안 쓴다', '하는 일이 너무 넓어 위험하다. 좁은 도구 셋으로 나눈다'], a: 3,
         why: '아무 코드나 실행하는 도구는 파일 지우기·키 읽기까지 다 할 수 있어요. 하는 일이 분명한 좁은 도구 여럿이 더 안전하고, Solar가 고르기도 쉬워요.',
@@ -1041,7 +1041,7 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: 'MCP와 Studio', sub: 'Cursor 에이전트에 업스테이지 문서 도구 붙이기, 노코드 문서 에이전트', min: 13, steps: [
+    { id: 'L5', type: 'lesson', title: 'MCP와 Studio', sub: 'Cursor 에이전트에 업스테이지 문서 도구 붙이기, 노코드 문서 에이전트', min: 11, steps: [
       { t: 'say', h: 'MCP: 남이 만든 도구 묶음을 꽂아 쓰는 표준', fig: 'mcpBridge', p: [
         '지금까지는 <code>agent.py</code> 안에 도구를 직접 만들었어요. <b>MCP</b>(Model Context Protocol)는 도구 묶음을 <b>MCP 서버</b>로 만들어 두고, Cursor 같은 프로그램이 그대로 꽂아 쓰게 하는 표준이에요. 커서한입 과정 3 단원 2에서 배웠죠.',
         '이때 루프를 돌리는 "내 코드" 자리는 Cursor가 맡아요. Cursor 에이전트가 도구 목록을 보고 부를 도구를 고르면, Cursor가 MCP 서버에 실행을 맡기고 결과를 대화에 붙여요.'
@@ -1123,7 +1123,7 @@
       note: '예상 비용(지금 가격으로 어림): agent.py 시험 10개 × 2~3턴이면 입력 약 9만·출력 약 3만 토큰(추론 포함)이라 <code>solar-pro4</code>로 약 $0.06이에요. 학습지 10쪽 파싱(standard)이 약 $0.1. 합쳐서 $0.2 안팎이에요. 짧은 질문과 작은 파일로 먼저 시험하고, 끝나면 콘솔 <b>Usage</b>에서 확인해요. 학생 개인정보가 든 문서와 실제 학생 답안은 쓰지 않아요.' },
 
     /* =================== T1 =================== */
-    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 12, pass: 0.7, steps: [
+    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 13, pass: 0.7, steps: [
       { t: 'q', kind: 'mc', fig: 't_400', q: '연수 2일차 오후 "실습 희망 주제" 시간이에요. 옆자리 선생님의 <code>agent.py</code>가 첫 턴에 도구 호출 <b>두 개</b>를 받은 뒤, 두 번째 요청에서 <code>400</code> 오류로 멈춰요. 무엇이 가장 의심스러울까요?',
         opts: ['<code>tool_calls[0]</code>만 실행해 결과를 하나만 붙였다', '<code>MAX_TURNS</code>를 5로 너무 크게 잡았다', '<code>tool_choice</code>를 <code>"auto"</code>로 두어 Solar가 두 개를 골랐다', '<code>reasoning_effort</code>를 직접 적었다'], a: 0,
         why: '호출마다 결과가 하나씩 있어야 해요. 두 번째 호출의 <code>tool_call_id</code>에 짝이 없으니 API가 대화를 거절했어요. <code>for c in msg.tool_calls</code>로 모두 처리해요.',

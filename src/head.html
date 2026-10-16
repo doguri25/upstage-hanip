@@ -921,6 +921,8 @@ details.peek .code{margin-top:6px;font-size:15px}
   .home>.brand{order:1} .home .guide{order:2} .home .continue{order:3} .home>.tree{order:4;display:grid}
   .home .mine{order:5} .home .install{order:6} .home .foot{order:7;text-align:center}
   .brand .fig{width:64px} .brand .fig svg{width:64px;max-width:64px} .brand h1{font-size:38px} .brand,.logo{gap:10px}
+  /* 앱 이름이 길어서(7글자) 휴대폰에서는 빠른 버튼을 위 줄로 올리고 이름은 한 줄로 */
+  .brand{flex-wrap:wrap;row-gap:2px} .quick{order:-1;flex-basis:100%;justify-content:flex-end;margin-top:0} .brand h1{font-size:clamp(26px,8.5vw,38px);white-space:nowrap}
   dialog.sheet{margin:auto auto 0;width:100vw;max-width:100vw;border-radius:22px 22px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
 }
 @media (min-width: 900px){ .quick,.m-only{display:none} }

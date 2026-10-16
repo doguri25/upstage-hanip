@@ -222,7 +222,7 @@ code{font-family:"Nanum Gothic Coding",Menlo,monospace;background:#f2f2f0;border
 pre{background:#f4f4f1;border-radius:8px;padding:10px 12px;overflow:auto;font-size:15px}pre code{background:none;padding:0}
 blockquote{margin:.5em 0;padding:.1em .9em;border-left:4px solid #9fd3bf;color:#48484a;background:#f3faf6;border-radius:0 8px 8px 0}
 hr{border:0;border-top:2px solid #e5e5ea;margin:1em 0}a{color:#1f6fd1}
-table{border-collapse:collapse;margin:.5em 0}th,td{border:1px solid #d9d9de;padding:6px 10px}th{background:#f2f7f4}
+table{border-collapse:collapse;margin:.5em 0;display:block;max-width:100%;overflow-x:auto}th,td{border:1px solid #d9d9de;padding:6px 10px}th{background:#f2f7f4}
 .md-img{display:inline-block;padding:14px 16px;border:2px dashed #b9c2cc;border-radius:10px;color:#6e6e73;font-size:14px;background:#fafafa}`;
 
 

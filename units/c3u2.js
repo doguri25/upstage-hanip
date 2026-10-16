@@ -116,7 +116,7 @@
   function ask(P, x, y, size, c) { P.text(x, y, '?', { size: size || 22, weight: 700, c: c || 'warm' }); }
 
   /* ---------- 모의 화면에서 되풀이하는 조각 ---------- */
-  const LAB_FILES = ['.env', '.gitignore', 'AGENTS.md', 'chunks.json', 'helper.py', 'app.py'];
+  const LAB_FILES = ['.env', '.gitignore', 'AGENTS.md', 'chunks.json', 'vectors.json', 'helper.py', 'app.py'];
   const APP_SRC = src([
     'import streamlit as st',
     'from helper import ask',
@@ -753,7 +753,7 @@
 
     items: [
     /* =================== L1 =================== */
-    { id: 'L1', type: 'lesson', title: 'AI 수업도구 사례 살펴보기', sub: '질문 도우미·자동채점·퀴즈·피드백·요약, 각각 무슨 부품을 쓸까', min: 11, steps: [
+    { id: 'L1', type: 'lesson', title: 'AI 수업도구 사례 살펴보기', sub: '질문 도우미·자동채점·퀴즈·피드백·요약, 각각 무슨 부품을 쓸까', min: 9, steps: [
       { t: 'say', h: 'AI 수업도구는 수업 한 장면에 API 부품을 엮은 것', fig: 'partsTool', p: [
         '과정 1·2에서 부품을 하나씩 익혔어요. 글로 답하는 <b>Solar</b>, 문서를 글로 바꾸는 <b>Document Parse</b>(줄여서 Parse), 정해진 칸을 뽑는 <b>Information Extract</b>(IE), 뜻으로 찾는 <b>임베딩</b>이요. c3u1에서는 이걸 엮어 <code>helper.py</code>를 만들었죠.',
         '<b>AI 수업도구</b>는 이 부품들을 <b>수업 한 장면</b>에 맞게 엮은 프로그램이에요. 출발점은 부품이 아니라 장면이에요. "Solar로 뭘 만들까?"보다 "실습 시간에 손 든 학생이 너무 많아"가 먼저예요.',
@@ -796,7 +796,7 @@
     ]},
 
     /* =================== L2 =================== */
-    { id: 'L2', type: 'lesson', title: '4요소로 수업 도구 설계하기', sub: '학생활동·교사의 할·자료·평가', min: 13, steps: [
+    { id: 'L2', type: 'lesson', title: '4요소로 수업 도구 설계하기', sub: '학생활동·교사의 할·자료·평가', min: 9, steps: [
       { t: 'say', h: '도구가 아니라 수업을 설계해요', fig: 'canvas4', p: [
         '연수 1일차 16:00 「수업 도구의 4요소」는 도구를 네 칸으로 나눠 봐요. <b>학생활동, 교사의 할, 자료, 평가</b>예요. 앱이 잘 돌아가도 이 네 칸이 비어 있으면 수업이 되지 않아요.',
         '네 칸은 수업을 설계할 때 늘 묻는 질문과 같아요. 학생은 무엇을 하나, 교사는 무엇을 맡나, 도구는 무엇에 기대나, 배웠는지 어떻게 아나.'
@@ -842,7 +842,7 @@
     ]},
 
     /* =================== QA =================== */
-    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '학생활동과 교사의 할, 자료와 평가, 도구와 수업', min: 4, steps: [
+    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '학생활동과 교사의 할, 자료와 평가, 도구와 수업', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qa_walk', q: '"도우미 대화 화면을 띄워 두고 교실을 돌며, 같은 질문을 세 번 한 학생에게 다가가 함께 코드를 본다." 4요소 중 어디일까요?',
         opts: ['학생활동. 문장에 학생이 나오니까', '교사의 할. 교사가 맡는 일이니까', '자료. 도우미 대화 화면에 기대어 하니까', '평가. 학생을 지켜보며 막힌 정도를 재니까'], a: 1,
         why: '학생이 나오는 문장이라도 <b>하는 사람</b>이 교사면 교사의 할이에요. 수업 중 살피고 다가가는 건 AI가 대신 못 하는 교사의 일이에요.',
@@ -858,7 +858,7 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: '제작 절차: 작게 만들고 시범하기', sub: '문제 정의부터 고치기까지, 에이전트 코딩으로 빠르게', min: 13, steps: [
+    { id: 'L3', type: 'lesson', title: '제작 절차: 작게 만들고 시범하기', sub: '문제 정의부터 고치기까지, 에이전트 코딩으로 빠르게', min: 9, steps: [
       { t: 'say', h: '여섯 단계로 만들어요', fig: 'sixSteps', table: { head: ['단계', '하는 일', '끝났다는 신호'], rows: [
         ['1. 문제 정의', '수업에서 막히는 장면을 한 문장으로', '누가·언제·무엇이 문장에 다 있다'],
         ['2. 4요소 설계', '레슨 2의 캔버스 채우기', '네 칸이 서로 맞물린다'],
@@ -916,7 +916,7 @@
     ]},
 
     /* =================== L4 =================== */
-    { id: 'L4', type: 'lesson', title: 'Streamlit으로 학생 화면 만들기', sub: 'st.chat_input·st.chat_message·st.session_state, 키는 서버 쪽에만', min: 16, steps: [
+    { id: 'L4', type: 'lesson', title: 'Streamlit으로 학생 화면 만들기', sub: 'st.chat_input·st.chat_message·st.session_state, 키는 서버 쪽에만', min: 18, steps: [
       { t: 'say', h: 'Streamlit: 파이썬 파일 하나로 웹 화면을', fig: 'pyToWeb', p: [
         '<b>Streamlit</b>은 파이썬 코드만으로 웹 화면을 만드는 도구예요. HTML·CSS·JavaScript를 따로 쓰지 않아도 입력칸, 버튼, 채팅 화면이 생겨요. 설치는 <code>pip install streamlit</code>.',
         '채팅에 쓰는 것은 셋이에요. <code>st.chat_input</code>은 아래쪽 입력칸, <code>st.chat_message</code>는 말풍선 하나, <code>st.session_state</code>는 대화 기록을 담아 두는 상자예요.',
@@ -1013,7 +1013,7 @@
     ]},
 
     /* =================== QB =================== */
-    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: 'session_state, streamlit run과 python, 학생 화면과 교사 화면', min: 4, steps: [
+    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: 'session_state, streamlit run과 python, 학생 화면과 교사 화면', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qb_refresh', q: '수업 중 한 학생이 새로고침을 눌렀더니 대화가 다 사라졌어요. 알맞은 설명은?',
         opts: ['session_state는 반 전체가 하나를 함께 쓰니, 다른 학생이 지운 것이다', 'API 키의 유효 시간이 끝나 대화가 지워진 것이다', 'helper.py가 대화를 파일에 저장하다 실패한 것이다', '새로고침은 새 접속이라 session_state가 빈 채로 시작한다'], a: 3,
         why: '<code>st.session_state</code>는 브라우저 접속(세션)마다 따로 있어서, 학생끼리 대화가 섞이지 않아요. 대신 새로고침하면 새 접속이라 기록이 비어요. 수업 기록을 남기려면 파일 같은 곳에 따로 저장해요(레슨 5).',
@@ -1029,7 +1029,7 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: '수업에 넣기', sub: '도입·전개·정리 배치, 기록과 평가, 학교에서 확인할 것', min: 13, steps: [
+    { id: 'L5', type: 'lesson', title: '수업에 넣기', sub: '도입·전개·정리 배치, 기록과 평가, 학교에서 확인할 것', min: 12, steps: [
       { t: 'say', h: '도입·전개·정리 중 한 곳에 넣어요', fig: 'lessonFlow', table: { head: ['어디에', '이렇게 쓰면', '주의'], rows: [
         ['<b>도입</b>(5분)', '지난 시간 퀴즈 3문제를 도구가 내고, 학생이 풀어요', '교사가 먼저 문제를 확인해요'],
         ['<b>전개</b>(실습 중)', '스스로 정해진 시간 시도한 뒤, 막히면 도우미에게 물어요', '바로 묻게 하면 생각할 틈이 없어요'],
@@ -1111,7 +1111,7 @@
       note: '예상 비용: 시험·시범 질문을 다 합쳐 20번 안팎이면, 질문마다 입력 2천·출력 3백 토큰으로 어림해 <code>solar-pro4</code>로 약 $0.02예요(2026년 10월 가격, 바뀔 수 있어요). 실제는 콘솔 Billing의 Usage에서 확인해요. 키는 <code>.env</code>에만 두고, 화면 공유·스크린샷에 <code>.env</code>가 보이지 않게 해요. 시범에는 학생 개인정보가 든 자료를 쓰지 않아요.' },
 
     /* =================== T1 =================== */
-    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 10, pass: 0.7, steps: [
+    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 11, pass: 0.7, steps: [
       { t: 'q', kind: 'mc', fig: 't_demoIE', q: '연수 1일차 11:00 사례 시연에서 "학습지 사진을 올리면 번호·문항·정답이 칸에 맞춰 표로 정리되는" 도구를 봤어요. 이 도구의 핵심 부품은?',
         opts: ['임베딩 검색', 'Streamlit 화면', 'IE(정보 추출)', 'Document Parse만'], a: 2,
         why: '파일·이미지에서 <b>정해진 칸</b>(번호·문항·정답)을 뽑는 부품이 Information Extract(IE)예요(c2u2). 스키마에 칸을 적어 주면 그 모양으로 돌려줘요.',

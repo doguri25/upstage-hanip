@@ -756,7 +756,7 @@
 
     items: [
     /* =================== L1 =================== */
-    { id: 'L1', type: 'lesson', title: '파싱 vs 추출', sub: '전체 글과 원하는 칸, 스키마는 빈 서식', min: 11, steps: [
+    { id: 'L1', type: 'lesson', title: '파싱 vs 추출', sub: '전체 글과 원하는 칸, 스키마는 빈 서식', min: 9, steps: [
       { t: 'say', h: '파싱은 전체 글, 추출은 원하는 칸만', fig: 'parseVsExtract', p: [
         'c2u1에서 <b>Document Parse</b>로 학습지를 통째로 Markdown 글로 바꿨죠. 사람이 읽거나 LLM에 넣기에는 좋지만, 채점 프로그램이 바로 쓰기에는 아직 글 덩어리예요.',
         '채점 프로그램이 알고 싶은 건 "1번 문항의 정답은 2번 보기, 배점 2점" 같은 <b>칸</b>이에요. 글 덩어리에서 이걸 찾으려면 코드를 또 짜야 해요.',
@@ -812,7 +812,7 @@
     ]},
 
     /* =================== L2 =================== */
-    { id: 'L2', type: 'lesson', title: '스키마 설계', sub: 'type·description, 배열 안 object, IE 첫 단계 규칙', min: 13, steps: [
+    { id: 'L2', type: 'lesson', title: '스키마 설계', sub: 'type·description, 배열 안 object, IE 첫 단계 규칙', min: 14, steps: [
       { t: 'say', h: 'JSON Schema는 type과 description부터', fig: 'typeChips', p: [
         '스키마도 JSON이에요. 칸마다 <code>type</code>(값의 종류)과 <code>description</code>(무엇을 넣을지 설명)을 적고, 칸들은 <code>properties</code> 안에 모아요.',
         '자주 쓰는 type은 <code>string</code>(글자), <code>integer</code>(정수), <code>number</code>(소수도 되는 수), <code>array</code>(목록), <code>object</code>(이름 붙은 칸 묶음)예요.',
@@ -910,7 +910,7 @@
     ]},
 
     /* =================== QA =================== */
-    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: 'string vs array, description의 역할, 첫 단계 object 금지', min: 4, steps: [
+    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: 'string vs array, description의 역할, 첫 단계 object 금지', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qa_units', q: '평가지 머리에 "평가 범위: 2단원, 3단원"이 적혀 있어요. 단원을 <b>하나씩 따로</b> 받아 세고 싶다면 첫 단계 칸을 어떻게 만들까요?',
         opts: ['<code>"units": {"type": "string"}</code>로 받아 그대로 쓴다', '<code>"units": {"type": "object"}</code>로 받는다', '<code>"units"</code>를 array로, 안쪽 <code>items</code>는 string으로', '<code>"units": {"type": "integer"}</code>로 단원 수만 받는다'], a: 2,
         why: '여러 값을 하나씩 받으려면 array, 그 안의 값이 글자면 items에 string이에요. 배열 안 글자는 규칙에 맞아요.',
@@ -926,7 +926,7 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: 'extract.py로 문항 뽑기', sub: 'base64 data URL, response_format, json.loads, confidence', min: 14, steps: [
+    { id: 'L3', type: 'lesson', title: 'extract.py로 문항 뽑기', sub: 'base64 data URL, response_format, json.loads, confidence', min: 15, steps: [
       { t: 'say', h: 'IE도 OpenAI SDK로, 주소만 달라요', fig: 'twoDoors', p: [
         'IE는 Chat Completions와 같은 꼴로 불러요. c1u3에서 쓴 <code>openai</code> 패키지 그대로, <code>base_url</code>만 <code>https://api.upstage.ai/v1/information-extraction</code>으로 바꿔요.',
         '화면 폭 때문에 주소를 두 줄로 나눠 적었어요. 괄호 안에 붙여 쓴 글자 둘은 파이썬이 하나로 이어 줘요. 키는 늘 <code>.env</code>에서 읽고 화면에 찍지 않아요.',
@@ -1097,7 +1097,7 @@
     ]},
 
     /* =================== QB =================== */
-    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: 'IE vs 구조화 출력, strict 규칙, confidence 뜻', min: 4, steps: [
+    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: 'IE vs 구조화 출력, strict 규칙, confidence 뜻', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qb_twoJson', q: 'IE와 Solar 구조화 출력은 둘 다 <code>response_format</code>에 json_schema를 넣어요. 둘의 차이로 맞는 것은?',
         opts: ['IE는 결과가 딕셔너리로 와서 json.loads가 필요 없다', '둘은 주소와 모델 이름만 다른 같은 기능이다', 'Solar 구조화 출력도 값마다 confidence를 붙여 준다', 'IE는 파일(data URL)을, Solar는 글을 받는다'], a: 3,
         why: 'IE는 파일·이미지에서, Solar는 글에서 뽑아요. 스키마 규칙(IE 첫 단계 규칙 vs Solar strict)과 요금 단위(쪽당 vs 토큰당)도 달라요.',
@@ -1113,7 +1113,7 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: '검증하고 사람이 확인해요', sub: '규칙 검사, low만 교사 확인, questions.json', min: 15, steps: [
+    { id: 'L5', type: 'lesson', title: '검증하고 사람이 확인해요', sub: '규칙 검사, low만 교사 확인, questions.json', min: 13, steps: [
       { t: 'say', h: '모양이 맞아도 값은 틀릴 수 있어요', fig: 'shapeVsValue', p: [
         'IE는 서식의 모양은 지켜 줘요. 하지만 흐린 인쇄, 손으로 고친 정답, 두 단으로 나뉜 문항 때문에 <b>값</b>은 틀릴 수 있어요.',
         '자주 보는 실수는 넷이에요. 정답 칸이 비어 있음, <code>"②"</code>처럼 정한 모양과 다름, 보기 수보다 큰 번호, 배점을 잘못 읽어 합계가 안 맞음.',

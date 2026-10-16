@@ -85,8 +85,8 @@
   const RUN_IN = `python helper.py "${Q_IN}"`;
   const RUN_OUT = `python helper.py "${Q_OUT}"`;
   const RUN_AMB = `python helper.py "${Q_AMB}"`;
-  const REQ = `search.py와 chunks.json으로 helper.py를 만들어 줘. 질문과 가까운 조각 3개에 [1]부터 번호를 붙여 넣고, 규칙은 "자료로만 답하고, 없으면 '자료에 없어요.', 문장 끝에 근거 번호". MODEL = "solar-pro4", reasoning_effort="none", temperature=0.2. 답 함수는 ask(question)으로, 답 아래에 번호·파일·쪽을 붙여 돌려줘. 다 되면 python helper.py로 한 번 실행해 확인해 줘.`;
-  const AI_MADE = '<code>search.py</code>와 <code>chunks.json</code>의 모양을 읽고 <code>helper.py</code>를 만들었어요. 검색 <code>search()</code> → 조립 <code>build()</code> → 호출 <code>ask()</code> 순서예요. 확인하려고 실행해 볼게요.';
+  const REQ = `search.py와 vectors.json으로 helper.py를 만들어 줘. 질문과 가까운 조각 3개에 [1]부터 번호를 붙여 넣고, 규칙은 "자료로만 답하고, 없으면 '자료에 없어요.', 문장 끝에 근거 번호". MODEL = "solar-pro4", reasoning_effort="none", temperature=0.2. 답 함수는 ask(question)으로, 답 아래에 번호·파일·쪽을 붙여 돌려줘. 다 되면 python helper.py로 한 번 실행해 확인해 줘.`;
+  const AI_MADE = '<code>search.py</code>와 <code>vectors.json</code>의 모양을 읽고 <code>helper.py</code>를 만들었어요. 검색 <code>search()</code> → 조립 <code>build()</code> → 호출 <code>ask()</code> 순서예요. 확인하려고 실행해 볼게요.';
   const AI_RUN = '실행 결과예요.<br>for는 반복할 횟수가 정해졌을 때 써요[1]. while은 조건이 참인 동안 반복해요[2].<br>--- 출처 ---<br>[1] 반복문_학습지.pdf 2쪽<br>[2] 반복문_학습지.pdf 3쪽<br>[3] 리스트_학습지.pdf 1쪽';
   const EMPTY = { mode: 'Agent', model: 'Auto', msgs: [], input: '' };
   const T_IN = ['$ ' + RUN_IN, 'for는 반복할 횟수가 정해졌을 때 써요[1].', 'while은 조건이 참인 동안 반복해요[2].', '--- 출처 ---', '[1] 반복문_학습지.pdf 2쪽 (0.83)', '[2] 반복문_학습지.pdf 3쪽 (0.71)', '[3] 리스트_학습지.pdf 1쪽 (0.52)'];
@@ -97,7 +97,7 @@
   const P_HELPER = src([
     'upstage-lab 폴더에 helper.py를 만들어 줘.',
     '',
-    '맥락: 같은 폴더에 search.py(코사인 함수)와 chunks.json(조각마다 text·file·page·vec)이 있어. 키는 .env의 UPSTAGE_API_KEY야.',
+    '맥락: 같은 폴더에 search.py(코사인 함수)와 vectors.json(조각마다 text·file·page·vec)이 있어. 키는 .env의 UPSTAGE_API_KEY야.',
     '',
     '할 일:',
     '1. search(q, k=3): 질문을 solar-embedding-2-query로 임베딩하고 코사인 점수가 높은 조각 3개를 돌려줘.',
@@ -107,7 +107,7 @@
     '',
     '조건: 모델 이름은 MODEL 변수 하나에. 옛 모델 이름(solar-pro3, solar-mini)은 쓰지 마. 키를 화면에 찍는 코드는 넣지 마. 새 패키지는 설치하지 마.',
     '',
-    '확인: 다 되면 chunks.json에 실제로 있는 내용을 묻는 질문 하나로 실행해서 결과를 보여 줘.'
+    '확인: 다 되면 vectors.json에 실제로 있는 내용을 묻는 질문 하나로 실행해서 결과를 보여 줘.'
   ]);
   const P_CUT = src([
     'helper.py를 고쳐 줘. 지금은 자료 밖 질문에도 출처가 3개 찍혀.',
@@ -166,7 +166,7 @@
       }},
       ragFlow: { w: 340, h: 240, label: '준비 단계(파싱, 조각, 임베딩, 저장)와 질문 단계(임베딩, 검색, 조립, Solar, 답과 출처)의 두 줄 흐름도', draw(P) {
         P.text(12, 18, '① 준비: 자료가 바뀔 때만', { size: 13, weight: 700, c: 'accent', anchor: 'start' });
-        [['파싱', 'Document Parse'], ['조각', '파일·쪽 붙이기'], ['임베딩', 'passage'], ['저장', 'chunks.json']].forEach(([t, s], i) => {
+        [['파싱', 'Document Parse'], ['조각', '파일·쪽 붙이기'], ['임베딩', 'passage'], ['저장', 'vectors.json']].forEach(([t, s], i) => {
           box2(P, 11 + i * 83, 28, 70, 42, t, s, i === 3 ? 'sky' : 'paper');
           if (i < 3) P.arrow(82 + i * 83, 49, 93 + i * 83, 49, { w: 1.8, head: 5 });
         });
@@ -797,14 +797,14 @@
 
     items: [
     /* =================== L1 =================== */
-    { id: 'L1', type: 'lesson', title: 'RAG 한눈에', sub: '준비 단계와 질문 단계, 다시 학습 대신 찾아 주기', min: 13, steps: [
+    { id: 'L1', type: 'lesson', title: 'RAG 한눈에', sub: '준비 단계와 질문 단계, 다시 학습 대신 찾아 주기', min: 10, steps: [
       { t: 'say', h: '모델은 내 수업자료를 몰라요', fig: 'noKnow', p: [
         'Solar는 많은 글로 학습했지만, <b>우리 반 학습지와 수행평가 안내문은 본 적이 없어요</b>. <code>solar-pro4</code>의 학습 데이터는 2026년 2월 기준이고, 내 컴퓨터 속 PDF는 그 안에 없어요.',
         '그래도 물으면 멈추지 않고 그럴듯한 다음 글자 조각을 이어 써요. 과정 1 단원 2에서 본 <b>환각</b>이에요. "이번 수행평가 범위는?"에 그럴듯한 범위를 지어내는 식이죠.',
         '고치는 길은 단순해요. 답에 필요한 자료를 <b>질문과 함께 프롬프트에 넣어 주는 것</b>. 필요한 조각을 찾아(Retrieval) 덧붙여(Augmented) 답을 만들게(Generation) 하는 이 방법을 <b>RAG</b>(검색 증강 생성)라고 불러요.'
       ]},
       { t: 'say', h: 'RAG는 두 줄로 일해요: 준비 단계와 질문 단계', fig: 'ragFlow', table: { head: ['', '하는 일', '언제', '배운 곳'], rows: [
-        ['① 준비', 'Document Parse로 읽기 → 조각 나누기(파일·쪽 붙이기) → <code>passage</code> 임베딩 → <code>chunks.json</code>에 저장', '자료가 바뀔 때만', '과정 2 단원 1·3'],
+        ['① 준비', 'Document Parse로 읽기 → 조각 나누기(파일·쪽 붙이기) → <code>passage</code> 임베딩 → <code>vectors.json</code>에 저장', '자료가 바뀔 때만', '과정 2 단원 1·3'],
         ['② 질문', '질문 임베딩(<code>query</code>) → 가까운 조각 검색 → 프롬프트 조립 → Solar → 답 + 출처', '질문마다', '이번 단원'] ] }, p: [
         '위 줄은 도서관에 책을 꽂고 색인 카드를 만들어 두는 일, 아래 줄은 질문이 올 때마다 카드를 뒤져 필요한 쪽만 펼쳐 주는 일이에요.',
         '준비 단계는 앞 단원에서 거의 다 했어요. 이번 단원은 아래 줄을 이어 붙여 <code>helper.py</code>를 완성해요. 업스테이지 공식 자료의 RAG 예제도 같은 모양이에요: 읽기 → 나누기 → 임베딩 → 검색 → 답.'
@@ -840,7 +840,7 @@
         why: '벡터가 있어야 가까운 조각을 고르고, 조각이 있어야 messages를 만들고, 답이 나와야 그 번호를 파일·쪽으로 바꿔 보여 줄 수 있어요.' },
       { t: 'q', kind: 'mc', fig: 'q_reprep', q: '3단원 학습지의 오타를 고쳐 새 PDF로 바꿨어요. helper가 고친 내용으로 답하게 하려면 무엇을 다시 해야 할까요?',
         opts: ['Solar 모델을 새 학습지로 다시 학습시킨다', '시스템 규칙에 "새 학습지를 봐"라고 적는다', '바뀐 학습지만 다시 파싱·조각·임베딩해 저장한다', '아무것도 안 해도 Solar가 새 PDF를 읽는다'], a: 2,
-        why: '자료가 바뀌면 준비 단계만 다시 해요. 바뀐 파일을 파싱하고, 조각 내고, passage로 임베딩해 <code>chunks.json</code>을 고치면 질문 단계는 그대로 써요.',
+        why: '자료가 바뀌면 준비 단계만 다시 해요. 바뀐 파일을 파싱하고, 조각 내고, passage로 임베딩해 <code>vectors.json</code>을 고치면 질문 단계는 그대로 써요.',
         ex: ['모델은 그대로 둬요. 자료를 찾아 넣어 주는 게 RAG예요.', '규칙을 바꿔도 저장된 조각은 옛 학습지 그대로예요.', '', 'Solar는 내 폴더의 PDF를 직접 읽지 않아요. 저장된 조각만 받아요.'] },
       { t: 'q', kind: 'mc', fig: 'q_shortDoc', q: '통째로 넣기와 RAG를 비교한 말로 <b>맞는</b> 것은?',
         opts: ['통째로 넣기는 512K를 넘는 큰 자료도 알아서 잘라 모두 넣어 준다', 'RAG는 질문마다 자료 전체를 보내서 통째로 넣기보다 늘 더 비싸다', '512K 창이 있으니 이제 RAG는 쓸 일이 없다', '통째로 넣기는 준비가 쉽지만, 질문마다 자료 전체 토큰이 든다'], a: 3,
@@ -850,7 +850,7 @@
     ]},
 
     /* =================== L2 =================== */
-    { id: 'L2', type: 'lesson', title: 'messages 조립하기', sub: '시스템 규칙, 번호 붙인 근거, 출처 표시', min: 14, steps: [
+    { id: 'L2', type: 'lesson', title: 'messages 조립하기', sub: '시스템 규칙, 번호 붙인 근거, 출처 표시', min: 12, steps: [
       { t: 'say', h: '조립한 messages는 이렇게 생겼어요', fig: 'msgSandwich', code: { lang: 'plain', src: src([
         'system: (규칙 다섯 줄)',
         'user:',
@@ -945,7 +945,7 @@
     ]},
 
     /* =================== QA =================== */
-    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '검색과 생성, 규칙과 자료, 통째로 넣기와 RAG', min: 4, steps: [
+    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '검색과 생성, 규칙과 자료, 통째로 넣기와 RAG', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qa_searchGen', q: 'helper가 엉뚱한 답을 해서 검색된 조각을 찍어 보니, 질문과 상관없는 조각 셋이었어요. 먼저 고칠 쪽은?',
         opts: ['생성 쪽: temperature를 0으로 낮춘다', '생성 쪽: 시스템 규칙을 더 길고 자세하게 쓴다', '생성 쪽: reasoning_effort를 "high"로 올린다', '검색 쪽: 조각 나누기·제목 붙이기·질문 다듬기를 본다'], a: 3,
         why: '검색은 재료를 찾는 일, 생성은 그 재료로 글을 쓰는 일이에요. 재료(조각)부터 엉뚱하면 생성 쪽을 아무리 바꿔도 답이 나아지지 않아요. 과정 2 단원 3의 검색 점검으로 돌아가요.',
@@ -961,19 +961,19 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: 'helper.py 완성', sub: '검색 + Solar 호출, 출처 찍기, top-k만 넣는 까닭', min: 15, steps: [
+    { id: 'L3', type: 'lesson', title: 'helper.py 완성', sub: '검색 + Solar 호출, 출처 찍기, top-k만 넣는 까닭', min: 14, steps: [
       { t: 'say', h: 'helper.py는 세 부분이에요: 검색, 프롬프트, 호출', fig: 'helperParts', code: { lang: 'py', src: src([
         '# helper.py 맨 위(앞 단원에서 가져와요)',
         'import json, math, os, sys',
         '# … 과정 1 단원 3: client, MODEL',
         '# … 과정 2 단원 3: cos(a, b)',
-        'with open("chunks.json",',
+        'with open("vectors.json",',
         '          encoding="utf-8") as f:',
         '    CHUNKS = json.load(f)',
         '# 조각 = {"text", "file", "page", "vec"}'
       ]) }, p: [
-        '파일 위쪽은 앞에서 만든 것을 그대로 가져와요. 과정 1 단원 3의 시작 코드(<code>.env</code>의 키로 만든 <code>client</code>, <code>MODEL = "solar-pro4"</code>), 과정 2 단원 3의 <code>cos()</code>와 <code>chunks.json</code>이에요.',
-        '조각 하나는 글(<code>text</code>), 파일 이름(<code>file</code>), 쪽(<code>page</code>), 벡터(<code>vec</code>)를 가진 딕셔너리라고 할게요. 내 <code>chunks.json</code>의 이름표가 다르면 거기에 맞춰 바꿔요.',
+        '파일 위쪽은 앞에서 만든 것을 그대로 가져와요. 과정 1 단원 3의 시작 코드(<code>.env</code>의 키로 만든 <code>client</code>, <code>MODEL = "solar-pro4"</code>), 과정 2 단원 3의 <code>cos()</code>와 <code>vectors.json</code>이에요.',
+        '조각 하나는 글(<code>text</code>), 파일 이름(<code>file</code>), 쪽(<code>page</code>), 벡터(<code>vec</code>)를 가진 딕셔너리라고 할게요. 내 <code>vectors.json</code>의 이름표가 다르면 거기에 맞춰 바꿔요.',
         '그 아래에 ① 검색 <code>search()</code>, ② 프롬프트 <code>build()</code>, ③ 호출 <code>ask()</code>를 차례로 써요.'
       ], tip: '학교 Windows에서는 <code>encoding="utf-8"</code>을 빼면 한글이 든 JSON을 읽다 오류가 날 수 있어요. 늘 적어요.' },
       { t: 'say', h: '① 검색: 질문도 임베딩해서 가까운 조각 k개만', fig: 'topK', code: { lang: 'py', src: src([
@@ -1074,7 +1074,7 @@
     ]},
 
     /* =================== L4 =================== */
-    { id: 'L4', type: 'lesson', title: '"보조 agent"의 정체', sub: '정해진 순서의 워크플로, 대화 기록과 후속 질문 다시 쓰기', min: 14, steps: [
+    { id: 'L4', type: 'lesson', title: '"보조 agent"의 정체', sub: '정해진 순서의 워크플로, 대화 기록과 후속 질문 다시 쓰기', min: 10, steps: [
       { t: 'say', h: '연수 제목의 "보조 agent", 지금은 정해진 순서예요', fig: 'flowAgent', p: [
         '연수 1일차 15:00 차시 이름은 "내 수업자료로 대답하는 나만의 보조 agent 제작하기"예요. 그런데 지금 만든 helper.py는 질문이 오면 <b>늘 같은 순서</b>로 움직여요. 검색 → 조립 → 답. 그 순서는 우리가 코드로 정해 뒀어요.',
         '이런 구조를 <b>워크플로</b>라고 해요. <b>에이전트</b>는 모델이 결과를 보고 다음 할 일을 스스로 골라요. 다시 검색할지, 퀴즈 도구를 쓸지, 그냥 답할지를요.',
@@ -1134,27 +1134,27 @@
         why: 'helper.py는 질문이 오면 늘 검색하고, 조립하고, 답해요. 모델은 답 글을 쓸 뿐 다음 할 일을 고르지 않아요. 그래서 워크플로예요.',
         ex: ['검색 여부는 코드가 정해요. 모델은 고르지 않아요.', 'helper.py는 파일을 고치거나 명령을 실행하지 않아요. 그건 Cursor 에이전트예요.', '', '모델은 그대로예요. 자료를 찾아 넣어 줄 뿐이에요.'] },
       { t: 'q', kind: 'mc', fig: 'q_followSearch', q: '"그거 예시 더 보여 줘"를 그대로 검색했더니 엉뚱한 조각이 왔어요. 가장 알맞은 까닭은?',
-        opts: ['query 모델은 짧은 글을 임베딩하지 못해서', '검색은 이 글만 보는데, "그거"가 무엇인지는 앞 대화에만 있어서', '대화 기록이 chunks.json에 저장되지 않아서', 'temperature를 0.2로 낮춰 두어서'], a: 1,
+        opts: ['query 모델은 짧은 글을 임베딩하지 못해서', '검색은 이 글만 보는데, "그거"가 무엇인지는 앞 대화에만 있어서', '대화 기록이 vectors.json에 저장되지 않아서', 'temperature를 0.2로 낮춰 두어서'], a: 1,
         why: '검색은 지금 들어온 글만 임베딩해요. "그거"의 뜻은 앞 대화에 있으니, 검색 전에 혼자 읽히는 질문으로 다시 써요.',
         ex: ['짧은 글도 임베딩돼요. 다만 뜻이 앞 대화에 기대고 있어서 문제예요.', '', '대화 기록은 검색할 자료가 아니에요. 질문을 다시 쓰는 데 써요.', 'temperature는 답을 만들 때의 무작위성이에요. 검색과는 상관없어요.'] },
       { t: 'q', kind: 'order', fig: 'q_turnOrder', q: '대화 모드에서 학생의 두 번째 질문을 처리하는 순서로 쌓아 보세요.',
-        items: ['학생의 후속 질문을 받는다', '앞 대화를 보고 혼자 읽히는 질문으로 다시 쓴다', '다시 쓴 질문으로 조각을 검색한다', '조각과 질문으로 답을 만들어 보여 준다', '질문과 답을 대화 기록에 붙인다'],
+        items: ['학생의 후속 질문을 받는다', '앞 대화를 보고 혼자 읽히는 질문으로 다시 쓴다', '다시 쓴 질문으로 조각을 검색한다', '조각과 질문으로 Solar가 답을 만든다', '다시 쓴 질문과 그 답을 대화 기록에 붙인다'],
         why: '받아야 다시 쓰고, 다시 써야 제대로 검색하고, 조각이 있어야 답하고, 답이 나와야 기록에 붙일 수 있어요.' },
       { t: 'q', kind: 'mc', fig: 'q_historyLong', q: '대화 모드에서 수업 끝까지 기록을 전부 다시 쓰기 부탁에 넣었더니 갈수록 느려지고 토큰이 많이 들어요. 알맞은 고침은?',
-        opts: ['기록을 모두 지우고 매번 첫 질문처럼 다룬다', 'reasoning_effort를 "high"로 올려 기록을 더 잘 읽게 한다', '기록을 chunks.json에 넣어 함께 검색되게 한다', '최근 몇 개(예: history[-4:])만 넣는다'], a: 3,
+        opts: ['기록을 모두 지우고 매번 첫 질문처럼 다룬다', 'reasoning_effort를 "high"로 올려 기록을 더 잘 읽게 한다', '기록을 vectors.json에 넣어 함께 검색되게 한다', '최근 몇 개(예: history[-4:])만 넣는다'], a: 3,
         why: '후속 질문의 뜻은 대개 바로 앞 대화에 있어요. 최근 몇 개만 넣으면 뜻은 살리고 토큰은 아껴요.',
         ex: ['그러면 "그거"가 무엇인지 알 수 없어 후속 질문을 못 받아요.', '추론을 켜면 오히려 더 느려지고 토큰이 늘어요.', '대화 기록은 수업자료가 아니에요. 섞이면 검색이 흐려져요.', ''] },
       { t: 'sum', pts: ['지금 helper는 순서를 코드가 정한 워크플로(검색 → 조립 → 답)다. 모델이 다음 일을 고르는 에이전트는 과정 5 단원 1에서.', '검색은 지금 질문 글만 본다. "그거 예시 더" 같은 후속 질문은 검색 전에 solar-mini4로 혼자 읽히는 질문으로 다시 쓴다.', '대화 기록은 리스트에 모으고 최근 몇 개만 넣는다. 다시 쓴 질문은 화면에 보여 준다.'] }
     ]},
 
     /* =================== QB =================== */
-    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '워크플로와 에이전트, 후속 질문, 출처 표시', min: 4, steps: [
+    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '워크플로와 에이전트, 후속 질문, 출처 표시', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qb_agentWho', q: 'Cursor 에이전트에게 helper.py를 만들어 달라고 했어요. Cursor 에이전트와 helper.py를 바르게 설명한 것은?',
         opts: ['둘 다 순서가 정해진 워크플로다. 부탁받은 일만 하니까', 'Cursor 쪽은 에이전트, helper.py는 워크플로다', 'helper.py는 에이전트, Cursor 쪽은 워크플로다', '둘 다 에이전트다. 연수 제목에 agent가 붙었으니까'], a: 1,
         why: 'Cursor 에이전트는 파일을 읽을지, 고칠지, 명령을 실행할지 스스로 골라요. helper.py는 늘 검색 → 조립 → 답이에요. 이름이 아니라 누가 다음 일을 고르느냐로 나눠요.',
         ex: ['Cursor 에이전트는 상황을 보고 파일 읽기·고치기·실행을 스스로 골라요.', '', '거꾸로예요. 순서가 고정된 쪽이 helper.py예요.', '이름표가 아니라 누가 다음 일을 고르느냐로 나눠요.'] },
       { t: 'q', kind: 'mc', fig: 'qb_rewriteUse', q: '다시 쓴 질문("for 문 예시를 하나 더 보여 줘")은 어디에 쓰나요?',
-        opts: ['chunks.json에 새 조각으로 저장하는 데', '대화 기록에서 앞 질문을 지우는 데', '검색과 답 만들기에. 화면에도 보여 준다', '교사 기록에만 남기고, 검색은 원래 질문으로'], a: 2,
+        opts: ['vectors.json에 새 조각으로 저장하는 데', '대화 기록에서 앞 질문을 지우는 데', '검색과 답 만들기에. 화면에도 보여 준다', '교사 기록에만 남기고, 검색은 원래 질문으로'], a: 2,
         why: '다시 쓴 질문으로 검색해야 맞는 조각이 와요. 같은 질문으로 답도 만들고, 화면에 보여 주면 엉뚱하게 다시 썼을 때 바로 알 수 있어요.',
         ex: ['질문은 수업자료가 아니에요. 조각으로 저장하지 않아요.', '기록은 그대로 둬요. 다음 후속 질문에도 필요해요.', '', '원래 질문("그거 예시 더")으로 검색하면 다시 쓴 보람이 없어요.'] },
       { t: 'q', kind: 'mc', fig: 'qb_pageFake', q: 'Solar에게 "출처를 파일 이름과 쪽으로 직접 써"라고 했더니 "반복문_학습지.pdf 7쪽"이 나왔어요. 학습지는 5쪽짜리예요. 알맞은 고침은?',
@@ -1164,7 +1164,7 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: '보조 에이전트 평가하기', sub: '자료 안·밖·애매한 질문, 채점표, 점수 기준과 LLM 채점', min: 16, steps: [
+    { id: 'L5', type: 'lesson', title: '보조 에이전트 평가하기', sub: '자료 안·밖·애매한 질문, 채점표, 점수 기준과 LLM 채점', min: 14, steps: [
       { t: 'say', h: '질문 세트는 세 종류를 섞어요', fig: 'testSet', table: { head: ['종류', '예시(반복문 학습지)', '좋은 답'], rows: [
         ['자료 안', '"for와 while은 언제 달라요?"', '맞는 내용 + 맞는 근거 번호'],
         ['자료 밖', '"다음 주 수행평가 날짜가 언제예요?"', '"자료에 없어요."'],
@@ -1267,7 +1267,7 @@
         why: '체육대회 준비물은 반복문 학습지에 없는 내용이에요. 이런 질문에 "자료에 없어요."라고 하는지 봐야 지어내는 버릇을 잡아요.',
         ex: ['range(5)는 반복문 학습지에 나올 법한 자료 안 질문이에요.', '끝나지 않는 while 반복은 반복문 자료에서 다루는 내용이에요.', '학습지 안의 문제를 묻는 자료 안 질문이에요.', ''] },
       { t: 'q', kind: 'mc', fig: 'q_cutWhy', q: '점수 기준 없이 "급식 메뉴가 뭐예요?"를 물었더니, 답은 "자료에 없어요."인데 아래에 출처가 3개 찍혔어요. 왜일까요?',
-        opts: ['Solar가 출처 목록까지 지어내서', '검색은 아무리 멀어도 가까운 k개를 늘 돌려줘서', 'chunks.json에 급식 메뉴가 들어 있어서', 'reasoning_effort를 "none"으로 두어 먼 조각을 걸러 내지 못해서'], a: 1,
+        opts: ['Solar가 출처 목록까지 지어내서', '검색은 아무리 멀어도 가까운 k개를 늘 돌려줘서', 'vectors.json에 급식 메뉴가 들어 있어서', 'reasoning_effort를 "none"으로 두어 먼 조각을 걸러 내지 못해서'], a: 1,
         why: '검색은 "가장 가까운 3개"를 늘 돌려줘요. 그 조각이 질문과 멀어도요. 그래서 점수 기준(CUT)으로 먼 조각을 빼야 출처도 함께 사라져요.',
         ex: ['출처 목록은 코드가 hits에서 찍은 거예요. 모델이 쓴 게 아니에요.', '', '들어 있었다면 Solar가 그 내용으로 답했겠죠. 답은 "자료에 없어요."였어요.', '추론 설정은 검색 결과와 상관없어요. 먼 조각을 거르는 건 점수 기준이에요.'] },
       { t: 'q', kind: 'line', fig: 'q_sheetLine', q: '평가 채점표 일부예요(종류·질문·결과·판정). <b>판정이 잘못된 줄</b>을 눌러 보세요.', lang: 'plain', code: src([
@@ -1284,11 +1284,11 @@
     /* =================== M1 =================== */
     { id: 'M1', type: 'mission', title: '내 수업자료로 답하는 helper.py', sub: '콘솔과 내 Cursor에서 직접', min: 45,
       where: '업스테이지 콘솔 + upstage-lab 폴더',
-      intro: '과정 2 단원 3에서 만든 <code>chunks.json</code>으로 진짜 보조 에이전트를 만들어요. 끝낸 것부터 체크하고, 한 줄 메모(질문과 결과)를 남겨요. 학생 개인정보가 든 자료는 쓰지 않아요.',
+      intro: '과정 2 단원 3에서 만든 <code>vectors.json</code>으로 진짜 보조 에이전트를 만들어요. 끝낸 것부터 체크하고, 한 줄 메모(질문과 결과)를 남겨요. 학생 개인정보가 든 자료는 쓰지 않아요.',
       tasks: [
         { do: '시작 전에 준비물을 확인하고 Git 커밋해요',
-          how: 'Cursor로 <code>upstage-lab</code>을 열고 터미널에서 <code>git status</code>. <code>chunks.json</code>(조각마다 글·파일·쪽·벡터), <code>search.py</code>, <code>.env</code>가 있는지 봐요. <code>git check-ignore .env</code>가 <code>.env</code>를 찍으면 키는 커밋되지 않아요. 그다음 <code>git add -A</code> → <code>git commit -m "c3u1 시작 전"</code>.',
-          check: '<code>git status</code>가 깨끗하고(nothing to commit), <code>git check-ignore .env</code>가 <code>.env</code>를 찍으면 성공. <code>chunks.json</code>에 벡터가 없으면 과정 2 단원 3 미션부터 마쳐요.' },
+          how: 'Cursor로 <code>upstage-lab</code>을 열고 터미널에서 <code>git status</code>. <code>vectors.json</code>(조각마다 글·파일·쪽·벡터), <code>search.py</code>, <code>.env</code>가 있는지 봐요. <code>git check-ignore .env</code>가 <code>.env</code>를 찍으면 키는 커밋되지 않아요. 그다음 <code>git add -A</code> → <code>git commit -m "c3u1 시작 전"</code>.',
+          check: '<code>git status</code>가 깨끗하고(nothing to commit), <code>git check-ignore .env</code>가 <code>.env</code>를 찍으면 성공. <code>vectors.json</code>에 벡터가 없으면 과정 2 단원 3 미션부터 마쳐요.' },
         { do: 'Cursor 에이전트에게 helper.py를 맡겨요',
           how: 'Agents Window에서 아래 부탁을 붙여 넣어요. 에이전트가 실행하려는 명령은 읽고 Run을 눌러요. 끝나면 diff에서 <code>MODEL</code>, <code>reasoning_effort="none"</code>, <code>os.environ["UPSTAGE_API_KEY"]</code> 세 곳을 직접 확인해요.',
           check: '내가 직접 <code>python helper.py "내 자료에 있는 질문"</code>을 실행했을 때 답 끝에 [1] 같은 번호가 붙고, 아래에 번호·파일·쪽 목록이 찍히면 성공.',
@@ -1318,7 +1318,7 @@
         why: '자료 밖 질문에 지어낸 답이에요. 프롬프트 규칙("자료에 없으면…")과 코드의 점수 기준이 두 겹으로 막는지부터 봐요.',
         ex: ['무작위성을 올리면 지어낸 답이 더 다양해질 뿐이에요.', '추론을 켜도 자료에 없는 사실이 생기지 않아요. 느리고 비싸지기만 해요.', '', '질문은 query 모델이 맞아요. 모델을 바꿔도 지어내기는 막히지 않아요.'] },
       { t: 'q', kind: 'order', fig: 't_prepOrder', q: '새 단원 학습지 PDF를 helper에 더하려 해요. 준비 단계를 순서대로 쌓아 보세요.',
-        items: ['Document Parse로 PDF를 markdown으로 바꾼다', '글을 조각으로 나누고 파일·쪽을 붙인다', '조각마다 solar-embedding-2-passage로 임베딩한다', '조각과 벡터를 chunks.json에 더해 저장한다'],
+        items: ['Document Parse로 PDF를 markdown으로 바꾼다', '글을 조각으로 나누고 파일·쪽을 붙인다', '조각마다 solar-embedding-2-passage로 임베딩한다', '조각과 벡터를 vectors.json에 더해 저장한다'],
         why: '글이 있어야 나누고, 조각이 있어야 임베딩하고, 벡터가 있어야 저장해요. 질문 단계는 그대로 써요.' },
       { t: 'q', kind: 'blank', fig: 't_paramBlank', q: 'helper.py의 <code>ask()</code>예요. 찾은 자료를 읽고 정리하는 일에 맞게 두 빈칸을 채워 보세요.', lang: 'py', code: src([
         'r = client.chat.completions.create(',

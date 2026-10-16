@@ -958,7 +958,7 @@
 
     items: [
     /* =================== L1 =================== */
-    { id: 'L1', type: 'lesson', title: '다음 토큰 맞히기', sub: '토큰, 확률, 한 조각씩 이어 쓰기, 토큰 = 돈과 시간', min: 12, steps: [
+    { id: 'L1', type: 'lesson', title: '다음 토큰 맞히기', sub: '토큰, 확률, 한 조각씩 이어 쓰기, 토큰 = 돈과 시간', min: 10, steps: [
       { t: 'say', h: 'LLM은 다음 조각을 맞히는 프로그램이에요', fig: 'nextToken', p: [
         '코딩한입에서 프롬프트 쓰는 법(역할·맥락·예시·형식)을 익혔죠. 이번 단원은 그 프롬프트를 받는 쪽, <b>LLM</b>(큰 언어 모델)의 속을 들여다봐요. 연수 1일차 13:00 「Solar로 보는 LLM의 원리」를 미리 공부하는 단원이에요.',
         'LLM이 하는 일은 하나예요. 지금까지의 글을 보고 <b>다음에 올 글 조각을 예측</b>해요. 업스테이지의 대표 모델 <code>solar-pro4</code>도 같은 원리로 움직여요.',
@@ -1011,7 +1011,7 @@
     ]},
 
     /* =================== L2 =================== */
-    { id: 'L2', type: 'lesson', title: '메시지와 역할, 컨텍스트', sub: 'system·user·assistant, 기억하지 않는 API, 512K 책상', min: 12, steps: [
+    { id: 'L2', type: 'lesson', title: '메시지와 역할, 컨텍스트', sub: 'system·user·assistant, 기억하지 않는 API, 512K 책상', min: 9, steps: [
       { t: 'say', h: '메시지는 역할이 붙은 상자예요', fig: 'roleBoxes', p: [
         'Solar에 보내는 요청의 중심은 <code>messages</code>예요. 글 상자 여러 개를 차례로 담은 목록이고, 상자마다 <b>역할</b>(<code>role</code>)이 붙어요.',
         '<code>system</code>은 모델이 지킬 규칙과 역할, <code>user</code>는 사용자의 말, <code>assistant</code>는 모델이 앞서 한 답이에요. 코딩한입에서 배운 "역할·맥락·형식 주기"는 주로 system에 들어가요. 도구 결과를 담는 <code>tool</code> 역할은 과정 5에서 만나요.',
@@ -1059,7 +1059,7 @@
     ]},
 
     /* =================== QA =================== */
-    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '토큰과 글자, system과 user, 컨텍스트 창과 학습 데이터', min: 4, steps: [
+    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '토큰과 글자, system과 user, 컨텍스트 창과 학습 데이터', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qa_tokChar', q: '"반복문"이라는 세 글자에 대한 설명으로 맞는 것은?',
         opts: ['모델의 토크나이저가 자르는 방식에 달렸다', '글자가 셋이니 어느 모델에서든 언제나 3토큰이다', '한국어 낱말은 길이와 상관없이 늘 1토큰이다', '띄어쓰기가 없으니 토큰으로 세지 않는다'], a: 0,
         why: '토큰은 모델이 정한 조각이라, 같은 글도 모델마다 토큰 수가 다를 수 있어요. 정확한 수는 응답의 <code>usage</code>로 봐요.',
@@ -1075,7 +1075,7 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: 'temperature·top_p·max_tokens', sub: '확률대로 뽑기, 뾰족하게·평평하게, 잘린 답', min: 14, steps: [
+    { id: 'L3', type: 'lesson', title: 'temperature·top_p·max_tokens', sub: '확률대로 뽑기, 뾰족하게·평평하게, 잘린 답', min: 12, steps: [
       { t: 'say', h: '확률대로 뽑아서 답이 매번 달라요', fig: 'sampling', p: [
         '모델은 늘 1등 후보만 고르지 않아요. 확률 분포에 따라 <b>뽑아요</b>. 이걸 <b>표집</b>(샘플링, sampling)이라고 해요. 72%짜리가 자주 뽑히지만 15%짜리도 가끔 뽑혀요.',
         '한 조각이 다르게 뽑히면 그 뒤의 글이 모두 달라져요. 그래서 같은 질문에도 답이 매번 조금씩 달라요. 고장이 아니라 원래 그래요.',
@@ -1137,7 +1137,7 @@
     ]},
 
     /* =================== L4 =================== */
-    { id: 'L4', type: 'lesson', title: '추론(reasoning) 모드', sub: 'reasoning_effort 값, max_tokens 안의 추론 토큰, 늘 직접 적기', min: 12, steps: [
+    { id: 'L4', type: 'lesson', title: '추론(reasoning) 모드', sub: 'reasoning_effort 값, max_tokens 안의 추론 토큰, 늘 직접 적기', min: 10, steps: [
       { t: 'say', h: '추론을 켜면 답 앞에 풀이 글을 먼저 써요', fig: 'thinkFirst', p: [
         '<code>solar-pro4</code>에는 <b>추론 모드</b>가 있어요. 켜면 답(<code>content</code>)을 쓰기 전에 풀이 과정 같은 글을 먼저 토큰으로 만들어요. 이 글을 <b>추론</b>(reasoning)이라고 불러요.',
         '추론 글도 다음 토큰 맞히기로 만들어져요. 다만 중간 단계를 글로 먼저 늘어놓고 그걸 읽으며 답을 이어 쓰니, 여러 단계가 필요한 문제에서 도움이 될 때가 있어요.',
@@ -1189,7 +1189,7 @@
     ]},
 
     /* =================== QB =================== */
-    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: 'temperature와 reasoning_effort, max_tokens와 컨텍스트, 추론 글과 답', min: 4, steps: [
+    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: 'temperature와 reasoning_effort, max_tokens와 컨텍스트, 추론 글과 답', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qb_tempVsEffort', q: '"같은 질문인데 답이 매번 너무 달라요." 먼저 손볼 것은?',
         opts: ['temperature를 0.2 이하로 낮춘다', 'reasoning_effort를 "max"로 올린다', 'max_tokens를 두 배로 늘린다', 'messages에서 system을 지운다'], a: 0,
         why: '답이 얼마나 들쭉날쭉한지는 뽑는 방식, 곧 <code>temperature</code>가 정해요. reasoning_effort는 답 전에 추론 글을 얼마나 쓸지예요.',
@@ -1205,7 +1205,7 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: '환각과 한계', sub: '그럴듯한 틀린 답, 학습 데이터 기준 시점, 근거 자료 주기', min: 13, steps: [
+    { id: 'L5', type: 'lesson', title: '환각과 한계', sub: '그럴듯한 틀린 답, 학습 데이터 기준 시점, 근거 자료 주기', min: 9, steps: [
       { t: 'say', h: '환각: 그럴듯하지만 틀린 답', fig: 'hallucination', p: [
         'LLM은 <b>그럴듯한 다음 조각</b>을 이어 쓰는 프로그램이에요. 문장이 매끄러운지와 내용이 사실인지는 따로예요. 사실과 다른 내용을 자신 있게 쓰는 일을 <b>환각</b>(hallucination)이라고 해요.',
         '모르는 내용이어도 "모른다"보다 그럴듯한 답이 이어질 확률이 높으면 모델은 그쪽을 써요. 날짜·이름·숫자처럼 구체적일수록 더 믿음직해 보여서 위험해요.',

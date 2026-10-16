@@ -364,13 +364,13 @@
         P.text(280, 100, '12문제', { size: 15, weight: 700 });
         P.text(170, 186, '어떤 모양으로 만들까?', { size: 13, c: 'ink2' });
       }},
-      q_router: { w: 340, h: 200, label: '자료 질문, 코드 제출, 잡담 말풍선이 들어오고, 갈림길 앞 로봇이 어느 담당에게 보낼지 고민하는 모습', draw(P) {
+      q_router: { w: 340, h: 200, label: '자료 질문, 코드 제출, 잡담 말풍선이 물음표 상자로 들어가고, 오른쪽에 검색·채점·안내 세 갈래가 있는 모습', draw(P) {
         [['자료 질문', 12], ['코드 제출', 76], ['잡담', 140]].forEach(([t, y]) => {
           P.bubble(8, y, 96, 34, 120, y + 17);
           P.text(56, y + 22, t, { size: 12, weight: 700 });
         });
-        P.robot(166, 100, 0.4, { mood: 'wow' });
-        ask(P, 166, 62, 22);
+        P.rrect(140, 74, 52, 52, 10, { c: 'soft', w: 2 });
+        ask(P, 166, 110, 28);
         [[40, '검색 담당'], [100, '채점 담당'], [160, '안내']].forEach(([y, t]) => {
           P.arrow(192, 100, 250, y, { c: 'soft', w: 1.8, head: 7 });
           P.text(296, y + 4, t, { size: 11, weight: 700 });
@@ -401,20 +401,14 @@
       }},
 
       /* ---------- QA 그림 ---------- */
-      qa_whoNext: { w: 340, h: 200, label: '위에는 정해진 화살표 길, 아래에는 갈림길 앞 로봇, 다음은 누가 정할지 묻는 물음표', draw(P) {
-        [30, 100, 170].forEach(x => P.rrect(x, 24, 50, 30, 6, { fill: 'sky', gap: 5 }));
-        P.arrow(82, 39, 98, 39, { c: 'accent', w: 2, head: 6 });
-        P.arrow(152, 39, 168, 39, { c: 'accent', w: 2, head: 6 });
-        P.text(272, 44, '정해진 길', { size: 13, weight: 700 });
-        P.line(14, 76, 326, 76, { c: 'soft', w: 1.2 });
-        P.robot(70, 132, 0.42, { mood: 'wow' });
-        [[100, '출제'], [132, '검토'], [164, '끝']].forEach(([y, t]) => {
-          P.arrow(100, 132, 164, y, { c: 'soft', w: 1.8, head: 7 });
-          P.text(176, y + 4, t, { size: 12, weight: 700, anchor: 'start' });
-        });
-        P.text(272, 136, '갈림길', { size: 13, weight: 700 });
-        ask(P, 300, 108, 24);
-        P.text(170, 192, '다음은 누가 정할까?', { size: 13, c: 'ink2' });
+      qa_whoNext: { w: 340, h: 200, label: '위에는 한 줄로 선 로봇 셋, 아래에는 감독자 아래 로봇 둘, 가운데 무엇이 다른지 묻는 물음표', draw(P) {
+        miniPipe(P, 14, 4);
+        P.text(250, 52, '순차 파이프라인', { size: 13, weight: 700 });
+        P.line(14, 92, 326, 92, { c: 'soft', w: 1.2 });
+        miniSup(P, 14, 100);
+        P.text(250, 148, '감독자-작업자', { size: 13, weight: 700 });
+        ask(P, 318, 104, 26);
+        P.text(170, 196, '가장 큰 차이는?', { size: 13, c: 'ink2' });
       }},
       qa_stopLoop: { w: 340, h: 200, label: '출제 로봇과 검토 로봇 사이를 빙글빙글 도는 화살표와 언제 멈추냐는 물음표', draw(P) {
         P.robot(70, 96, 0.4, { mood: 'dizzy' });
@@ -492,16 +486,14 @@
       }},
 
       /* ---------- L3 문제 그림 ---------- */
-      q_whyPass: { w: 340, h: 200, label: '"괜찮아 보이긴 한데…" 말풍선과, 갈림길 앞에서 갸웃하는 코드 상자', draw(P) {
+      q_whyPass: { w: 340, h: 200, label: '"괜찮아 보이긴 한데…" 말풍선과 pass·issues 두 칸짜리 상자 사이의 물음표', draw(P) {
         P.robot(60, 112, 0.44, { mood: 'smile' });
         P.bubble(10, 10, 170, 50, 60, 78);
         P.text(95, 40, '괜찮아 보이긴 한데…', { size: 13 });
-        P.rrect(210, 90, 60, 40, 6, { fill: 'ink', fs: 'solid' });
-        P.text(240, 115, 'if ?', { mono: true, size: 14, c: 'paper' });
-        P.arrow(240, 132, 210, 168, { c: 'soft', w: 1.8, head: 7 });
-        P.arrow(240, 132, 270, 168, { c: 'soft', w: 1.8, head: 7 });
-        ask(P, 300, 80, 26);
-        P.text(240, 192, '멈출까? 고칠까?', { size: 12, c: 'ink2' });
+        P.arrow(110, 110, 166, 110, { c: 'soft', w: 2, head: 8 });
+        ask(P, 138, 100, 20);
+        jbox(P, 176, 76, 150, 70, ['"pass": …,', '"issues": […]'], 12);
+        P.text(200, 186, '왜 이 모양으로만 받을까?', { size: 13, c: 'ink2' });
       }},
       q_passType: { w: 340, h: 200, label: '스키마 쪽지의 pass 칸 타입이 빈칸이라 고민하는 얼굴', draw(P) {
         jbox(P, 14, 30, 204, 100, ['"pass": {', '  "type": ___', '},', '"issues": { ... }'], 12);
@@ -639,8 +631,8 @@
       qb_stateLog: { w: 340, h: 200, label: '고쳐 쓰는 칠판 하나와 한 줄씩 쌓이는 두루마리 하나, 각각 무엇인지 묻는 물음표', draw(P) {
         P.rrect(20, 30, 130, 96, 8, { fill: 'good', gap: 8, w: 2 });
         P.rrect(30, 40, 110, 76, 4, { fill: 'paper', fs: 'solid', w: 1.2 });
-        P.text(85, 74, '4번 2판', { size: 14, weight: 700 });
-        P.text(85, 98, '만드는 중', { size: 12, c: 'ink2' });
+        P.line(44, 66, 126, 66, { c: 'ink2', w: 3 });
+        P.line(44, 90, 110, 90, { c: 'soft', w: 3 });
         P.rrect(200, 20, 120, 130, 8, { fill: 'paper', w: 1.8 });
         for (let i = 0; i < 6; i++) P.line(212, 40 + i * 18, 306 - (i % 3) * 14, 40 + i * 18, { c: 'soft', w: 3 });
         ask(P, 85, 160, 24);
@@ -799,15 +791,14 @@
         P.path('M270 80 L270 66 Q286 46 302 66 L302 80', { w: 2.4 });
         P.text(286, 152, 'strict', { mono: true, size: 14, weight: 700, c: 'accent' });
       }},
-      t_workerCost: { w: 340, h: 200, label: '작업자 로봇의 모델 이름표를 큰 모델에서 가벼운 모델로 바꿔 다는 모습과 동전', draw(P) {
+      t_workerCost: { w: 340, h: 200, label: '작업자 로봇의 모델 이름표를 큰 모델에서 가벼운 모델로 바꿔 다는 모습, 바꾼 뒤 비용은 물음표', draw(P) {
         P.robot(70, 74, 0.46, { mood: 'happy' });
         tag(P, 70, 136, 'solar-pro4', { mono: true, size: 11, c: 'accent' });
         P.arrow(124, 82, 196, 82, { c: 'accent', w: 2.4, head: 9 });
         P.robot(250, 74, 0.46, { mood: 'happy' });
         tag(P, 250, 136, 'solar-mini4', { mono: true, size: 11, c: 'good' });
         [0, 1, 2].forEach(i => coin(P, 40 + i * 30, 174, 24));
-        coin(P, 250, 174, 24);
-        ask(P, 290, 182, 20);
+        ask(P, 250, 186, 26);
       }},
       t_allPass: { w: 340, h: 200, label: '통과 표시가 가득한 검토 기록장과, 이 검토자를 믿어도 될지 고민하는 선생님', draw(P) {
         P.rrect(16, 20, 150, 150, 10, { fill: 'paper', w: 2 });
@@ -847,7 +838,7 @@
 
     items: [
     /* =================== L1 =================== */
-    { id: 'L1', type: 'lesson', title: '왜 여럿으로 나눌까', sub: '역할 분리·짧은 지시·서로 검사, 그리고 하나로 충분할 때', min: 12, steps: [
+    { id: 'L1', type: 'lesson', title: '왜 여럿으로 나눌까', sub: '역할 분리·짧은 지시·서로 검사, 그리고 하나로 충분할 때', min: 10, steps: [
       { t: 'say', h: '멀티에이전트는 기능이 아니라 설계 방법이에요', fig: 'oneVsTeam', p: [
         'c5u1의 <code>agent.py</code>는 에이전트 하나가 도구 여럿을 골라 썼어요. <b>멀티에이전트</b>(multi-agent)는 역할을 나눈 에이전트 여럿이 일을 주고받는 구조예요.',
         '업스테이지 API에 "멀티에이전트" 스위치가 따로 있는 게 아니에요. 같은 Chat Completions를 <b>역할마다 다른 시스템 프롬프트</b>로 여러 번 부르고, 그 사이를 내 파이썬 코드가 이어요. 아래 코드가 뼈대의 전부예요.',
@@ -897,7 +888,7 @@
     ]},
 
     /* =================== L2 =================== */
-    { id: 'L2', type: 'lesson', title: '멀티에이전트의 네 가지 모양', sub: '순차 파이프라인, 감독자-작업자, 만들기-검토 반복, 나눠 하고 합치기', min: 12, steps: [
+    { id: 'L2', type: 'lesson', title: '멀티에이전트의 네 가지 모양', sub: '순차 파이프라인, 감독자-작업자, 만들기-검토 반복, 나눠 하고 합치기', min: 8, steps: [
       { t: 'say', h: '① 순차 파이프라인: 앞 결과가 다음 입력이에요', fig: 'pipeFig', p: [
         '공장 컨베이어처럼 에이전트를 한 줄로 세워요. 학습지를 Document Parse로 읽고(c2u1) → 개념 뽑기 → 문항 만들기 → 형식 검사. 앞 단계의 결과가 다음 단계의 입력이에요.',
         '순서는 <b>내 코드가</b> 정해요. c3u1에서 본 워크플로와 같은 생각이에요. 단순하고 예측하기 쉬워서 처음 나눌 때 가장 무난해요.',
@@ -945,7 +936,7 @@
     ]},
 
     /* =================== QA =================== */
-    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '파이프라인 vs 감독자, 반복 끝내기, 나란히 하기', min: 4, steps: [
+    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '파이프라인 vs 감독자, 반복 끝내기, 나란히 하기', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qa_whoNext', q: '순차 파이프라인과 감독자-작업자는 둘 다 출제·검토 에이전트를 쓸 수 있어요. 가장 큰 차이는?',
         opts: ['파이프라인은 모델 하나만, 감독자 쪽은 모델 둘 이상을 쓴다', '다음 차례를 파이프라인은 코드가, 감독자 쪽은 모델이 고른다', '파이프라인에서는 단계마다 구조화 출력을 쓸 수 없다', '감독자-작업자는 작업자를 늘 동시에 돌려야 한다'], a: 1,
         why: '파이프라인은 내가 정한 순서대로 코드가 불러요(워크플로). 감독자-작업자는 감독자 모델이 상황을 보고 다음 작업자를 골라요(도구 호출).',
@@ -961,7 +952,7 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: 'team.py 출제 팀 만들기', sub: '출제 → 검토 {pass, issues} → 고치기(최대 2번) → 확정', min: 14, steps: [
+    { id: 'L3', type: 'lesson', title: 'team.py 출제 팀 만들기', sub: '출제 → 검토 {pass, issues} → 고치기(최대 2번) → 확정', min: 16, steps: [
       { t: 'say', h: '출제 팀 설계: 역할 둘, 반복은 코드가', fig: 'teamPlan', table: { head: ['누가', '하는 일', '모델', '내놓는 것'], rows: [
         ['출제자 <code>write()</code>', '문항 1개 만들기, 지적받으면 고치기', '<code>solar-mini4</code>', '문항 JSON'],
         ['검토자 <code>review()</code>', '오류 찾기만(고치지 않음)', '<code>solar-mini4</code>', '<code>{pass, issues}</code>'],
@@ -1016,7 +1007,7 @@
       ], code: { lang: 'json', src: src(['{', '  "topic": "반복문",', '  "rules": "보기 4개, 정답 1개",', '  "draft": {"no": 4, "ver": 2,', '            "fixes": 1},', '  "done": [1, 3],', '  "human": [2]', '}']) } },
       { t: 'say', h: '도구 실행 = 작업자 에이전트 부르기', p: [
         '감독자가 <code>tool_calls</code>로 작업자를 고르면, 실행은 늘 <b>내 코드</b>가 해요. 그 실행 안에서 작업자 에이전트(Solar 호출)가 한 번 더 일어나요.',
-        'c5u1 <code>agent.py</code>의 <code>ask()</code>·<code>tool_msg()</code>·<code>run_tool()</code>·<code>MAX_TURNS</code>는 그대로 써요. <code>TOOL_FUNCS</code>에 작업자 함수만 바꿔 끼우면 돼요. <code>write()</code>와 <code>review()</code>는 상태에서 자기에게 필요한 칸만 꺼내 넘겨요.',
+        'c5u1 <code>agent.py</code>의 <code>ask()</code>·<code>tool_msg()</code>·<code>run_tool()</code>·<code>MAX_TURNS</code> 구조를 그대로 가져와요(모델만 <code>SUPERVISOR</code>로). <code>TOOL_FUNCS</code>에 작업자 함수를 바꿔 끼우면 돼요. <code>write()</code>와 <code>review()</code>는 상태에서 자기에게 필요한 칸만 꺼내 넘겨요.',
         'c5u1의 규칙도 그대로예요. assistant 메시지를 먼저 붙이고, 호출마다 <code>tool</code> 결과를 하나씩, <code>content</code>가 <code>None</code>이면 <code>""</code>, 그리고 최대 턴.'
       ], code: { lang: 'py', src: src(['def ask_writer(note):', '    STATE["draft"] = write(STATE, note)', '    return json.dumps(STATE["draft"],', '        ensure_ascii=False)', '', 'def ask_reviewer(note):', '    rv = review(STATE)', '    return json.dumps(rv,', '        ensure_ascii=False)', '', 'TOOL_FUNCS = {"ask_writer": ask_writer,', '    "ask_reviewer": ask_reviewer}']) } },
       { t: 'say', h: '로그: 누가, 어떤 모델로, 몇 토큰', fig: 'logBook', p: [
@@ -1061,7 +1052,7 @@
     ]},
 
     /* =================== QB =================== */
-    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '상태 공유, 모델 나눠 쓰기, 상태와 로그', min: 4, steps: [
+    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '상태 공유, 모델 나눠 쓰기, 상태와 로그', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qb_memory', q: '출제자에게 "보기는 4개, 해설은 한 줄"이라는 조건을 보냈어요. 검토자를 부를 때도 이 조건이 함께 갈까요?',
         opts: ['간다. 같은 API 키를 쓰니 호출끼리 대화가 이어진다', '간다. 같은 모델이면 앞 호출의 내용이 남아 있다', '안 간다. 코드가 상태에서 조건을 꺼내 넣어야 한다', '안 간다. 그러니 조건 없이 보는 쪽이 더 공정하다'], a: 2,
         why: 'API는 대화를 기억하지 않아요(c1u2). 역할 사이에 함께 쓸 것(주제, 문항 조건, 지금 판)은 상태 JSON에 두고, 코드가 각 역할에게 필요한 만큼 넣어 보내요.',
@@ -1077,7 +1068,7 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: '평가와 비용, 그리고 사람 확인', sub: '토큰 어림, 실패 모양, 사람 확인, Cursor 서브에이전트와 잇기', min: 13, steps: [
+    { id: 'L5', type: 'lesson', title: '평가와 비용, 그리고 사람 확인', sub: '토큰 어림, 실패 모양, 사람 확인, Cursor 서브에이전트와 잇기', min: 11, steps: [
       { t: 'say', h: '형성평가 10문제, 토큰과 돈을 어림해요', fig: 'costCalc', table: { head: ['방식', '호출', '입력 · 출력 토큰', '지금 가격으로'], rows: [
         ['에이전트 하나(<code>solar-pro4</code>)', '1번', '1,500 · 3,000', '약 $0.004(6원쯤)'],
         ['출제 팀(<code>solar-mini4</code>)', '40번', '40,000 · 16,000', '약 $0.010(15원쯤)'],
@@ -1173,7 +1164,7 @@
       note: '예상 비용(지금 가격으로 어림, 바뀔 수 있어요): team.py로 10문제 한 번이 문항당 호출 4~6번이면 <code>solar-mini4</code>로 약 1~2센트, 에이전트 하나(<code>solar-pro4</code> 한 번)는 1센트 미만이에요. 반 학생이 한 키로 동시에 돌리면 429가 날 수 있으니, 수업에서는 교사가 미리 만들어 확정해 두는 쪽이 안전해요. 문항·로그에 학생 이름·성적 같은 개인정보를 넣지 않아요.' },
 
     /* =================== T1 =================== */
-    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 10, pass: 0.7, steps: [
+    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 12, pass: 0.7, steps: [
       { t: 'q', kind: 'mc', fig: 't_askSwitch', q: '연수 실습 시간, 옆자리 선생님이 "멀티에이전트를 해 보려면 콘솔에서 뭘 켜야 해요?"라고 물어요. 가장 알맞은 대답은?',
         opts: ['Playground에서 멀티에이전트 모드를 고르면 돼요', 'API keys에서 에이전트마다 키를 하나씩 새로 만들어야 해요', '켤 건 없어요. 역할마다 프롬프트를 달리해 코드로 이어요', 'Upstage Studio에서만 만들 수 있어요. 코드로는 안 돼요'], a: 2,
         why: '멀티에이전트는 제품 기능이 아니라 <b>설계 방법</b>이에요. 역할마다 시스템 프롬프트(와 모델)를 정해 같은 API를 여러 번 부르고, 그 사이를 내 파이썬 코드가 이어요.',

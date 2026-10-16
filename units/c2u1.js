@@ -859,7 +859,7 @@
 
     items: [
     /* =================== L1 =================== */
-    { id: 'L1', type: 'lesson', title: 'PDF를 그대로 주면 안 되는 까닭', sub: '사람 눈용 문서와 LLM이 읽기 좋은 글', min: 10, steps: [
+    { id: 'L1', type: 'lesson', title: 'PDF를 그대로 주면 안 되는 까닭', sub: '사람 눈용 문서와 LLM이 읽기 좋은 글', min: 9, steps: [
       { t: 'say', h: 'PDF는 사람 눈으로 보라고 만든 종이예요', fig: 'pdfCopy', p: [
         '정보 수업 학습지를 PDF로 저장하면 어느 컴퓨터에서나 똑같이 보여요. 대신 대부분의 PDF 안에는 "이 글자를 이 자리에 그려라"는 정보만 있고, "여기부터 표, 이건 제목" 같은 구조는 따로 없어요.',
         '그래서 복사해 붙이면 표가 한 줄로 뭉개지고, 2단 교과서는 왼쪽·오른쪽 단 문장이 섞이고, 쪽마다 있는 학교 이름과 쪽 번호가 본문 사이에 끼어들어요.',
@@ -902,7 +902,7 @@
     ]},
 
     /* =================== L2 =================== */
-    { id: 'L2', type: 'lesson', title: 'Playground에서 학습지 파싱해 보기', sub: '파일 고르기 → 요소 강조 → 요소별 결과', min: 12, steps: [
+    { id: 'L2', type: 'lesson', title: 'Playground에서 학습지 파싱해 보기', sub: '파일 고르기 → 요소 강조 → 요소별 결과', min: 10, steps: [
       { t: 'say', h: '콘솔 Playground에서 키 없이 먼저 해 봐요', fig: 'consoleNav', p: [
         'c1u1에서 둘러본 콘솔의 <b>Playground</b> 아래에 <b>Document Parse</b>가 있어요. 공식 안내에 따르면 견본이나 내 파일로 HTML·Markdown 변환을 API 키 없이 해 볼 수 있어요.',
         '콘솔 화면 모양은 바뀔 수 있어요. 메뉴 이름이나 단추 자리가 이 앱과 다르면, 왼쪽 메뉴에서 Playground 아래 Document Parse를 찾으면 돼요.',
@@ -954,7 +954,7 @@
     ]},
 
     /* =================== QA =================== */
-    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: 'OCR과 파싱, 세 가지 결과 꼴, standard와 enhanced', min: 4, steps: [
+    { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: 'OCR과 파싱, 세 가지 결과 꼴, standard와 enhanced', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qa_ocr', q: '스캔한 학습지를 두고 동료가 "OCR이랑 Document Parse는 같은 거 아냐?"라고 물어요. 가장 정확한 설명은?',
         opts: ['둘은 같은 일이다. 이름만 다르고 돌려주는 결과도 똑같다', 'OCR은 디지털 PDF에만, 파싱은 사진·스캔본에만 쓰는 기능이다', '파싱은 글자를 못 읽어서 늘 OCR을 먼저 따로 돌려야 한다', 'OCR은 글자만 읽고, 파싱은 표·제목 같은 구조까지 나눈다'], a: 3,
         why: 'OCR은 그림 속 글자를 알아보는 일이에요. Document Parse는 필요하면 안에서 OCR을 하고, 그 위에 요소를 나누고 이름(category)을 붙여 구조 있는 글로 돌려줘요.',
@@ -970,7 +970,7 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: '요소와 카테고리 읽기', sub: '12가지 이름, 차트·수식, 비율 좌표', min: 12, steps: [
+    { id: 'L3', type: 'lesson', title: '요소와 카테고리 읽기', sub: '12가지 이름, 차트·수식, 비율 좌표', min: 13, steps: [
       { t: 'say', h: '결과의 알맹이는 elements 목록이에요', fig: 'elemCard', p: [
         'API로 받은 결과에는 문서 전체를 이은 <code>content</code>와, 요소 하나하나를 담은 <code>elements</code> 목록이 함께 와요. Playground에서 본 테두리 하나가 elements의 칸 하나예요.',
         '요소마다 번호(<code>id</code>), 이름(<code>category</code>), 쪽(<code>page</code>), 내용(<code>content</code>의 text·html·markdown), 위치(<code>coordinates</code>)가 있어요.'
@@ -1041,7 +1041,7 @@
     ]},
 
     /* =================== L4 =================== */
-    { id: 'L4', type: 'lesson', title: 'parse.py로 파싱하기', sub: 'requests 한 번, ocr·mode·비용·쪽수·형식', min: 14, steps: [
+    { id: 'L4', type: 'lesson', title: 'parse.py로 파싱하기', sub: 'requests 한 번, ocr·mode·비용·쪽수·형식', min: 13, steps: [
       { t: 'say', h: 'parse.py ① 주소와 키를 준비해요', fig: 'parseReq', p: [
         'Solar는 OpenAI SDK로 불렀지만, Document Parse는 파일을 보내야 해서 c1u3에서 깐 <code>requests</code>로 직접 보내요. 주소는 <code>https://api.upstage.ai/v1/document-digitization</code>예요.',
         'Playground와 달리 API는 키가 있어야 해요. <code>hello_solar.py</code>처럼 <code>.env</code>의 <code>UPSTAGE_API_KEY</code>를 읽어, 헤더에 <code>Authorization: Bearer 키</code>로 실어 보내요.'
@@ -1097,7 +1097,7 @@
     ]},
 
     /* =================== QB =================== */
-    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '동기와 비동기, output_formats와 mode, 전체와 요소', min: 4, steps: [
+    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '동기와 비동기, output_formats와 mode, 전체와 요소', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qb_ticket', q: '250쪽 교과서 PDF를 비동기 주소(<code>…/document-digitization/async</code>)로 보냈어요. 응답으로 바로 받는 것은?',
         opts: ['250쪽 전체의 markdown', '앞 100쪽의 결과', '<code>request_id</code>(번호표)', '처리가 끝났다는 안내 메일'], a: 2,
         why: '비동기는 바로 <code>request_id</code>(번호표)를 줘요. 그걸로 상태를 확인하고, 끝난 묶음의 <code>download_url</code>에서 결과를 받아요. 주소는 15분만 유효하니 받으면 바로 저장해요.',
@@ -1113,7 +1113,7 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: '결과 다듬어 저장하기', sub: '머리말·꼬리말 빼기, 쪽 표시, data/*.md', min: 12, steps: [
+    { id: 'L5', type: 'lesson', title: '결과 다듬어 저장하기', sub: '머리말·꼬리말 빼기, 쪽 표시, data/*.md', min: 13, steps: [
       { t: 'say', h: '머리말·꼬리말은 자료에선 소음이에요', fig: 'noise', p: [
         '30쪽 학습지를 그대로 이으면 "한입고등학교 정보과"가 30번, 쪽 번호가 30번 끼어들어요. 나중에 검색할 때 엉뚱한 조각이 뽑히고, Solar에게 넘길 토큰만 늘어요.',
         '<code>content.markdown</code> 한 덩어리에서 이걸 지우기는 어려워요. 대신 <code>elements</code>에서 <code>category</code>가 <code>header</code>·<code>footer</code>인 요소를 빼고 다시 이으면 깔끔해요.'
@@ -1213,7 +1213,7 @@
       note: '예상 비용(지금 가격, 부가세 별도): 학습지 5쪽 standard ≈ $0.05, 스캔본 2쪽 ≈ $0.02. 실수로 enhanced로 돌리면 쪽당 세 배($0.03)예요. 모두 합쳐도 $0.1 안팎이라 새 계정 무료 크레딧 $10으로 넉넉해요. 처음엔 2쪽짜리 짧은 파일로 시험하고, 100쪽 넘는 교과서를 통째로 보내지 않아요. 키는 <code>.env</code>에만 두고 코드·스크린샷·채팅에 붙이지 않아요.' },
 
     /* =================== T1 =================== */
-    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 12, pass: 0.7, steps: [
+    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 11, pass: 0.7, steps: [
       { t: 'q', kind: 'mc', fig: 't_415', q: '연수장에서 옆자리 선생님이 parse.py에 발표 자료 <code>lesson.key</code>(Keynote 파일)를 넣었더니 <code>415</code> 오류가 났어요. 가장 알맞은 대처는?',
         opts: ['API 키가 틀렸으니 새 키를 만든다', 'PDF로 내보낸 뒤 그 파일로 다시 보낸다', '크레딧이 떨어졌으니 Billing에서 충전한다', '잠시 기다렸다 같은 파일을 다시 보낸다'], a: 1,
         why: '415는 지원하지 않는 파일이라는 뜻이에요. Keynote 파일은 지원 형식에 없으니, PDF처럼 지원하는 형식으로 내보내 다시 보내요.',

@@ -842,7 +842,7 @@
 
     items: [
     /* =================== L1 =================== */
-    { id: 'L1', type: 'lesson', title: 'upstage-lab 만들기', sub: '연습 폴더, 가상 환경, 패키지 셋, .env와 .gitignore', min: 12, win: 'ide', steps: [
+    { id: 'L1', type: 'lesson', title: 'upstage-lab 만들기', sub: '연습 폴더, 가상 환경, 패키지 셋, .env와 .gitignore', min: 14, win: 'ide', steps: [
       { t: 'say', h: '연수 실습은 upstage-lab 폴더 하나에서 자라요', fig: 'labTree', p: [
         '기반연수 1일차 13:00 「Solar로 보는 LLM의 원리」 실습부터 2일차 트랙 실습까지, 이 과정은 <b>연습 폴더 <code>upstage-lab</code> 하나</b>에서 해요. 첫 파일은 이번 단원의 <code>hello_solar.py</code>이고, 단원마다 <code>parse.py</code>, <code>search.py</code>, <code>app.py</code>처럼 하나씩 늘어나요.',
         '폴더가 하나면 좋은 점이 셋이에요. 가상 환경과 키(<code>.env</code>)를 한 번만 준비하면 되고, 단원마다 커밋해 두면 되돌릴 수 있고, 에이전트 규칙(<code>AGENTS.md</code>)도 한곳에 모여요.',
@@ -978,7 +978,7 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: '응답 읽기와 오류', sub: 'finish_reason과 usage, 오류 번호별 대처, 지수 백오프', min: 14, steps: [
+    { id: 'L3', type: 'lesson', title: '응답 읽기와 오류', sub: 'finish_reason과 usage, 오류 번호별 대처, 지수 백오프', min: 16, steps: [
       { t: 'say', h: 'finish_reason: 답이 왜 멈췄을까', fig: 'stopSign', table: { head: ['값', '뜻', '이럴 때'], rows: [
         ['<code>stop</code>', '할 말을 다 하고 멈췄어요', '정상'],
         ['<code>length</code>', '<code>max_tokens</code>에 닿아 잘렸어요', '상한을 늘리거나 나눠 부탁'],
@@ -1069,7 +1069,7 @@
     ]},
 
     /* =================== L4 =================== */
-    { id: 'L4', type: 'lesson', title: '스트리밍과 대화 이어 가기', sub: 'stream=True와 delta, 대화 기록 리스트, 터미널 챗봇', min: 12, steps: [
+    { id: 'L4', type: 'lesson', title: '스트리밍과 대화 이어 가기', sub: 'stream=True와 delta, 대화 기록 리스트, 터미널 챗봇', min: 13, steps: [
       { t: 'say', h: '스트리밍: 답을 조각으로 받아 바로 보여 줘요', fig: 'streamDrip', code: { lang: 'py', src: src(['stream = client.chat.completions.create(', '  model=MODEL,', '  messages=msgs,', '  reasoning_effort="none",', '  stream=True,', ')', 'for chunk in stream:', '    t = chunk.choices[0].delta.content', '    if t:', '        print(t, end="", flush=True)', 'print()']) }, p: [
         '<code>stream=True</code>를 더하면 답이 다 만들어질 때까지 기다리지 않고, 만들어지는 대로 <b>조각</b>(<code>chunk</code>)으로 받아요. 학생이 보는 챗봇에서 첫 글자가 빨리 떠서 덜 답답해요.',
         '조각에는 <code>message</code> 대신 새로 더해진 부분 <code>delta</code>가 와요. 마지막 조각처럼 글이 없는 조각도 있어서 <code>if t:</code>로 거르고, <code>end=""</code>로 한 줄에 이어 찍어요.',
@@ -1113,7 +1113,7 @@
     ]},
 
     /* =================== QB =================== */
-    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '스트리밍과 아닌 것, 기록 붙이는 순서, .env와 환경 변수', min: 4, steps: [
+    { id: 'QB', type: 'quiz', title: '헷갈림 퀴즈 ②', sub: '스트리밍과 아닌 것, 기록 붙이는 순서, .env와 환경 변수', min: 3, steps: [
       { t: 'q', kind: 'mc', fig: 'qb_streamWhen', q: '<code>stream=True</code>가 가장 잘 어울리는 곳은?',
         opts: ['학습지 30장을 밤새 요약해 파일로 저장하는 프로그램', '채점 결과를 JSON으로 받아 바로 점수를 더하는 프로그램', '학생이 질문하고 답을 기다리는 챗봇 화면', '토큰을 아껴 요금을 줄이고 싶은 모든 프로그램'], a: 2,
         why: '스트리밍은 답이 만들어지는 대로 보여 줘서 <b>기다리는 사람</b>이 덜 답답해요. 사람이 지켜보지 않거나, 다 받아야 쓸 수 있는 일(JSON 채점, 파일 저장)은 한꺼번에 받는 게 간단해요.',
@@ -1129,7 +1129,7 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: '에이전트 코딩: Cursor에게 업스테이지 코드 맡기기', sub: 'AGENTS.md에 업스테이지 규칙, Plan으로 계획 먼저, 옛 예제 바로잡기', min: 13, win: 'agents', steps: [
+    { id: 'L5', type: 'lesson', title: '에이전트 코딩: Cursor에게 업스테이지 코드 맡기기', sub: 'AGENTS.md에 업스테이지 규칙, Plan으로 계획 먼저, 옛 예제 바로잡기', min: 14, win: 'agents', steps: [
       { t: 'say', h: '에이전트는 옛 예제를 닮기 쉬워요', fig: 'oldExample', p: [
         '모델 이름은 자주 바뀌어요. <code>solar-pro3</code>, <code>solar-pro2</code>, <code>solar-mini</code>는 <b>2026-10-30(KST)</b>에 서비스가 끝나고, 공식 안내는 <code>solar-pro4</code>·<code>solar-mini4</code>로 옮기라는 거예요.',
         '그런데 인터넷과 옛 쿡북에는 <code>solar-pro3</code>, <code>solar-1-mini-chat</code>, <code>api.upstage.ai/v1/solar</code> 같은 옛 예제가 많아요. Cursor 에이전트를 움직이는 모델도 학습한 시점의 글을 바탕으로 코드를 이어 써서, 그대로 두면 옛 이름을 가져올 수 있어요.',
@@ -1231,7 +1231,7 @@
       note: '예상 비용: 이 미션의 Solar 호출은 많아야 수십 번이고 한 번에 수백~수천 토큰이에요. 지금 요금(solar-pro4, 100만 토큰당 입력 $0.30·출력 $1.20, 2026년 10월 기준)으로 어림하면 몇 센트 안쪽이라 가입 크레딧 $10으로 넉넉해요. Cursor 에이전트 사용량은 Cursor 요금제에서 따로 빠져요. 키는 채팅·스크린샷·GitHub에 올리지 않고, 샜다면 콘솔 API keys에서 바로 지우고 새로 만들어요. 질문에 학생 이름·성적 같은 개인정보를 넣지 않아요.' },
 
     /* =================== T1 =================== */
-    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 12, pass: 0.7, steps: [
+    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 13, pass: 0.7, steps: [
       { t: 'q', kind: 'mc', fig: 't_noModule', q: '연수장에서 옆자리 선생님이 어제 집에서 pip install까지 했다는데, 오늘 <code>python hello_solar.py</code>를 치니 <code>ModuleNotFoundError: No module named \'openai\'</code>가 나요. 터미널 줄 앞에 <code>(.venv)</code>가 없어요. 무엇부터 할까요?',
         opts: ['키가 틀렸으니 콘솔에서 새 키를 만든다', 'upstage-lab의 가상 환경을 다시 켜고 실행한다', 'hello_solar.py를 지우고 처음부터 다시 쓴다', 'openai 대신 requests로 코드를 바꾼다'], a: 1,
         why: '패키지는 가상 환경(<code>.venv</code>) 안에 깔렸는데, 터미널을 새로 열면 가상 환경이 꺼져 있어요. Mac은 <code>source .venv/bin/activate</code>, Windows는 <code>.venv\\Scripts\\activate</code>로 켜고 다시 실행해요.',

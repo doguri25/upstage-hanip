@@ -176,7 +176,7 @@ function simView(st){
     h('span', { class:'gi' }, i < my.k ? '✓' : String(i + 1)), h('span', { html:x.goal }))));
   const draw = () => {
     const x = cur();
-    winPill.textContent = my.scene.win === 'web' ? webName(my.scene) : { agents:'Cursor · Agents Window', ide:'Cursor · IDE 창', term:'터미널' }[my.scene.win] || '';
+    winPill.textContent = my.scene.win === 'web' ? webName(my.scene) : { agents:'Cursor 에이전트', ide:'Cursor 편집기', term:'터미널' }[my.scene.win] || '';
     holder.replaceChildren(simScreen(my.scene, x && !my.done ? (x.click || (x.type != null ? 'type:' + x.into : '')) : ''),
       h('p', { class:'snote' }, my.scene.win === 'web' ? '실제 화면을 단순하게 옮긴 연습용이에요. 메뉴 이름·위치·모델 목록은 바뀔 수 있어요.' : '실제 Cursor 화면을 단순하게 옮긴 연습용이에요. 버전에 따라 모양이 조금 달라요.'));
     drawGoals();
