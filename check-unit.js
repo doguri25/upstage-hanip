@@ -239,6 +239,13 @@ function checkSim(w, s){
   if (answers.length >= 4) { const c = [0, 1, 2, 3].map(k => answers.filter(a => a === k).length); if (Math.max(...c) > answers.length * 0.6) warn(`${W}: 정답 위치가 한쪽으로 몰려요 ${c.join('/')}`); }
 });
 Object.keys(figs).forEach(n => { if (!usedFigs.has(n) && n !== 'hero') warn(`그림 '${n}'을 아무 데서도 안 써요`); });
+// 정답이 혼자 가장 긴 보기면 길이만 보고 맞힐 수 있다: 객관식의 35%를 넘지 않게
+{
+  const optLen = o => (Array.isArray(o) ? o.join(' ') : String(o)).replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, 'x').length;
+  const mcs = [...(Array.isArray(U.skip) ? U.skip : []), ...items.flatMap(it => it.steps || [])].filter(s => s.t === 'q' && s.kind === 'mc' && Array.isArray(s.opts) && s.opts.length === 4);
+  const longest = mcs.filter(q => { const L = q.opts.map(optLen), m = Math.max(...L); return L[q.a] === m && L.filter(x => x === m).length === 1; });
+  if (mcs.length >= 8 && longest.length > mcs.length * 0.35) warn(`객관식 ${mcs.length}개 중 ${longest.length}개(${Math.round(longest.length / mcs.length * 100)}%)에서 정답이 혼자 가장 긴 보기예요. 35% 이하로: 오답도 정답만큼 구체적으로 쓰거나 정답을 줄여요. 예: ${longest.slice(0, 3).map(q => '"' + String(q.q).replace(/<[^>]+>/g, '').slice(0, 24) + '…"').join(', ')}`);
+}
 
 errors.forEach(m => console.log('ERROR ' + m));
 warns.forEach(m => console.log('WARN  ' + m));
