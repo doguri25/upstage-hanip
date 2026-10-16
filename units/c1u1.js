@@ -128,17 +128,14 @@
   }
 
   /* ---------- 모의 화면에서 되풀이하는 조각 ---------- */
-  const NAV = ['Home', 'Playground', { name: 'Chat', sub: true }, { name: 'Document Parse', sub: true }, 'API keys', 'Billing', { name: 'Usage', sub: true }, { name: 'Credit', sub: true }];
-  const HOME = [
-    { k: 'h', text: 'Home' },
-    { k: 'p', text: '콘솔 첫 화면이에요. 왼쪽 메뉴에서 써 볼 기능을 골라요.' },
-    { k: 'note', text: '실제 Home 화면의 구성은 바뀔 수 있어요. 메뉴 이름을 보고 찾아요.' }
-  ];
-  const SCENE = { win: 'web', url: 'console.upstage.ai', brand: 'Upstage Console', nav: NAV, page: 'Home', blocks: HOME };
+  const NAV = ['Playground', { name: 'Chat', sub: true }, { name: 'Document Parse', sub: true }, 'API keys', 'Usage', 'Limits', 'Billing', { name: 'Credit', sub: true }, { name: 'Payment', sub: true }];
+  const KEYS_H = { k: 'h', text: 'API keys', sub: 'Keys · Manage all API keys issued in this organization', btns: ['Create new key'] };
+  const KEYS_HEAD = ['Name', 'Owner', 'Key', 'Created (UTC)'];
+  const KEYS = [KEYS_H, { k: 'p', text: '로그인하면 조직의 API keys 페이지로 들어와요. 아래에는 언어별 Example codes도 있어요.' }];
+  const SCENE = { win: 'web', url: 'console.upstage.ai', brand: 'Upstage Console', nav: NAV, page: 'API keys', blocks: KEYS };
   const Q1 = '중학교 1학년에게 알고리즘을 두 문장으로 설명해 줘.';
   const A1 = '알고리즘은 어떤 문제를 풀기 위한 순서를 차례대로 적은 거예요. 라면 끓이는 순서처럼 단계를 정해 두면 누가 해도 같은 결과를 얻을 수 있어요.';
   const CHAT_H = { k: 'h', text: 'Chat', sub: 'Playground' };
-  const KEYS_H = { k: 'h', text: 'API keys', btns: ['Create new key'] };
 
   HANIP.unit({
     id: 'c1u1',
@@ -154,11 +151,13 @@
       'https://console.upstage.ai/docs/capabilities/generate/chat',
       'https://console.upstage.ai/docs/guides/rate-limits',
       'https://console.upstage.ai/docs/resources/error-codes',
+      'https://console.upstage.ai/docs/resources/faq',
       'https://console.upstage.ai/docs/capabilities/parse/document-parsing',
       'https://console.upstage.ai/docs/capabilities/extract/universal-extraction',
       'https://console.upstage.ai/docs/capabilities/embed',
       'https://www.upstage.ai/pricing/api',
       'https://www.upstage.ai/products/studio',
+      'https://www.upstage.ai/events/ai-initiative-2026-en',
       'https://www.upstage.ai/blog/en/solar-open-2',
       'https://github.com/UpstageAI/upstage-extensions-hub',
       'https://github.com/UpstageAI/Solar-Pro4-Cookbook',
@@ -591,16 +590,19 @@
       }},
 
       /* ---------- L4 설명 그림 ---------- */
-      consoleMap: { w: 340, h: 208, label: '콘솔 창 왼쪽에 Home, Playground, API keys, Billing 메뉴', draw(P) {
-        win(P, 12, 10, 316, 172);
-        P.line(120, 32, 120, 182, { w: 1.4 });
-        P.text(22, 50, 'Upstage Console', { size: 11, weight: 700, anchor: 'start' });
-        P.rrect(20, 62, 92, 20, 5, { fill: 'accent', gap: 4, w: 1.2 });
-        P.text(28, 76, 'Home', { size: 12, anchor: 'start' });
-        P.text(28, 100, 'Playground', { size: 12, anchor: 'start' });
-        P.text(42, 120, 'Chat', { size: 11, anchor: 'start', c: 'ink2' });
-        P.text(28, 144, 'API keys', { size: 12, anchor: 'start' });
-        P.text(28, 168, 'Billing', { size: 12, anchor: 'start' });
+      consoleMap: { w: 340, h: 208, label: '콘솔 창 위쪽 막대에 Playground, 왼쪽에 API keys, Usage, Limits, Members와 Billing 아래 Credit, Payment 메뉴', draw(P) {
+        win(P, 12, 8, 316, 180);
+        P.text(320, 24, 'Documentation · API Reference · Playground', { size: 9, anchor: 'end', c: 'ink2' });
+        P.line(120, 30, 120, 188, { w: 1.4 });
+        P.text(22, 46, 'Upstage Console', { size: 11, weight: 700, anchor: 'start' });
+        P.rrect(20, 55, 92, 20, 5, { fill: 'accent', gap: 4, w: 1.2 });
+        P.text(28, 69, 'API keys', { size: 11, anchor: 'start' });
+        P.text(28, 89, 'Usage', { size: 11, anchor: 'start' });
+        P.text(28, 107, 'Limits', { size: 11, anchor: 'start' });
+        P.text(28, 125, 'Members', { size: 11, anchor: 'start' });
+        P.text(28, 144, 'BILLING', { size: 9, weight: 700, anchor: 'start', c: 'ink2' });
+        P.text(36, 162, 'Credit', { size: 11, anchor: 'start' });
+        P.text(36, 180, 'Payment', { size: 11, anchor: 'start' });
         P.text(224, 58, 'console.upstage.ai', { mono: true, size: 11, c: 'ink2' });
         P.rrect(140, 74, 170, 16, 6, { c: 'soft', w: 1.4 });
         P.rrect(170, 98, 140, 16, 6, { fill: 'sky', gap: 4, w: 1.2 });
@@ -676,11 +678,11 @@
       }},
       q_pgBlank: { w: 340, h: 200, label: '콘솔 메뉴의 빈칸과 수업 질문 말풍선', draw(P) {
         P.rrect(20, 16, 120, 164, 10, { fill: 'paper', fs: 'solid' });
-        P.text(36, 46, 'Home', { size: 12, anchor: 'start' });
+        P.text(36, 46, 'API keys', { size: 12, anchor: 'start' });
         P.rrect(30, 58, 100, 24, 6, { c: 'accent', w: 1.8 });
         P.text(80, 75, '? ? ?', { size: 13, weight: 700, c: 'warm' });
         P.text(48, 102, 'Chat', { size: 11, anchor: 'start', c: 'ink2' });
-        P.text(36, 132, 'API keys', { size: 12, anchor: 'start' });
+        P.text(36, 132, 'Usage', { size: 12, anchor: 'start' });
         P.text(36, 160, 'Billing', { size: 12, anchor: 'start' });
         P.bubble(166, 24, 160, 50, 208, 96);
         P.text(246, 55, '알고리즘이 뭐예요?', { size: 12 });
@@ -699,8 +701,9 @@
         P.text(270, 160, '프로그램이 API에', { size: 12, c: 'ink2' });
         P.text(170, 190, '무엇이 새면 위험할까?', { size: 13, c: 'ink2' });
       }},
-      qb_usageCredit: { w: 340, h: 190, label: 'Billing 아래 막대그래프 칸과 동전 칸, 이름표가 비어 있는 두 칸', draw(P) {
-        P.text(170, 24, 'Billing', { size: 15, weight: 700 });
+      qb_usageCredit: { w: 340, h: 190, label: '따로 있는 메뉴의 막대그래프 칸과 Billing 아래 동전 칸, 이름표가 비어 있는 두 칸', draw(P) {
+        P.text(90, 28, '따로 있는 메뉴', { size: 12, weight: 700, c: 'ink2' });
+        P.text(250, 28, 'Billing 아래', { size: 12, weight: 700, c: 'ink2' });
         P.rrect(30, 40, 120, 110, 10, { fill: 'paper', fs: 'solid' });
         P.rect(48, 92, 14, 24, { fill: 'sky', gap: 4, w: 1.2 });
         P.rect(68, 72, 14, 44, { fill: 'sky', gap: 4, w: 1.2 });
@@ -1084,7 +1087,7 @@
         ['가격(100만 토큰당)', '입력 $0.30 · 출력 $1.20', '입력 $0.10 · 출력 $0.40'],
         ['이럴 때', '여러 단계를 거치는 어려운 문제, 에이전트', '짧은 분류, 많이 부르는 가벼운 일'] ] }, p: [
         '둘 다 대화·추론·구조화 출력·도구 호출을 지원해요. 이 과정의 코드는 <code>solar-pro4</code>를 기본으로, 가벼운 일은 <code>solar-mini4</code>로 해요.',
-        '가격은 2026년 10월 기준(부가세 별도)이고 바뀔 수 있어요. 돈은 글을 쪼갠 조각인 <b>토큰</b> 수로 매기는데, 토큰은 단원 2에서 자세히 봐요.'
+        '가격은 정가(부가세 별도)예요. 지금은 할인 행사 중이라 실제로는 더 쌀 수 있고, 가격은 바뀔 수 있어요. 돈은 글을 쪼갠 조각인 <b>토큰</b> 수로 매기는데, 토큰은 단원 2에서 자세히 봐요.'
       ]},
       { t: 'say', h: '별칭과 버전 이름: 코드에는 별칭을', fig: 'aliasFig', code: { lang: 'py', src: src(['MODEL = "solar-pro4"   # 별칭', '', '# 응답의 model 칸에는 실제 버전이', '# "solar-pro4-260806"']) }, p: [
         '<code>solar-pro4</code>는 <b>별칭</b>이에요. 지금은 2026년 8월 6일에 나온 버전 <code>solar-pro4-260806</code>을 가리키고, 응답의 <code>model</code> 칸에는 이 버전 이름이 찍혀요.',
@@ -1123,58 +1126,63 @@
     ]},
 
     /* =================== L4 =================== */
-    { id: 'L4', type: 'lesson', title: '콘솔 둘러보기', sub: 'Home, Playground, API keys, Billing', min: 9, win: 'console', steps: [
+    { id: 'L4', type: 'lesson', title: '콘솔 둘러보기', sub: 'API keys, Playground, Usage, Limits, Billing', min: 12, win: 'console', steps: [
       { t: 'say', h: '콘솔은 업스테이지 API의 관리실이에요', fig: 'consoleMap', table: { head: ['메뉴', '뜻', '이럴 때'], rows: [
-        ['<b>Home</b>', '첫 화면', '콘솔에 들어오면 처음 보는 곳'],
-        ['<b>Playground</b>', '놀이터: 코드 없이 써 보기(아래에 Chat, Document Parse 등)', '모델과 문서 읽기를 먼저 맛볼 때'],
-        ['<b>API keys</b>', 'API 키 관리', '키를 만들고, 보고, 지울 때(레슨 5)'],
-        ['<b>Billing</b>', '요금(아래에 Usage, Credit 등)', '얼마나 썼는지, 얼마 남았는지 볼 때'] ] }, p: [
+        ['<b>API keys</b>', 'API 키 관리(로그인하면 처음 보이는 곳)', '키를 만들고, 보고, 지울 때(레슨 5)'],
+        ['<b>Playground</b>', '놀이터: 코드 없이 써 보기(위쪽 막대, 안에 Chat·Document Parse 등)', '모델과 문서 읽기를 먼저 맛볼 때'],
+        ['<b>Usage</b>', '사용량과 이번 달 예상 요금', '얼마나 썼는지 볼 때'],
+        ['<b>Limits</b>', '월 사용 한도(Usage limit)와 속도 제한 등급', '돈이 너무 나가지 않게 막을 때'],
+        ['<b>Members</b>', '조직 구성원 초대·역할', '동료와 한 조직을 함께 쓸 때'],
+        ['<b>Billing</b>', '요금(아래에 Credit, Payment)', '남은 크레딧을 보고 결제 수단을 등록할 때'] ] }, p: [
         '업스테이지 콘솔(<code>console.upstage.ai</code>)은 API를 쓰는 데 필요한 것을 한곳에 모은 곳이에요. 화면이 영어라서 메뉴 이름을 영어 그대로 쓰고 뜻을 함께 적어요.',
-        '시작 안내는 네 단계예요. 가입하고, API 키를 만들고, 첫 요청을 보내고, 다른 기능을 둘러봐요. 가입은 오른쪽 위 <b>Log in</b>에서 시작해요.',
-        '메뉴 모양과 위치는 바뀔 수 있어요. 이름이 조금 달라도 같은 뜻의 메뉴를 찾으면 돼요.'
+        '위쪽 막대에는 <b>Documentation · API Reference · Playground</b>가 있어요. 로그인하면 왼쪽에 조직(<b>Default Organization</b>)을 관리하는 메뉴가 보이고, 맨 아래에 <b>Settings</b>도 있어요. 따로 첫 화면 메뉴는 없고 <b>API keys</b> 페이지로 바로 들어와요.',
+        '가입은 오른쪽 위 <b>Log in</b>에서 시작해요. 메뉴 모양과 위치는 바뀔 수 있으니, 이름이 조금 달라도 같은 뜻의 메뉴를 찾으면 돼요.'
       ]},
       { t: 'say', h: '새 계정에는 무료 크레딧 $10', fig: 'credit10', p: [
         '새로 가입하면 <b>무료 크레딧 $10</b>을 받아요(2026년 10월 기준). 크레딧은 API를 쓴 만큼 줄어드는 선불 금액이에요.',
-        '지금 가격으로 어림하면(부가세 별도) 20쪽 학습지를 Document Parse로 읽히는 데 약 $0.2, 학생 30명이 <code>solar-pro4</code>에게 질문 10개씩(질문마다 입력 2천·출력 3백 토큰쯤) 하는 데 약 $0.3이에요. 연수 실습은 작은 파일로 하면 이 안에서 충분히 해 볼 수 있어요.',
-        '크레딧의 유효 기간과 카드 등록이 필요한지는 문서에서 확인되지 않았어요. 콘솔의 <b>Billing → Credit</b>에서 직접 확인해요.'
-      ], tip: '결제 수단을 등록해 두면 크레딧이 떨어져도 API가 멈추지 않고 그 수단으로 청구돼요. 결제 수단 없이 크레딧이 모자라면 <code>403</code> 오류가 나요.' },
+        '정가로 어림하면(부가세 별도) 20쪽 학습지를 Document Parse로 읽히는 데 약 $0.2, 학생 30명이 <code>solar-pro4</code>에게 질문 10개씩(질문마다 입력 2천·출력 3백 토큰쯤) 하는 데 약 $0.3이에요. 지금은 할인 행사 중이라 실제로는 더 쌀 수 있어요.',
+        '크레딧마다 <b>유효 기간</b>이 있어서 그 기간에만 쓸 수 있어요. <b>Billing → Credit</b>의 크레딧 목록에서 <b>Valid period</b>를 확인해요.',
+        '학교 같은 교육기관과 비영리·연구기관은 Document Parse와 Solar Pro를 <b>최대 1년 무료</b>로 쓸 수 있다는 안내도 있어요(UPSTAGE X AWS AI Initiative). 조건과 신청 방법은 직접 확인해요.'
+      ], tip: '결제 수단을 등록해 두면 크레딧이 떨어져도 API가 멈추지 않고 그 수단으로 청구돼요. 결제 수단 없이 크레딧이 떨어지면 키가 막혀 <code>401 api_key_is_blocked</code>(새 키를 만들어도 안 풀려요)나 <code>403</code>이 나요.' },
       { t: 'say', h: 'Playground: 코드 짜기 전에 먼저 물어봐요', fig: 'pgFig', p: [
-        '<b>Playground</b>에서는 브라우저에서 바로 Chat(대화)과 Document Parse(문서 읽기)를 써 볼 수 있어요. API 키 없이도 체험할 수 있다는 안내가 있어요.',
-        '수업에 쓸 질문을 먼저 넣어 보며 답의 수준을 가늠해요. "중학교 1학년에게"처럼 대상을 붙였을 때 설명이 어떻게 달라지는지 보면, 나중에 코드에 넣을 프롬프트가 정해져요.',
-        'Playground는 <b>내가 시험하는 곳</b>이에요. 학생이 쓸 도구는 내 프로그램이 API로 불러서 만들어요. 모델 고르기 같은 세부 칸은 바뀌기 쉬우니 실제 화면에서 확인해요.'
-      ]},
-      { t: 'say', h: 'Usage와 속도 제한도 알아 둬요', fig: 'rateFig', p: [
-        '<b>Billing</b> 아래 <b>Usage</b>에서는 얼마나 썼는지와 한도를, <b>Credit</b>에서는 남은 크레딧과 내역을 봐요. 실습한 날에는 한 번씩 들여다보는 습관을 들여요.',
-        'API에는 <b>속도 제한</b>이 있어요. 1분에 보낼 수 있는 요청 수(RPM)와 토큰 수(TPM)가 정해져 있고, 넘으면 <code>429</code> 오류가 나요. 지금 <code>solar-pro4</code>는 분당 100번 안팎인데, 등급마다 다르니 직접 확인해요.',
-        '그래서 반 학생 30명이 <b>키 하나로 동시에</b> 부르는 도구는 금방 걸릴 수 있어요. 기다렸다 다시 보내는 방법은 단원 3, 학생당 횟수 제한은 과정 3에서 다뤄요.'
-      ]},
-      { t: 'sim', h: '콘솔을 한 바퀴 둘러봐요', p: 'Playground의 Chat에서 수업 질문을 하나 보내 보고, Billing 아래 Usage와 Credit도 열어 보세요.',
+        '위쪽 막대의 <b>Playground</b>에서는 브라우저에서 바로 Chat(대화)과 Document Parse(문서 읽기)를 써 볼 수 있어요. Playground는 <b>무료</b>라 크레딧이 줄지 않아요. Chat은 로그인 없이도 되지만, Document Parse 데모는 지금 로그인해야 써요.',
+        '지금 모델 Solar Pro 4·Solar Mini 4를 고르면 질문이 <b>Solar Chat</b> 새 탭으로 열려 거기서 답해요. System Prompt·Temperature 같은 설정 칸은 곧 끝나는 옛 모델에서만 보이니, 매개변수 실험은 코드로 해요(단원 2·3).',
+        'Playground는 <b>내가 시험하는 곳</b>이에요. "중학교 1학년에게"처럼 대상을 붙여 답의 수준을 가늠해 두면 코드에 넣을 프롬프트가 정해져요. 학생이 쓸 도구는 내 프로그램이 API로 불러서 만들어요.'
+      ], tip: 'Playground에 넣은 글은 모델 개선에 쓰일 수 있어요. 학생 이름·답안 같은 개인정보는 넣지 않아요. API로 보낸 글은 학습에 쓰지 않는다고 안내해요.' },
+      { t: 'say', h: 'Usage·Limits와 속도 제한도 알아 둬요', fig: 'rateFig', p: [
+        '<b>Usage</b>에서는 얼마나 썼는지와 이번 달 예상 요금을(최근 사용은 보이기까지 10분쯤 걸릴 수 있어요), <b>Billing → Credit</b>에서는 남은 크레딧을 봐요. Usage는 Billing 아래가 아니라 따로 있는 메뉴예요.',
+        'API에는 <b>속도 제한</b>이 있어요. 1분에 보낼 수 있는 요청 수(RPM)와 토큰 수(TPM)가 정해져 있고, 넘으면 <code>429 too_many_requests</code>가 나요. 처음 등급(Tier 0)에서 <code>solar-pro4</code>는 <b>1분에 100번·25만 토큰</b>까지예요. 크레딧을 사면 등급이 오를 수 있어요.',
+        '이 제한은 키마다가 아니라 <b>계정(조직)마다</b>예요. 키를 여러 개 만들어도 한도를 나눠 써요. 그래서 반 학생 30명이 <b>한 계정으로 동시에</b> 부르는 도구는 금방 걸릴 수 있어요. 기다렸다 다시 보내는 방법은 단원 3, 학생당 횟수 제한은 과정 3에서 다뤄요.'
+      ], tip: '돈이 너무 나갈까 걱정되면 <b>Limits</b>의 <b>Usage limit</b>(월 사용 한도, 달마다 새로 시작)을 <b>Set</b>으로 정해 둬요. 결제 수단을 등록해야 켤 수 있고, 한도에 닿으면 <code>429 usage_limit_exceeded</code>로 멈춰요. 이건 다시 보내도 소용없어요.' },
+      { t: 'sim', h: '콘솔을 한 바퀴 둘러봐요', p: '로그인하면 API keys 페이지가 열려요. Playground의 Chat에서 수업 질문을 하나 보내 보고, Usage·Limits·Credit도 열어 보세요.',
         scene: SCENE,
         steps: [
           { goal: 'Playground 아래 Chat을 눌러요', click: 'nav:Chat', then: { page: 'Chat', blocks: [CHAT_H, { k: 'chat', msgs: [], ph: '질문을 적어요', empty: '코드 없이 바로 물어볼 수 있어요' }] },
-            say: '<b>Playground</b>는 코드 없이 브라우저에서 모델을 써 보는 곳이에요. 모델 고르기 같은 세부 칸은 실제 화면에서 확인해요.' },
+            say: '<b>Playground</b>는 코드 없이 브라우저에서 모델을 써 보는 곳이에요. 실제로는 Solar Pro 4를 고르면 질문이 <b>Solar Chat</b> 새 탭에서 열려 답해요.' },
           { goal: '수업 질문을 적어요', type: Q1, into: 'chat', say: '대상(중학교 1학년)과 길이(두 문장)를 정해 주는 질문이에요.' },
           { goal: '보내요', click: 'btn:send', then: { blocks: [CHAT_H, { k: 'chat', msgs: [{ me: Q1 }, { ai: A1 }], ph: '질문을 적어요' }] },
-            say: '답이 왔어요. 그대로 쓰기 전에 맞는지, 우리 반 수준인지 직접 읽어 봐요.' },
-          { goal: 'Billing 아래 Usage를 눌러요', click: 'nav:Usage', then: { page: 'Usage', blocks: [{ k: 'h', text: 'Usage', sub: 'Billing' }, { k: 'p', text: '얼마나 썼는지, 한도는 얼마인지 보는 곳이에요.' }, { k: 'note', text: '실제 표와 그래프 모양은 콘솔에서 직접 확인해요.' }] },
-            say: '<b>Usage</b>(사용량)에서는 쓴 양과 한도를 봐요. 실습한 날에 한 번씩 들러요.' },
-          { goal: 'Credit을 눌러요', click: 'nav:Credit', then: { page: 'Credit', blocks: [{ k: 'h', text: 'Credit', sub: 'Billing' }, { k: 'kv', rows: [['남은 크레딧', '$10.00 (예시)']] }, { k: 'note', text: '무료 크레딧의 유효 기간은 문서에 없어요. 이 화면에서 직접 확인해요.', tone: 'warn' }] },
-            say: '<b>Credit</b>(크레딧)은 남은 금액과 내역을 보는 곳이에요. 새 계정은 $10을 받아요(2026년 10월 기준).' } ],
-        end: 'Playground로 먼저 써 보고, Usage·Credit으로 쓴 만큼을 확인해요.' },
-      { t: 'q', kind: 'mc', fig: 'q_429', q: '반 학생 30명이 내 키 하나로 만든 질문 도우미를 수업 시작과 동시에 한꺼번에 썼어요. 몇몇 학생 화면에 <code>429</code> 오류가 떴어요. 가장 그럴듯한 까닭은?',
+            say: '답이 왔어요. 그대로 쓰기 전에 맞는지, 우리 반 수준인지 직접 읽어 봐요. Playground는 무료라 크레딧이 줄지 않아요.' },
+          { goal: 'Usage를 눌러요', click: 'nav:Usage', then: { page: 'Usage', blocks: [{ k: 'h', text: 'Usage', btns: ['Download CSV'], plain: true }, { k: 'p', text: '이번 달 예상 요금(Upcoming charges)과 API 키·제품별 사용 내역을 봐요.' }, { k: 'note', text: 'Recent usage may take up to 10 minutes to appear. 최근 사용은 10분쯤 늦게 보일 수 있어요.' }] },
+            say: '<b>Usage</b>(사용량)는 Billing 아래가 아니라 따로 있는 메뉴예요. 실습한 날에 한 번씩 들러요.' },
+          { goal: 'Limits를 눌러요', click: 'nav:Limits', then: { page: 'Limits', blocks: [{ k: 'h', text: 'Limits' }, { k: 'kv', rows: [['Usage limit', '월 사용 한도($), Set으로 정해요'], ['Rate limit', 'Tier 0 (예시)']] }, { k: 'note', text: 'Usage limit은 결제 수단을 등록해야 켤 수 있어요.', tone: 'warn' }] },
+            say: '<b>Limits</b>에서는 한 달에 쓸 돈의 한도(<b>Usage limit</b>)와 지금 속도 제한 등급을 봐요. 한도에 닿으면 <code>429 usage_limit_exceeded</code>로 멈춰요.' },
+          { goal: 'Billing 아래 Credit을 눌러요', click: 'nav:Credit', then: { page: 'Credit', blocks: [{ k: 'h', text: 'Credit', sub: 'Billing' }, { k: 'kv', rows: [['남은 크레딧', '$10.00 (예시)'], ['Valid period', '크레딧 목록에서 확인']] }, { k: 'note', text: 'Credits apply only during their valid period. 크레딧은 유효 기간에만 쓸 수 있어요.', tone: 'warn' }] },
+            say: '<b>Credit</b>(크레딧)은 남은 금액과 크레딧마다의 유효 기간(<b>Valid period</b>)을 보는 곳이에요. 새 계정은 $10을 받아요(2026년 10월 기준).' } ],
+        end: 'Playground로 먼저 써 보고, Usage·Credit으로 쓴 만큼을, Limits로 한도를 확인해요.' },
+      { t: 'q', kind: 'mc', fig: 'q_429', q: '반 학생 30명이 내 계정으로 만든 질문 도우미를 수업 시작과 동시에 한꺼번에 썼어요. 몇몇 학생 화면에 <code>429 too_many_requests</code> 오류가 떴어요. 가장 그럴듯한 까닭은?',
         opts: ['크레딧이 수업 중에 다 떨어졌다', '학생들이 쓰는 API 키가 틀렸다', '속도 제한(분당 요청 수)을 넘었다', 'Playground에서 먼저 시험하지 않았다'], a: 2,
-        why: '<code>429</code>는 너무 많은 요청, 곧 속도 제한에 걸렸다는 뜻이에요. 잠깐 기다렸다 다시 보내고, 학생당 횟수 제한을 둬요.',
-        ex: ['크레딧 부족은 <code>403</code>이에요.', '키가 틀리면 <code>401</code>이에요. 몇몇 학생만 안 되는 것도 키 문제와 맞지 않아요.', '', 'Playground 시험 여부와 이 오류는 상관없어요. 한꺼번에 몰린 게 문제예요.'] },
+        why: '<code>429 too_many_requests</code>는 너무 많은 요청, 곧 계정의 속도 제한에 걸렸다는 뜻이에요. 잠깐 기다렸다 다시 보내고, 학생당 횟수 제한을 둬요.',
+        ex: ['크레딧이 떨어지면 <code>401 api_key_is_blocked</code>나 <code>403</code>이에요.', '키가 틀리면 <code>401</code>이에요. 몇몇 학생만 안 되는 것도 키 문제와 맞지 않아요.', '', 'Playground 시험 여부와 이 오류는 상관없어요. 한꺼번에 몰린 게 문제예요.'] },
       { t: 'q', kind: 'mc', fig: 'q_creditOut', q: '결제 카드를 등록해 둔 계정에서 무료 크레딧 $10을 다 썼어요. 그다음 API 호출은 어떻게 될까요?',
         opts: ['멈추지 않고, 등록한 결제 수단으로 청구된다', '모든 호출이 바로 멈추고 다음 달까지 기다린다', '무료 크레딧 $10이 저절로 다시 채워진다', 'Playground만 되고 API는 막힌다'], a: 0,
-        why: '결제 수단이 있으면 크레딧이 떨어져도 멈추지 않고 청구돼요. 그래서 Usage를 자주 보고, 학생용 도구에는 횟수 제한을 둬요.',
-        ex: ['', '결제 수단 없이 크레딧이 모자랄 때 <code>403</code>으로 막혀요. 이 계정은 카드가 있어요.', '무료 크레딧은 가입할 때 받는 거예요. 저절로 다시 채워진다는 안내는 없어요.', '결제 수단이 있으면 API도 계속 돼요. 대신 돈이 나가요.'] },
+        why: '결제 수단이 있으면 크레딧이 떨어져도 멈추지 않고 청구돼요. 그래서 Usage를 자주 보고, Limits에 월 사용 한도(Usage limit)를 정해 두고, 학생용 도구에는 횟수 제한을 둬요.',
+        ex: ['', '결제 수단 없이 크레딧이 떨어질 때 <code>401</code>·<code>403</code>으로 막혀요. 이 계정은 카드가 있어요.', '무료 크레딧은 가입할 때 받는 거예요. 저절로 다시 채워진다는 안내는 없어요.', '결제 수단이 있으면 API도 계속 돼요. 대신 돈이 나가요.'] },
       { t: 'q', kind: 'blank', fig: 'q_pgBlank', q: '코드 없이 브라우저에서 Solar에게 수업 질문을 먼저 해 보려 해요. 빈칸에 들어갈 메뉴는?', lang: 'plain',
         code: src(['console.upstage.ai', '→ [[1]] → Chat', '→ 질문을 적고 보내기']),
-        opts: ['Billing', 'API keys', 'Home', 'Playground'], a: 3,
-        why: '<b>Playground</b> 아래 <b>Chat</b>에서 코드 없이 바로 물어볼 수 있어요. 같은 Playground 아래에 Document Parse도 있어요.',
-        ex: ['Billing은 쓴 양과 남은 크레딧을 보는 곳이에요.', 'API keys는 키를 만들고 관리하는 곳이에요. 코드로 부를 때 필요해요.', 'Home은 첫 화면이에요. Chat은 Playground 아래에 있어요.', ''] },
-      { t: 'sum', pts: ['콘솔 메뉴: Home, Playground(Chat·Document Parse), API keys, Billing(Usage·Credit). 영어 이름 그대로, 모양은 바뀔 수 있다.', '새 계정은 무료 크레딧 $10(2026년 10월 기준). 유효 기간은 Billing → Credit에서 직접 확인. 결제 수단이 있으면 다 써도 청구된다.', 'Playground는 내가 시험하는 곳, 학생 도구는 API로. 속도 제한을 넘으면 429, 키 하나로 30명이 동시에 쓰면 걸릴 수 있다.'] }
+        opts: ['Billing', 'API keys', 'Usage', 'Playground'], a: 3,
+        why: '<b>Playground</b> 안의 <b>Chat</b>에서 코드 없이 바로 물어볼 수 있어요. 같은 Playground 안에 Document Parse도 있어요.',
+        ex: ['Billing은 남은 크레딧을 보고 결제 수단을 등록하는 곳이에요.', 'API keys는 키를 만들고 관리하는 곳이에요. 코드로 부를 때 필요해요.', 'Usage는 얼마나 썼는지 보는 곳이에요. Chat은 Playground 안에 있어요.', ''] },
+      { t: 'sum', pts: ['콘솔 메뉴: 위쪽 막대의 Playground(Chat·Document Parse), 왼쪽의 API keys·Usage·Limits·Members, Billing(Credit·Payment), Settings. 로그인하면 API keys로 들어간다.', '새 계정은 무료 크레딧 $10(2026년 10월 기준). 크레딧마다 유효 기간이 있어 Credit의 Valid period로 확인. Limits의 Usage limit으로 월 한도를 정한다.', 'Playground는 무료, 내가 시험하는 곳(학생 정보는 넣지 않기). 학생 도구는 API로. 속도 제한은 계정마다라 한 계정으로 30명이 동시에 쓰면 429가 날 수 있다.'] }
     ]},
 
     /* =================== QB =================== */
@@ -1183,11 +1191,11 @@
         opts: ['맞아요. 비밀번호가 있어야 키를 쓸 수 있어요', '맞아요. 키는 콘솔 안에서만 쓰여요', '아니에요. 비밀번호를 바꾸면 키도 저절로 바뀌니 비밀번호부터 바꿔요', '아니에요. 키만 있으면 누구든 쓸 수 있으니 새 키로 바꿔요'], a: 3,
         why: '로그인 비밀번호는 <b>사람이 콘솔에 들어갈 때</b>, API 키는 <b>프로그램이 API를 부를 때</b> 쓰는 열쇠예요. 키는 비밀번호 없이도 혼자 통해요. 샜으면 API keys에서 지우고 새로 만들어요.',
         ex: ['API를 부를 때는 키만 보내요. 비밀번호는 쓰이지 않아요.', '키는 콘솔 밖, 어느 컴퓨터의 코드에서든 쓰여요. 그래서 위험해요.', '비밀번호를 바꾸면 키도 바뀐다는 안내는 없어요. 새어 나간 키는 직접 지워야 해요.', ''] },
-      { t: 'q', kind: 'blank', fig: 'qb_usageCredit', q: 'Billing 아래 두 메뉴를 알맞게 짝지어 보세요.', lang: 'plain',
-        code: src(['이번 주에 얼마나 썼고 한도는 얼마인지', '→ Billing → [[1]]', '무료 크레딧이 얼마 남았는지', '→ Billing → [[2]]']),
-        opts: [['Credit', 'Usage'], ['Usage', 'Credit'], ['Usage', 'API keys'], ['Playground', 'Credit']], a: 1,
-        why: '<b>Usage</b>는 쓴 양과 한도, <b>Credit</b>은 남은 크레딧과 내역이에요. 둘 다 Billing 아래에 있어요.',
-        ex: ['두 칸이 서로 바뀌었어요.', '', '둘째 칸이 틀렸어요. API keys는 키를 만드는 곳이에요.', '첫 칸이 틀렸어요. Playground는 써 보는 곳이지 사용량을 보는 곳이 아니에요.'] },
+      { t: 'q', kind: 'blank', fig: 'qb_usageCredit', q: '알고 싶은 것과 콘솔 메뉴를 알맞게 짝지어 보세요.', lang: 'plain',
+        code: src(['이번 달 얼마나 썼고 예상 요금은 얼마인지', '→ [[1]]', '무료 크레딧이 얼마 남았는지', '→ Billing → [[2]]']),
+        opts: [['Credit', 'Usage'], ['Usage', 'Credit'], ['Usage', 'Payment'], ['Limits', 'Credit']], a: 1,
+        why: '<b>Usage</b>는 따로 있는 메뉴로 쓴 양과 이번 달 예상 요금을, <b>Billing</b> 아래 <b>Credit</b>은 남은 크레딧과 유효 기간을 보여 줘요.',
+        ex: ['두 칸이 서로 바뀌었어요.', '', '둘째 칸이 틀렸어요. Payment는 결제 수단을 등록하고 결제 내역을 보는 곳이에요.', '첫 칸이 틀렸어요. Limits는 월 사용 한도를 정하는 곳이지 쓴 양을 보는 곳이 아니에요.'] },
       { t: 'q', kind: 'mc', fig: 'qb_pgApi', q: 'Playground에서 해 본 "힌트만 주는 설명"이 마음에 들었어요. 이걸 반 학생 30명이 쓰게 하려면?',
         opts: ['내 콘솔 계정을 학생들과 같이 써서 Playground에 들어오게 한다', '학생마다 내 API 키를 나눠 주고 각자 쓰게 한다', '같은 프롬프트로 내 프로그램이 API를 부르게 한다', 'Playground 화면을 녹화해 학생에게 보여 준다'], a: 2,
         why: 'Playground는 내가 시험하는 곳이에요. 학생이 쓸 도구는 내 프로그램이 키를 들고 API로 부르고, 학생은 그 화면만 써요. 과정 3에서 이렇게 만들어요.',
@@ -1195,14 +1203,14 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: 'API 키 만들고 지키기', sub: 'Create new key, .env, 샜을 때', min: 10, win: 'console', steps: [
+    { id: 'L5', type: 'lesson', title: 'API 키 만들고 지키기', sub: 'Create new key, .env, 샜을 때', min: 11, win: 'console', steps: [
       { t: 'say', h: 'API 키는 내 계정으로 들어가는 열쇠예요', fig: 'keyDoor', p: [
         '<b>API 키</b>는 프로그램이 API를 부를 때 "누가 부르는지" 보여 주는 긴 문자열이에요. 업스테이지 키는 <code>up_</code>으로 시작해요.',
         '키로 부른 만큼 <b>그 키 주인의 크레딧</b>이 줄어요. 키를 손에 넣은 사람은 내 계정으로 마음껏 부를 수 있다는 뜻이에요.',
         '비밀번호와 달리 키는 코드·파일·스크린샷에 섞여 퍼지기 쉬워요. 그래서 <b>처음부터 둘 곳을 정해 두는</b> 게 중요해요.'
       ]},
       { t: 'say', h: '만드는 길: API keys → Create new key', fig: 'createKey', p: [
-        '콘솔의 <b>API keys</b> 페이지에서 <b>Create new key</b>(새 키 만들기)를 눌러요. 만든 키도 이 페이지에서 봐요. 예전 문서에는 버튼 이름이 Create API Key로 나와 있어서, 화면이 이 앱과 조금 다를 수 있어요.',
+        '콘솔의 <b>API keys</b> 페이지에서 <b>Keys</b> 카드의 <b>Create new key</b>(새 키 만들기)를 눌러요. 만든 키는 같은 카드의 표(Name · Owner · Key · Created (UTC))에 <code>up_****7f3a</code>처럼 가려진 채 보여요.',
         '이름을 붙일 수 있다면 <code>연수용</code>, <code>수업도구용</code>처럼 <b>용도</b>로 붙여요. 나중에 하나가 새도 어느 키를 지울지 바로 알아요.',
         '키가 보이면 복사해 <b>곧바로</b> <code>.env</code>에 붙여 넣어요. 메모장, 메신저 "나에게 보내기", 사진으로 따로 남기지 않아요.'
       ]},
@@ -1218,13 +1226,11 @@
       { t: 'say', h: '학생에게 내 키를 나눠 주지 않아요', fig: 'serverWall', p: [
         '학생 30명에게 키를 나눠 주면 누가 얼마나 썼는지 알 수 없고, 한 명만 퍼뜨려도 내 크레딧이 새요. 학생이 집에서 친구에게 넘겨도 막을 길이 없어요.',
         '그래서 키는 <b>내 프로그램(서버) 안에만</b> 두고, 학생은 그 프로그램의 화면만 써요. 학생 화면에서 질문이 오면 서버가 키를 들고 업스테이지에 대신 물어봐요. 과정 3의 Streamlit 앱이 이 구조예요.',
-        '연수장에서도 같아요. 옆자리 선생님과 키를 같이 쓰지 말고, 각자 가입해 자기 키를 만들어요.'
-      ]},
-      { t: 'sim', h: '연수용 키를 만들어 봐요', p: 'API keys에서 Create new key를 눌러 <code>연수용</code> 키를 만들고, 복사까지 해 보세요.',
+        '연수장에서도 같아요. 옆자리 선생님과 키를 같이 쓰지 말고, 각자 가입해 자기 키를 만들어요. 속도 제한도 계정마다라서 각자 자기 계정을 써야 서로 막히지 않아요.'
+      ], tip: '학생 도구를 열기 전에 <b>Limits</b>에서 월 사용 한도(<b>Usage limit</b>)를 정해 두면, 키가 새거나 호출이 몰려도 쓰는 돈이 그 안에서 멈춰요. 한도에 닿으면 <code>429 usage_limit_exceeded</code>가 나요.' },
+      { t: 'sim', h: '연수용 키를 만들어 봐요', p: '로그인하면 API keys 페이지가 열려요. Create new key를 눌러 <code>연수용</code> 키를 만들고, 복사까지 해 보세요.',
         scene: SCENE,
         steps: [
-          { goal: 'API keys 메뉴를 눌러요', click: 'nav:API keys', then: { page: 'API keys', blocks: [KEYS_H, { k: 'p', text: '만든 키는 이 페이지에서 봐요.' }] },
-            say: '키를 만들고 보는 <b>API keys</b> 페이지예요.' },
           { goal: 'Create new key를 눌러요', click: 'b:Create new key', then: { dlg: { title: 'Create new key', blocks: [{ k: 'field', id: 'name', label: '키 이름(용도)', ph: '예: 연수용' }, { k: 'btns', btns: ['만들기'] }] } },
             say: '<b>Create new key</b>(새 키 만들기)를 눌렀어요. 이름 칸과 확인 버튼의 실제 이름·모양은 조금 다를 수 있어요.' },
           { goal: '이름에 연수용을 적어요', type: '연수용', into: 'f:name', say: '용도로 이름을 붙이면 나중에 어떤 키를 지울지 헷갈리지 않아요.' },
@@ -1232,8 +1238,8 @@
             say: '키가 만들어졌어요. 업스테이지 키는 <code>up_</code>으로 시작해요. 여기서는 가린 가짜 키예요.' },
           { goal: '키를 복사해요', click: 'b:복사', then: { toast: '복사했어요. 이제 .env에 붙여 넣어요.' },
             say: '복사한 키는 곧바로 <code>.env</code>에 붙여 넣어요. 다른 곳에 잠깐 붙여 두지 않아요.' },
-          { goal: '창을 닫아요', click: 'btn:close', then: { dlg: null, toast: null, blocks: [KEYS_H, { k: 'table', head: ['이름', '키'], rows: [['연수용', 'up_••••••••7f3a']] }] },
-            say: '목록에 <code>연수용</code> 키가 생겼어요. 샜다면 여기서 그 키를 지우고 새로 만들어요.' } ],
+          { goal: '창을 닫아요', click: 'btn:close', then: { dlg: null, toast: null, blocks: [KEYS_H, { k: 'table', head: KEYS_HEAD, rows: [['연수용', '나', 'up_****7f3a', '2026-10-16']] }] },
+            say: 'Keys 표에 <code>연수용</code> 키가 생겼어요. 키는 끝 네 자리만 보여요. 샜다면 여기서 그 키를 지우고 새로 만들어요.' } ],
         end: '키는 복사해 곧바로 .env로. 코드·GitHub·채팅방·화면 공유에는 절대 올리지 않아요.' },
       { t: 'q', kind: 'mc', fig: 'q_leakGit', q: '수업 자료 저장소를 GitHub에 올렸는데, <code>.env</code>까지 함께 올라간 걸 발견했어요. 가장 먼저 할 일은?',
         opts: ['콘솔에서 그 키를 지우고 새 키를 만든다', '저장소에서 <code>.env</code>를 지우는 커밋을 하나 더 올린다', '저장소를 비공개로 바꾼다', '키 이름을 <code>연수용</code>에서 다른 이름으로 바꾼다'], a: 0,
@@ -1247,7 +1253,7 @@
         why: '알아채면 바로 새어 나간 키부터 막아요. 새 키가 있어야 .env를 바꾸고, 바꿔야 새 키로 되는지 확인할 수 있어요.' },
       { t: 'q', kind: 'mc', fig: 'q_neighbor', q: '연수장에서 옆자리 선생님이 "가입 메일이 아직 안 와서요. 선생님 키 좀 같이 써도 될까요?"라고 해요. 어떻게 할까요?',
         opts: ['내 키를 메신저로 보내 주고 연수가 끝나면 지운다', '내 노트북을 넘겨 내 키로 실습하게 한다', '내 <code>.env</code> 파일을 USB로 복사해 준다', '키는 나누지 않고, 가입부터 함께 해결한다'], a: 3,
-        why: '키는 사람마다 따로예요. 나눠 준 키는 어디로 퍼질지 몰라요. 키 없이도 체험할 수 있다는 안내가 있는 Playground로 먼저 따라가고, 가입 문제는 연수 운영진과 함께 풀어요.',
+        why: '키는 사람마다 따로예요. 나눠 준 키는 어디로 퍼질지 몰라요. Chat은 로그인 없이도 되는 Playground로 먼저 따라가고, 가입 문제는 연수 운영진과 함께 풀어요.',
         ex: ['메신저에 보낸 순간 키가 새어 나간 거예요. 기록에도 남아요.', '내 키로 부른 비용과 기록이 모두 내 계정에 쌓이고, 누가 무엇을 했는지도 섞여요.', '파일로 넘겨도 키를 나눠 준 건 같아요.', ''] },
       { t: 'sum', pts: ['API 키는 프로그램이 API를 부르는 열쇠(up_로 시작). 키로 부른 만큼 그 키 주인의 크레딧이 줄어든다.', 'API keys → Create new key, 이름은 용도로. 키는 .env에만, .gitignore에 .env. 코드·GitHub·채팅방·화면 공유·에이전트 채팅에는 절대 올리지 않는다.', '샜으면 글보다 키를 먼저 지우고 새로 만든다. 학생에게는 키를 주지 않고, 키는 내 프로그램(서버) 안에만 둔다.'] }
     ]},
@@ -1258,14 +1264,14 @@
       intro: '이번 단원에서 배운 것을 진짜 콘솔과 내 컴퓨터로 해 봐요. 학생 개인정보는 어디에도 넣지 않아요. 끝낸 것부터 체크하고, 한 줄 메모도 남겨요.',
       tasks: [
         { do: '업스테이지 콘솔에 가입하고 메뉴를 확인해요',
-          how: '<code>console.upstage.ai</code>에 들어가 오른쪽 위 <b>Log in</b>에서 가입·로그인해요. 왼쪽 메뉴에서 Home, Playground, API keys, Billing을 찾아요.',
-          check: '네 메뉴를 다 찾았으면 성공. 이름이 조금 다르면 같은 뜻의 메뉴 이름을 메모해 둬요.' },
+          how: '<code>console.upstage.ai</code>에 들어가 오른쪽 위 <b>Log in</b>에서 가입·로그인해요. 로그인하면 API keys 페이지가 열려요. 왼쪽 메뉴에서 API keys, Usage, Limits, Billing(Credit·Payment)을, 위쪽 막대에서 Playground를 찾아요.',
+          check: '다섯 곳을 다 찾았으면 성공. 이름이 조금 다르면 같은 뜻의 메뉴 이름을 메모해 둬요.' },
         { do: 'Playground의 Chat에서 수업 질문 3개를 해 봐요',
-          how: 'Playground → Chat. ① 개념 설명: "중학교 1학년에게 변수를 생활 속 비유로 설명해 줘." ② 문제 만들기: "반복문 이해를 확인하는 객관식 3문제를 만들어 줘." ③ 피드백: 가명 학생의 짧은 코드를 붙이고 "정답 대신 힌트 하나만 줘." 실제 학생 이름·답안은 넣지 않아요.',
+          how: 'Playground → Chat에서 Solar Pro 4를 고르면 질문이 Solar Chat 새 탭에서 열려 답해요. ① 개념 설명: "중학교 1학년에게 변수를 생활 속 비유로 설명해 줘." ② 문제 만들기: "반복문 이해를 확인하는 객관식 3문제를 만들어 줘." ③ 피드백: 가명 학생의 짧은 코드를 붙이고 "정답 대신 힌트 하나만 줘." 실제 학생 이름·답안은 넣지 않아요.',
           check: '세 답 가운데 그대로 쓰기 어려운 곳(틀린 내용, 수준이 안 맞는 말 등)을 하나 찾아 메모에 적으면 성공.' },
-        { do: 'Billing에서 크레딧과 사용량을 확인해요',
-          how: 'Billing → <b>Credit</b>에서 남은 크레딧과 유효 기간(보이면)을, <b>Usage</b>에서 방금 쓴 양이 잡혔는지 봐요.',
-          check: '남은 크레딧과 유효 기간을 메모에 적으면 성공. 유효 기간이 안 보이면 "안 보임"이라고 적어요.' },
+        { do: '크레딧·사용량·한도를 확인해요',
+          how: 'Billing → <b>Credit</b>에서 남은 크레딧과 <b>Valid period</b>(유효 기간)를, <b>Usage</b>에서 이번 달 사용량을, <b>Limits</b>에서 <b>Usage limit</b>(월 사용 한도)이 어떻게 되어 있는지 봐요. Usage limit은 결제 수단을 등록해야 켤 수 있어요.',
+          check: '남은 크레딧, 유효 기간, Usage limit 상태를 메모에 적으면 성공.' },
         { do: 'upstage-lab 폴더에 키 자리를 먼저 마련해요',
           how: '빈 폴더 <code>upstage-lab</code>을 만들어 Cursor로 열고, 아래 부탁을 에이전트에게 붙여 넣어요. 키는 아직 넣지 않아요. 파이썬 환경은 단원 3에서 더해요.',
           check: '터미널에서 <code>git log --oneline</code>에 커밋이 하나 있고, <code>git check-ignore .env</code>가 <code>.env</code>를 출력하면 성공.',
@@ -1277,7 +1283,7 @@
           how: '이 앱의 <b>연수 지도</b> 탭 → 연수 전 준비물에서 업스테이지 콘솔 계정 항목을 체크하고, 남은 항목(Cursor·Python, 개인정보 없는 수업자료 2~3개, 충전기·핫스팟)을 훑어봐요.',
           check: '아직 못 한 준비물을 메모에 적어 두면 성공.' }
       ],
-      note: '예상 비용: Playground 질문이 크레딧에서 빠지는지는 문서에서 확인하지 못했어요. Usage에서 직접 봐요. 같은 질문 3개를 API로 부른다면 지금 가격으로 어림해 <code>solar-pro4</code>로 $0.01도 안 돼요(입력 600·출력 2,400토큰쯤 ≈ $0.003). 키가 샜다고 느끼면 망설이지 말고 API keys에서 지우고 새로 만들어요.' },
+      note: '예상 비용: Playground는 무료라 크레딧이 줄지 않아요. 같은 질문 3개를 API로 부른다면 정가로 어림해 <code>solar-pro4</code>로 $0.01도 안 돼요(입력 600·출력 2,400토큰쯤 ≈ $0.003). 키가 샜다고 느끼면 망설이지 말고 API keys에서 지우고 새로 만들어요.' },
 
     /* =================== T1 =================== */
     { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 11, pass: 0.7, steps: [
@@ -1306,8 +1312,8 @@
         why: '계정이 있어야 키를 만들고, 키가 .env에 있어야 코드가 읽어 쓸 수 있어요. .gitignore는 키를 넣기 전에 미리 적어 둬요.' },
       { t: 'q', kind: 'mc', fig: 't_403', q: '연수장에서 다 같이 같은 코드를 돌렸는데, 한 선생님만 <code>403</code> 오류가 나요. 키 이름도 맞고, 다른 선생님들은 잘 돼요. 무엇부터 확인할까요?',
         opts: ['Billing에서 크레딧과 결제 상태', '코드의 모델 이름을 <code>solar-pro3</code>로 바꿔 보기', '30초 기다렸다 다시 보내기만 되풀이하기', '옆 선생님 키를 빌려 쓰기'], a: 0,
-        why: '<code>403</code>은 크레딧 부족(결제 실패 등)일 때 나요. Billing의 Credit과 결제 상태부터 봐요.',
-        ex: ['', '<code>solar-pro3</code>는 끝난 모델이에요. 모델 이름은 403의 까닭이 아니에요.', '기다렸다 다시 보내기는 <code>429</code>(너무 많은 요청)일 때 쓰는 방법이에요.', '키는 나눠 쓰지 않아요.'] },
+        why: '<code>403 api_key_is_not_allowed</code>는 크레딧 부족·결제 실패로 키가 정지됐을 때 나요. Billing의 Credit과 Payment(결제 상태)부터 봐요.',
+        ex: ['', '<code>solar-pro3</code>는 끝난 모델이에요. 모델 이름은 403의 까닭이 아니에요.', '기다렸다 다시 보내기는 <code>429 too_many_requests</code>(너무 많은 요청)일 때 쓰는 방법이에요.', '키는 나눠 쓰지 않아요.'] },
       { t: 'q', kind: 'mc', fig: 't_agentPaste', q: 'Cursor 에이전트에게 "이 키로 Solar 부르는 코드 짜 줘: up_…"처럼 키를 붙여 부탁하려는 동료에게 알려 줄 말로 알맞은 것은?',
         opts: ['괜찮아요. 에이전트는 대화가 끝나면 키를 기억하지 않아요', '키 앞 몇 글자만 지우고 붙이면 안전해요', 'Ask 모드로 물으면 파일을 안 바꾸니 괜찮아요', '키 위치(.env)만 알려 주고 키는 붙이지 않아요'], a: 3,
         why: '채팅에 붙인 내용은 답을 만들려고 밖으로 보내지고 대화 기록에도 남아요. 에이전트에게는 키가 <b>어디 있는지</b>만 알려 주면 돼요.',
@@ -1318,8 +1324,8 @@
         ex: ['크레딧은 Billing → Credit에서 봐요.', '<code>solar-mini4</code>가 한 번에 읽는 양은 512K 토큰이에요. 이름에 들어 있지 않아요.', '요청 수는 Usage에서 봐요.', ''] },
       { t: 'q', kind: 'mc', fig: 't_expire', q: '연수 두 달 뒤 수업에서 쓰려는데, 가입 때 받은 무료 크레딧이 그때도 남아 있을지 궁금해요. 어떻게 알아볼까요?',
         opts: ['크레딧은 기한이 없으니 확인할 필요 없다', 'Playground에서 Solar에게 "내 크레딧 유효 기간 알려 줘"라고 묻는다', '콘솔 Billing → Credit에서 직접 확인한다', 'API keys에서 키를 새로 만들면 크레딧이 다시 생긴다'], a: 2,
-        why: '무료 크레딧의 유효 기간은 문서에서 확인되지 않았어요. 내 계정의 <b>Billing → Credit</b>에서 직접 봐요.',
-        ex: ['기한이 없다는 안내는 없어요. 직접 확인해요.', '모델은 내 계정 정보를 몰라요. 그럴듯하게 지어낼 수도 있어요.', '', '키를 새로 만들어도 크레딧은 늘지 않아요. 키와 크레딧은 따로예요.'] }
+        why: '크레딧마다 유효 기간이 있어서 그 기간에만 쓸 수 있어요. 내 계정의 <b>Billing → Credit</b> 목록에서 <b>Valid period</b>를 봐요.',
+        ex: ['크레딧은 유효 기간 안에서만 쓸 수 있어요. 직접 확인해요.', '모델은 내 계정 정보를 몰라요. 그럴듯하게 지어낼 수도 있어요.', '', '키를 새로 만들어도 크레딧은 늘지 않아요. 키와 크레딧은 따로예요.'] }
     ]}
     ]
   });

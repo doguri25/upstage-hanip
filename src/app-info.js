@@ -1,12 +1,16 @@
 /* ============ 앱 정보: 기능을 올릴 때마다 version을 올리고 history 맨 앞에 한 줄씩 더한다(화면에는 최근 3개) ============ */
 const APP_INFO = {
   name:'업스테이지한입',
-  version:'1.1.0',
+  version:'1.1.1',
   checked:'2026-10-16',   // 업스테이지 공식 문서와 마지막으로 맞춰 본 날
   author:'도구리',
   contact:'raccoon@ai.cne.go.kr',
   notice:'업스테이지(Upstage)의 공식 앱이 아니라, 기반연수를 준비하는 교사가 공부하려고 만든 개인 학습앱이에요. 제품 이름과 화면은 공부를 돕기 위해서만 써요.',
   history:[
+    { v:'1.1.1', date:'2026-10-16', items:[
+      '실제 업스테이지 콘솔에 맞췄어요: Home 메뉴 없음, API keys·Usage·Limits·Credit 자리, Playground에서 Solar Pro 4는 Solar Chat 새 탭',
+      '공식 문서로 바로잡았어요: reasoning_effort를 빼면 추론 꺼짐, 401 막힌 키·429 두 가지, Document Parse 100쪽 넘으면 413, code 요소',
+      '교사용 안전장치: 월 사용 한도(Limits), 속도 제한은 계정마다, Playground에 학생 정보 넣지 않기, 교육기관 무료 안내'] },
     { v:'1.1.0', date:'2026-10-16', items:[
       '트랙 A 중심: 과정 4를 2일차 트랙 A 실습으로, 새 단원 「트랙 A ③ 연수 실습 완주」(테스트 케이스 늘리기·루브릭 피드백·반 결과·30명 운영)',
       '트랙 B 단원은 선택 단원(4-4)으로 옮겼어요',

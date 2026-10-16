@@ -163,6 +163,10 @@
     checked: { date: '2026-10-16' },
     sources: [
       'https://console.upstage.ai/docs/capabilities/extract/universal-extraction',
+      'https://console.upstage.ai/docs/capabilities/extract/writing-a-schema',
+      'https://console.upstage.ai/docs/capabilities/extract/confidence',
+      'https://console.upstage.ai/docs/models/information-extract',
+      'https://console.upstage.ai/docs/guides/rate-limits',
       'https://console.upstage.ai/docs/capabilities/parse/document-parsing',
       'https://console.upstage.ai/docs/capabilities/generate/chat',
       'https://console.upstage.ai/api/chat',
@@ -796,7 +800,7 @@
         why: '원하는 칸만 JSON으로 받는 일은 IE가 맞아요. 파일과 함께 "번호·정답·배점" 칸이 있는 스키마를 줘요.',
         ex: ['되긴 하지만 사람이 옮겨 적는 수고가 그대로 남아요. 옮기다 틀리기도 쉬워요.', '', '파일 이름만으로는 모델이 문서 내용을 볼 수 없어요.', '<code>elements</code>는 문단·표 같은 레이아웃 조각이에요. 정답·배점 칸으로 나뉘어 있지 않아요.'] },
       { t: 'q', kind: 'mc', fig: 'q_schemaIs', q: 'IE에서 말하는 <b>스키마</b>에 대한 설명으로 맞는 것은?',
-        opts: ['문서에서 채울 칸의 이름·종류·설명을 적은 빈 서식', 'IE가 문서를 읽고 돌려준 결과 JSON을 부르는 다른 이름', 'API 키와 base_url 주소를 담아 두는 설정 파일', 'Document Parse가 나누는 요소 12가지의 분류표'], a: 0,
+        opts: ['문서에서 채울 칸의 이름·종류·설명을 적은 빈 서식', 'IE가 문서를 읽고 돌려준 결과 JSON을 부르는 다른 이름', 'API 키와 base_url 주소를 담아 두는 설정 파일', 'Document Parse가 나누는 요소 13가지의 분류표'], a: 0,
         why: '스키마는 "이런 칸을 채워 줘"라고 건네는 빈 서식이에요. 칸 이름, type, description을 적어요.',
         ex: ['', '결과는 스키마의 칸이 <b>채워진</b> JSON이에요. 스키마는 비어 있는 서식이에요.', '키는 <code>.env</code>, 주소는 코드의 <code>base_url</code>에 둬요. 스키마와 상관없어요.', '그건 Document Parse의 <code>category</code>예요(c2u1).'] },
       { t: 'q', kind: 'blank', fig: 'q_fieldBlank', q: '1번은 "1바이트는 몇 비트? ①4 ②8 ③16 ④32", 정답 ②, 배점 2점이에요. 스키마 설명대로 객관식 정답은 <b>보기 번호를 숫자 글자로</b> 받기로 했어요. 빈칸에 알맞은 것은?', lang: 'json',
@@ -815,7 +819,7 @@
     { id: 'L2', type: 'lesson', title: '스키마 설계', sub: 'type·description, 배열 안 object, IE 첫 단계 규칙', min: 14, steps: [
       { t: 'say', h: 'JSON Schema는 type과 description부터', fig: 'typeChips', p: [
         '스키마도 JSON이에요. 칸마다 <code>type</code>(값의 종류)과 <code>description</code>(무엇을 넣을지 설명)을 적고, 칸들은 <code>properties</code> 안에 모아요.',
-        '자주 쓰는 type은 <code>string</code>(글자), <code>integer</code>(정수), <code>number</code>(소수도 되는 수), <code>array</code>(목록), <code>object</code>(이름 붙은 칸 묶음)예요.',
+        '자주 쓰는 type은 <code>string</code>(글자), <code>integer</code>(정수), <code>number</code>(소수도 되는 수), <code>array</code>(목록), <code>object</code>(이름 붙은 칸 묶음)예요. 참·거짓만 담을 칸이면 <code>boolean</code>도 돼요.',
         '<b>description이 정확도를 좌우해요.</b> IE는 칸 이름과 설명을 읽고 문서에서 맞는 값을 찾아요. 사람에게 서식을 줄 때 "예: 2026-03-02"처럼 적어 주는 것과 같아요.'
       ], code: { lang: 'json', src: src([
         '{',
@@ -906,7 +910,7 @@
         opts: ['boolean', 'string', 'object', 'integer'], a: 3,
         why: '정수는 <code>integer</code>예요. 받은 값을 바로 더해 배점 합계를 낼 수 있어요.',
         ex: ['boolean은 참·거짓 두 값만 담는 종류예요.', '글자로 받으면 "3점"처럼 올 수 있고, 더하기 전에 숫자로 바꿔야 해요.', 'object는 이름 붙은 칸 묶음이에요. 숫자 하나에는 맞지 않아요.', ''] },
-      { t: 'sum', pts: ['칸마다 type(string·integer·number·array·object)과 description. description이 정확도를 좌우한다.', '문항 목록은 array의 items에 object. IE는 맨 위 object, 첫 단계는 string·integer·number·array만, 배열 안 배열 금지.', '보기 목록은 한 줄 글자로 합치거나 첫 단계에 따로 배열을 둔다. 스키마 자동 생성은 콘솔·문서에서 지금 방법을 확인한다.'] }
+      { t: 'sum', pts: ['칸마다 type(string·integer·number·array·object, 참·거짓은 boolean)과 description. description이 정확도를 좌우한다.', '문항 목록은 array의 items에 object. IE는 맨 위 object, 첫 단계는 string·integer·number·array만, 배열 안 배열 금지.', '보기 목록은 한 줄 글자로 합치거나 첫 단계에 따로 배열을 둔다. 스키마 자동 생성은 콘솔·문서에서 지금 방법을 확인한다.'] }
     ]},
 
     /* =================== QA =================== */
@@ -926,7 +930,7 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: 'extract.py로 문항 뽑기', sub: 'base64 data URL, response_format, json.loads, confidence', min: 15, steps: [
+    { id: 'L3', type: 'lesson', title: 'extract.py로 문항 뽑기', sub: 'base64 data URL, response_format, json.loads, confidence', min: 16, steps: [
       { t: 'say', h: 'IE도 OpenAI SDK로, 주소만 달라요', fig: 'twoDoors', p: [
         'IE는 Chat Completions와 같은 꼴로 불러요. c1u3에서 쓴 <code>openai</code> 패키지 그대로, <code>base_url</code>만 <code>https://api.upstage.ai/v1/information-extraction</code>으로 바꿔요.',
         '화면 폭 때문에 주소를 두 줄로 나눠 적었어요. 괄호 안에 붙여 쓴 글자 둘은 파이썬이 하나로 이어 줘요. 키는 늘 <code>.env</code>에서 읽고 화면에 찍지 않아요.',
@@ -945,7 +949,7 @@
       { t: 'say', h: '파일은 base64 글자로 바꿔 보내요', fig: 'b64Fig', p: [
         'API 요청은 JSON 글자예요. PDF·사진 같은 파일(바이트)을 글자 속에 담으려고 <b>base64</b>로 바꿔요. 크기는 1.3배쯤 커지지만 어디에나 끼워 넣을 수 있는 글자가 돼요.',
         '바꾼 글자 앞에 <code>data:application/octet-stream;base64,</code>를 붙이면 <b>data URL</b>이에요. 이걸 메시지의 <code>image_url</code> 칸에 넣어요. PDF여도 칸 이름은 image_url이에요.',
-        '받는 형식은 PDF·이미지(JPEG·PNG 등)·HWP 등이고, 한 번에 100쪽까지예요. 최신 목록은 공식 문서에서 확인해요.'
+        '받는 형식은 PDF·이미지(JPEG·PNG 등)·HWP 등이고, 한 번에 100쪽까지예요. IE는 100쪽을 넘으면 앞 100쪽만 처리해요(413 오류로 거절하는 Document Parse와 달라요).'
       ], code: { lang: 'py', src: src([
         'with open("data/quiz3.pdf", "rb") as f:',
         '    raw = f.read()',
@@ -995,7 +999,7 @@
         end: '서식은 schema.json, 부르기는 extract.py. 결과는 터미널에서 바로 확인해요.' },
       { t: 'say', h: 'confidence를 켜면 값마다 high·low가 붙어요', fig: 'hiLow', p: [
         '베타 기능인 <code>confidence</code>를 켜면 뽑은 값마다 <code>"high"</code> 또는 <code>"low"</code>가 붙어요. 0.87 같은 숫자가 아니라 두 글자 중 하나예요.',
-        'OpenAI SDK에 없는 칸이라 <code>extra_body</code>에 넣어 보내요. 켜면 값마다 <code>_value</code>와 <code>confidence</code>가 짝인 자세한 결과가 함께 와요. 문서 사본에는 content가 아닌 다른 자리로 온다고 적혀 있으니, 받는 자리는 공식 문서 예시를 보고 맞춰요.',
+        'OpenAI SDK에 없는 칸이라 <code>extra_body</code>에 넣어 보내요. 켜면 값마다 <code>_value</code>와 <code>confidence</code>가 짝인 결과가 <code>content</code>가 아닌 <code>choices[0].message.tool_calls</code>로 와요. 그중 이름이 <code>additional_values</code>인 호출의 <code>arguments</code>(JSON 글자)를 <code>json.loads</code>로 풀어요.',
         '<b>low는 "틀렸다"가 아니라 "사람이 한 번 봐 줘"예요.</b> 2026년 5월 공식 문서 사본에 따르면 low 표시는 틀린 값을 놓치지 않는 쪽으로 맞춰져 있어서, 실제로는 맞은 값에도 꽤 붙어요.'
       ], code: { lang: 'py', src: src([
         'resp = client.chat.completions.create(',
@@ -1004,7 +1008,8 @@
         '    response_format=FMT,',
         '    extra_body={"confidence": True},',
         ')',
-        '# 값 하나의 모양(문서 예시 꼴)',
+        '# confidence는 tool_calls 중',
+        '# additional_values의 arguments에',
         '# {"_value": "len", "confidence": "low"}']) },
         tip: '복잡한 표나 손글씨가 많으면 <code>extra_body</code>에 <code>"mode": "enhanced"</code>(베타)를 넣을 수 있어요. 쪽당 값이 더 비싸요(레슨 4).' },
       { t: 'q', kind: 'mc', fig: 'q_whyB64', q: 'extract.py에서 PDF를 base64로 바꾸는 까닭으로 가장 알맞은 것은?',
@@ -1093,7 +1098,7 @@
         opts: ['사진 파일 이름을 solar-pro4 메시지에 적어 보낸다', '사진을 base64 data URL로 IE에 보내 스키마대로 받는다', '사진 파일의 확장자를 .md로 바꿔 Solar에 보낸다', 'confidence를 켜서 사진을 글로 바꾼 뒤 Solar에 보낸다'], a: 1,
         why: '파일·이미지 그대로면 IE예요. 사진을 data URL로 보내면 스키마의 칸을 채워 돌려줘요.',
         ex: ['이름만으로는 사진 내용이 가지 않아요.', '', '확장자를 바꿔도 내용은 그림 그대로예요. 글이 아니에요.', 'confidence는 값마다 high/low를 붙이는 기능이에요. 사진을 글로 바꾸지 않아요.'] },
-      { t: 'sum', pts: ['파일·이미지 그대로면 IE, 이미 파싱한 글이면 solar-pro4 구조화 출력(response_format).', 'Solar strict: "strict": True, 모든 object에 additionalProperties: False, 모든 칸 required. 추출은 reasoning_effort="none" + 낮은 temperature.', '지금 가격으로 20쪽: IE 약 $0.80, Parse+Solar 약 $0.21. 둘 다 싸니 정확도·확인 시간으로 고른다.'] }
+      { t: 'sum', pts: ['파일·이미지 그대로면 IE, 이미 파싱한 글이면 solar-pro4 구조화 출력(response_format).', 'Solar strict: "strict": True, 모든 object에 additionalProperties: False, 모든 칸 required. 추출은 reasoning_effort="none" + 낮은 temperature.', '정가로 어림하면 20쪽: IE 약 $0.80, Parse+Solar 약 $0.21. 둘 다 싸니 정확도·확인 시간으로 고른다.'] }
     ]},
 
     /* =================== QB =================== */
@@ -1216,7 +1221,7 @@
 
     /* =================== M1 =================== */
     { id: 'M1', type: 'mission', title: '내 형성평가지로 questions.json 만들기', sub: '내 Cursor와 upstage-lab에서 직접', min: 30,
-      where: 'upstage-lab 폴더 + 내 Cursor + 업스테이지 콘솔(Billing)',
+      where: 'upstage-lab 폴더 + 내 Cursor + 업스테이지 콘솔(Usage)',
       intro: '이번 단원에서 배운 것을 진짜로 해 봐요. 학생 개인정보가 없는 <b>내 형성평가지(문제지·정답표)</b> 1~2쪽만 써요. 끝낸 것부터 체크하고 한 줄 메모를 남겨요.',
       tasks: [
         { do: '시작 전에 커밋하고 평가지를 준비해요',
@@ -1229,7 +1234,7 @@
         { do: 'extract.py를 만들어 내 평가지를 뽑아요',
           how: '아래 부탁을 붙여 넣고, 에이전트가 쓴 코드가 레슨 3의 모양(주소·모델·response_format·json.loads)과 같은지 읽은 뒤 터미널에서 <code>python extract.py</code>로 직접 실행해요.',
           check: '터미널에 문항 JSON과 low 목록이 찍히고 <code>questions.json</code>이 생기면 성공. 키가 화면이나 파일에 찍히지 않았는지도 봐요.',
-          prompt: 'upstage-lab에 extract.py를 만들어 줘.\n- OpenAI SDK, base_url은 "https://api.upstage.ai/v1/information-extraction", model은 "information-extract". 키는 .env의 UPSTAGE_API_KEY를 python-dotenv로 읽고 절대 출력하지 마.\n- data/ 안의 평가지 파일을 base64 data URL(data:application/octet-stream;base64,…)로 만들어 image_url에 넣어.\n- schema.json을 utf-8로 읽어 response_format={"type": "json_schema", "json_schema": {"name": "quiz", "schema": …}}로 보내.\n- extra_body={"confidence": True}를 켜. 응답 모양은 공식 문서(https://console.upstage.ai/docs/capabilities/extract/universal-extraction)를 확인해 값과 confidence를 나눠 읽고, low인 칸은 "3.answer"처럼 모아 출력해.\n- 값은 questions.json에 ensure_ascii=False, indent=2로 저장해.\n- 옛 이름(solar-pro3, /v1/solar)은 쓰지 마. 실행은 내가 직접 할게.' },
+          prompt: 'upstage-lab에 extract.py를 만들어 줘.\n- OpenAI SDK, base_url은 "https://api.upstage.ai/v1/information-extraction", model은 "information-extract". 키는 .env의 UPSTAGE_API_KEY를 python-dotenv로 읽고 절대 출력하지 마.\n- data/ 안의 평가지 파일을 base64 data URL(data:application/octet-stream;base64,…)로 만들어 image_url에 넣어.\n- schema.json을 utf-8로 읽어 response_format={"type": "json_schema", "json_schema": {"name": "quiz", "schema": …}}로 보내.\n- extra_body={"confidence": True}를 켜. confidence는 resp.choices[0].message.tool_calls 중 function.name이 "additional_values"인 호출의 function.arguments(JSON 글자)에 와(공식 문서: https://console.upstage.ai/docs/capabilities/extract/confidence). json.loads로 풀어 값과 confidence를 나눠 읽고, low인 칸은 "3.answer"처럼 모아 출력해.\n- 값은 questions.json에 ensure_ascii=False, indent=2로 저장해.\n- 옛 이름(solar-pro3, /v1/solar)은 쓰지 마. 실행은 내가 직접 할게.' },
         { do: '서식을 두 번 고치며 정확도를 기록해요',
           how: '원본과 대조해 맞은 칸 수를 세요(예: 4문항 × 5칸 = 20칸 중 몇 칸). 틀린 칸의 description을 더 분명하게 고쳐 다시 실행하고, 한 번 더 고쳐 다시 실행해요.',
           check: '메모에 "1회 16/20 → 2회 19/20 → 3회 20/20"처럼 세 번의 기록이 있으면 성공.' },
@@ -1238,7 +1243,7 @@
           check: '<code>python check.py</code>가 "없음"을 출력하고, 고친 값이 원본과 같고, 커밋이 남았으면 성공.',
           prompt: 'upstage-lab에 check.py를 만들어 줘. questions.json을 utf-8로 읽어 문항마다 (1) answer가 빈 글자인지 (2) choices가 있는 객관식이면 answer가 "1"~"4" 중 하나인지 검사하고, (3) points 합계가 맨 위에 적어 둔 TOTAL(예: 10)과 같은지 봐. 걸린 것을 "교사 확인 목록"으로 한 줄씩 출력하고, 없으면 "없음"을 출력해. 파일은 고치지 말고 읽기만 해. 일부러 틀린 예시 questions.json으로 시험해 보는 방법도 알려 줘.' }
       ],
-      note: '예상 비용: IE standard는 지금 쪽당 $0.04(부가세 별도, 2026년 10월 기준)예요. 2쪽 평가지를 세 번 뽑으면 6쪽 × $0.04 ≈ $0.24예요. 먼저 1쪽짜리로 시험하고, 콘솔 <b>Billing</b>의 <b>Usage</b>에서 쓴 만큼을 확인해요. 키는 <code>.env</code>에만 두고 화면 공유·채팅에 올리지 않아요.' },
+      note: '예상 비용: IE standard는 지금 쪽당 $0.04(부가세 별도, 2026년 10월 기준)예요. 2쪽 평가지를 세 번 뽑으면 6쪽 × $0.04 ≈ $0.24예요. 먼저 1쪽짜리로 시험하고, 콘솔 왼쪽 메뉴의 <b>Usage</b>에서 쓴 만큼을 확인해요. 속도 제한은 키가 아니라 계정마다라, Tier 0 기준 IE는 1초 1번·1분 300쪽이에요. 한 계정을 반 전체가 함께 쓰면 금방 429가 나니 연수에서는 각자 자기 계정의 키를 써요. 키는 <code>.env</code>에만 두고 화면 공유·채팅에 올리지 않아요.' },
 
     /* =================== T1 =================== */
     { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 12, pass: 0.7, steps: [

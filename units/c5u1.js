@@ -298,6 +298,7 @@
       'https://github.com/UpstageAI/mcp-upstage',
       'https://pypi.org/project/mcp-upstage/',
       'https://www.upstage.ai/products/studio',
+      'https://console.upstage.ai/docs/studio',
       'https://www.upstage.ai/pricing/api',
       'https://cursor.com/docs/mcp'
     ],
@@ -672,16 +673,19 @@
         P.text(225, 152, '문서 읽기·뽑기', { size: 12, weight: 700 });
         P.text(170, 192, '루프의 "내 코드" 자리를 Cursor가 맡아요', { size: 12, c: 'accent' });
       }},
-      studioFlow: { w: 340, h: 200, label: 'Parse, Classify, Extract 세 칸을 화면에서 선으로 이어 붙이는 모습', draw(P) {
+      studioFlow: { w: 340, h: 200, label: 'Parse, Classify, Extract, Instruct 네 칸을 화면에서 선으로 이어 붙이는 모습', draw(P) {
         P.text(170, 26, 'Upstage Studio', { size: 15, weight: 700 });
-        chip(P, 12, 64, 92, 40, 'Parse', 'sky', 13);
-        chip(P, 124, 64, 92, 40, 'Classify', 'hi', 13);
-        chip(P, 236, 64, 92, 40, 'Extract', 'good', 13);
-        P.arrow(106, 84, 122, 84, { c: 'ink2', w: 2, head: 6 });
-        P.arrow(218, 84, 234, 84, { c: 'ink2', w: 2, head: 6 });
-        P.text(58, 128, '읽기', { size: 12, c: 'ink2' });
-        P.text(170, 128, '나누기', { size: 12, c: 'ink2' });
-        P.text(282, 128, '뽑기', { size: 12, c: 'ink2' });
+        chip(P, 8, 64, 72, 40, 'Parse', 'sky', 12);
+        chip(P, 90, 64, 72, 40, 'Classify', 'hi', 12);
+        chip(P, 172, 64, 72, 40, 'Extract', 'good', 12);
+        chip(P, 254, 64, 72, 40, 'Instruct', 'pink', 12);
+        P.arrow(81, 84, 89, 84, { c: 'ink2', w: 2, head: 5 });
+        P.arrow(163, 84, 171, 84, { c: 'ink2', w: 2, head: 5 });
+        P.arrow(245, 84, 253, 84, { c: 'ink2', w: 2, head: 5 });
+        P.text(44, 128, '읽기', { size: 12, c: 'ink2' });
+        P.text(126, 128, '나누기', { size: 12, c: 'ink2' });
+        P.text(208, 128, '뽑기', { size: 12, c: 'ink2' });
+        P.text(290, 128, '요약·판단', { size: 12, c: 'ink2' });
         P.text(170, 176, '코드 없이 화면에서 이어 붙여요', { size: 13, c: 'accent' });
       }},
 
@@ -1041,7 +1045,7 @@
     ]},
 
     /* =================== L5 =================== */
-    { id: 'L5', type: 'lesson', title: 'MCP와 Studio', sub: 'Cursor 에이전트에 업스테이지 문서 도구 붙이기, 노코드 문서 에이전트', min: 11, steps: [
+    { id: 'L5', type: 'lesson', title: 'MCP와 Studio', sub: 'Cursor 에이전트에 업스테이지 문서 도구 붙이기, 노코드 문서 에이전트', min: 12, steps: [
       { t: 'say', h: 'MCP: 남이 만든 도구 묶음을 꽂아 쓰는 표준', fig: 'mcpBridge', p: [
         '지금까지는 <code>agent.py</code> 안에 도구를 직접 만들었어요. <b>MCP</b>(Model Context Protocol)는 도구 묶음을 <b>MCP 서버</b>로 만들어 두고, Cursor 같은 프로그램이 그대로 꽂아 쓰게 하는 표준이에요. 커서한입 과정 3 단원 2에서 배웠죠.',
         '이때 루프를 돌리는 "내 코드" 자리는 Cursor가 맡아요. Cursor 에이전트가 도구 목록을 보고 부를 도구를 고르면, Cursor가 MCP 서버에 실행을 맡기고 결과를 대화에 붙여요.'
@@ -1051,7 +1055,7 @@
         ['<code>extract_information</code>', '문서에서 정한 값 뽑기', 'Information Extract(c2u2)'] ] }, p: [
         '공식 MCP 서버 <code>mcp-upstage</code>(PyPI 패키지)에는 이 두 도구가 있어요. <b>채팅 도구는 없어요</b>. 대화와 판단은 Cursor 에이전트의 모델이 하고, 업스테이지 서버는 문서 일만 맡아요.',
         '준비물은 업스테이지 API 키, Python 3.10 이상, 그리고 파이썬 도구 <b>uv</b>(Astral)예요. <code>uvx mcp-upstage</code> 한 줄이면 따로 설치하지 않고 바로 실행돼요. 결과 파일은 홈 폴더의 <code>.mcp-upstage/outputs/</code> 아래에 남아요.',
-        '도구를 부를 때마다 Document Parse·Information Extract 요금이 나가요. 지금 가격으로 어림하면 Document Parse standard가 쪽당 $0.01이라, 10쪽 학습지 하나에 $0.1 안팎이에요(모드에 따라 달라요).'
+        '도구를 부를 때마다 Document Parse·Information Extract 요금이 나가요. 정가로 어림하면 Document Parse standard가 쪽당 $0.01이라, 10쪽 학습지 하나에 $0.1 안팎이에요(모드에 따라 달라요).'
       ]},
       { t: 'say', h: '.cursor/mcp.json에 적고, 키는 지켜요', code: { lang: 'json', src: MCP_JSON }, p: [
         '커서한입에서 배운 대로 <code>upstage-lab/.cursor/mcp.json</code>의 <code>mcpServers</code>에 적어요. <code>command</code>와 <code>args</code>는 터미널에서 <code>uvx mcp-upstage</code>를 치는 것과 같고, <code>env</code>로 서버에 키를 넘겨요.',
@@ -1073,7 +1077,8 @@
             say: '진짜 Cursor에서는 이 사이에 도구 호출 줄이 생겨요. 펼치면 넘긴 값(파일 경로)과 결과가 보이고, Run Mode에 따라 승인을 물을 수도 있어요.' } ],
         end: '문서 읽기는 업스테이지 서버가, 판단과 요약은 Cursor 에이전트가. 요약은 원본과 꼭 대조해요.' },
       { t: 'say', h: 'Upstage Studio: 코드 없이 만드는 문서 에이전트', fig: 'studioFlow', p: [
-        '<b>Upstage Studio</b>는 문서 처리 흐름(<b>Parse → Classify → Extract</b>)을 화면에서 이어 붙여 에이전트로 만드는 노코드 도구예요. 학습지 묶음을 종류별로 나누고 문항·정답을 뽑는 일처럼 <b>흐름이 정해진 문서 일</b>을 코드 없이 시제품으로 보여 줄 때 후보가 돼요. 학생 질문에 따라 도구를 고르는 질문 창구는 <code>agent.py</code>가 맞고, Studio의 화면과 요금은 바뀔 수 있으니 공식 페이지에서 직접 확인해요.'
+        '<b>Upstage Studio</b>는 문서 처리 노드 4개(<b>Parse · Classify · Extract · Instruct</b>)를 화면에서 이어 붙여 에이전트로 만드는 노코드 도구예요. 읽고, 종류별로 나누고, 칸을 뽑고, Instruct가 그 결과를 요약·검증·판단해요. 학습지 묶음을 종류별로 나누고 문항·정답을 뽑는 일처럼 <b>흐름이 정해진 문서 일</b>을 코드 없이 시제품으로 보여 줄 때 후보가 돼요. 학생 질문에 따라 도구를 고르는 질문 창구는 <code>agent.py</code>가 맞아요.',
+        '요금은 2026년 9월 1일부터 <b>조직 단위 구독</b>(Free 요금제 등)으로 바뀌어, 요금제마다 쓸 수 있는 양이 정해져 있어요(예전의 "에이전트마다 무료 몇 번" 방식은 없어졌어요). 화면과 요금은 바뀔 수 있으니 공식 문서에서 직접 확인해요.'
       ]},
       { t: 'q', kind: 'mc', fig: 'q_mcpTools', q: 'Cursor에 <code>mcp-upstage</code>를 연결했어요. 에이전트가 새로 쓸 수 있게 되는 도구는?',
         opts: ['<code>parse_document</code>와 <code>extract_information</code>', '<code>parse_document</code>와 <code>solar_chat_completion</code>', '<code>search_materials</code>와 <code>grade_code</code>', '<code>solar_chat</code>과 <code>embed_text</code>'], a: 0,
@@ -1089,9 +1094,9 @@
         ex: ['private이어도 함께 쓰는 사람에게 보이고, 나중에 공개하면 기록째 드러나요.', '커밋하면 기록에 남아요. 나중에 실수로 푸시하면 그대로 올라가요.', '', '일부를 지운 키는 동작하지 않아서 결국 다시 적게 돼요. 키는 저장소에 남기지 않아요.'] },
       { t: 'q', kind: 'mc', fig: 'q_studioPick', q: '대회 준비 중이에요. 학습지 PDF 묶음을 종류별로 나누고 필요한 칸을 뽑는 흐름을 <b>코드 없이</b> 이틀 안에 시연하고 싶어요. 먼저 살펴볼 것은?',
         opts: ['agent.py에 분류 도구를 더 붙여 만든다', 'Upstage Studio', 'Cursor에 mcp-upstage를 붙여 매번 부탁한다', '콘솔 Playground의 Document Parse로 보여 준다'], a: 1,
-        why: 'Parse → Classify → Extract처럼 흐름이 정해진 문서 일을 화면에서 이어 붙여 만드는 노코드 도구가 Studio예요.',
+        why: 'Parse → Classify → Extract → Instruct처럼 흐름이 정해진 문서 일을 화면에서 이어 붙여 만드는 노코드 도구가 Studio예요.',
         ex: ['agent.py는 코드예요. "코드 없이"라는 조건에 맞지 않아요.', '', 'mcp-upstage에는 파싱과 추출 도구만 있어요. 종류별로 나누는 흐름을 이어 붙여 두지는 못해요.', 'Playground는 기능 하나를 써 보는 곳이에요. 나누고 뽑는 흐름을 이어 만들지는 않아요.'] },
-      { t: 'sum', pts: ['MCP는 도구 묶음(서버)을 Cursor 같은 프로그램에 꽂아 쓰는 표준. 루프의 "내 코드" 자리를 Cursor가 맡는다.', 'mcp-upstage: parse_document·extract_information(채팅 도구 없음). .cursor/mcp.json의 mcpServers에 command "uvx", args ["mcp-upstage"], env의 UPSTAGE_API_KEY.', '키가 든 mcp.json은 커밋하지 않는다(.gitignore, ~/.cursor, 또는 ${env:…}). Studio는 Parse → Classify → Extract를 코드 없이.'] }
+      { t: 'sum', pts: ['MCP는 도구 묶음(서버)을 Cursor 같은 프로그램에 꽂아 쓰는 표준. 루프의 "내 코드" 자리를 Cursor가 맡는다.', 'mcp-upstage: parse_document·extract_information(채팅 도구 없음). .cursor/mcp.json의 mcpServers에 command "uvx", args ["mcp-upstage"], env의 UPSTAGE_API_KEY.', '키가 든 mcp.json은 커밋하지 않는다(.gitignore, ~/.cursor, 또는 ${env:…}). Studio는 Parse → Classify → Extract → Instruct를 코드 없이.'] }
     ]},
 
     /* =================== M1 =================== */
@@ -1120,7 +1125,7 @@
           check: '대화에 <code>parse_document</code> 호출이 보이고, 요약을 원본 학습지와 대조해 틀린 곳이 없거나 고친 곳을 메모했으면 성공.',
           prompt: 'mcp-upstage의 parse_document 도구로 data/의 [내 학습지 파일 이름]을 읽어 줘. 그다음 (1) 학생용 세 줄 요약 (2) 핵심 용어 5개와 한 줄 뜻 (3) 학습지에 있는 문항 수를 알려 줘. 학습지에 없는 내용은 덧붙이지 말고, 파일은 하나도 바꾸지 마. 끝에 어느 도구를 몇 번 불렀는지 적어 줘.' }
       ],
-      note: '예상 비용(지금 가격으로 어림): agent.py 시험 10개 × 2~3턴이면 입력 약 9만·출력 약 3만 토큰(추론 포함)이라 <code>solar-pro4</code>로 약 $0.06이에요. 학습지 10쪽 파싱(standard)이 약 $0.1. 합쳐서 $0.2 안팎이에요. 짧은 질문과 작은 파일로 먼저 시험하고, 끝나면 콘솔 <b>Usage</b>에서 확인해요. 학생 개인정보가 든 문서와 실제 학생 답안은 쓰지 않아요.' },
+      note: '예상 비용(정가로 어림): agent.py 시험 10개 × 2~3턴이면 입력 약 9만·출력 약 3만 토큰(추론 포함)이라 <code>solar-pro4</code>로 약 $0.06이에요. 학습지 10쪽 파싱(standard)이 약 $0.1. 합쳐서 $0.2 안팎이에요. 짧은 질문과 작은 파일로 먼저 시험하고, 끝나면 콘솔 <b>Usage</b>에서 확인해요. 학생 개인정보가 든 문서와 실제 학생 답안은 쓰지 않아요.' },
 
     /* =================== T1 =================== */
     { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 13, pass: 0.7, steps: [
@@ -1157,7 +1162,7 @@
         opts: ['temperature를 2로 올려 다른 답이 나오게 한다', '<code>MAX_TURNS</code>를 20으로 늘려 찾을 틈을 준다', '<code>parallel_tool_calls</code>를 꺼서 하나씩 부르게 한다', '도구 설명과 시스템 프롬프트에 "수업 내용 질문은 먼저 찾기"를 적는다'], a: 3,
         why: 'Solar는 설명과 규칙을 보고 도구를 골라요. 언제 꼭 찾아야 하는지 적어 주고, 그래도 안 되면 그 화면에서만 <code>"required"</code>를 검토해요.',
         ex: ['무작위성만 커져 지어내기가 더 늘 수 있어요.', '턴이 모자라서가 아니라 처음부터 도구를 안 골랐어요.', '여러 개를 함께 부르는 기능일 뿐, 부를지 말지와는 상관없어요.', ''] },
-      { t: 'q', kind: 'mc', fig: 't_cost', q: '<code>agent.py</code>로 질문 10개를 시험했어요. 질문 하나에 평균 3턴이 돌았고, 턴마다 입력 3,000·출력 1,000토큰(추론 포함)이 들었어요. <code>solar-pro4</code>의 지금 가격(100만 토큰당 입력 $0.30, 출력 $1.20)으로 어림하면?',
+      { t: 'q', kind: 'mc', fig: 't_cost', q: '<code>agent.py</code>로 질문 10개를 시험했어요. 질문 하나에 평균 3턴이 돌았고, 턴마다 입력 3,000·출력 1,000토큰(추론 포함)이 들었어요. <code>solar-pro4</code>의 정가(100만 토큰당 입력 $0.30, 출력 $1.20)으로 어림하면?',
         opts: ['약 $0.06', '약 $0.02', '약 $0.12', '약 $63'], a: 0,
         why: '질문 10개 × 3턴 = 요청 30번. 입력 9만 토큰 × $0.30 ÷ 100만 ≈ $0.027, 출력 3만 토큰 × $1.20 ÷ 100만 ≈ $0.036, 합쳐 약 $0.06이에요.',
         ex: ['', '턴 수(3)를 빼고 셌어요. 루프는 턴마다 요청이 나가요.', '입력과 출력 가격이 바뀌었어요. 출력이 더 비싸요.', '100만 토큰당 가격을 1,000토큰당으로 셌어요.'] }

@@ -135,9 +135,11 @@
     sources: [
       'https://console.upstage.ai/docs/getting-started',
       'https://console.upstage.ai/docs/capabilities/generate/chat',
+      'https://console.upstage.ai/docs/capabilities/generate/reasoning',
       'https://console.upstage.ai/api/chat',
       'https://console.upstage.ai/docs/resources/error-codes',
       'https://console.upstage.ai/docs/guides/rate-limits',
+      'https://console.upstage.ai/docs/resources/faq',
       'https://console.upstage.ai/docs/models',
       'https://console.upstage.ai/docs/models/history',
       'https://www.upstage.ai/pricing/api',
@@ -156,7 +158,7 @@
     skip: [
       { t: 'q', kind: 'mc', fig: 'k_baseUrl', q: 'OpenAI 파이썬 SDK(<code>from openai import OpenAI</code>)로 Solar를 부르려 해요. 클라이언트를 만들 때 키 말고 <b>꼭 함께 적어야</b> 하는 것은?',
         opts: ['<code>organization="upstage"</code>', '<code>model="gpt"</code>를 그대로 두기', '<code>base_url="https://api.upstage.ai/v1"</code>', '<code>import upstage</code> 한 줄 더하기'], a: 2,
-        why: 'Solar는 OpenAI 호환 API라서 SDK는 그대로 쓰고 <b>주소(base_url)만</b> 업스테이지로 바꿔요. 빼면 요청이 OpenAI 서버로 가요.',
+        why: 'Solar는 OpenAI 호환 API라서 SDK는 그대로 쓰고 <b>주소(base_url)만</b> 업스테이지로 바꿔요. 안 적으면 요청이 OpenAI 서버로 가요.',
         ex: ['organization은 OpenAI 쪽 조직을 고르는 칸이에요. 요청을 업스테이지로 보내 주지 않아요.', 'model에는 <code>solar-pro4</code> 같은 업스테이지 모델 이름을 적어요. 그리고 어디로 갈지는 주소가 정해요.', '', '따로 더할 패키지는 없어요. openai 패키지 하나로 불러요.'] },
       { t: 'q', kind: 'mc', fig: 'k_keySafe', q: 'upstage-lab에서 API 키를 다루는 방법으로 가장 알맞은 것은?',
         opts: ['hello_solar.py 맨 위에 <code>KEY = "up_…"</code>로 적고 저장소는 비공개로 둔다', '<code>.env</code>에 두고 Git에서 빼고, <code>os.environ</code>으로 읽는다', 'AGENTS.md에 적어 두어 에이전트가 코드를 만들 때 알아서 넣게 한다', '실행할 때마다 <code>input()</code>으로 키를 쳐 넣는다'], a: 1,
@@ -432,7 +434,7 @@
         P.arrow(240, 88, 262, 88, { c: 'accent', w: 2.2, head: 8 });
         P.circle(290, 74, 32, { fill: 'warm', gap: 4 });
         P.circle(302, 106, 32, { fill: 'warm', gap: 4 });
-        P.text(170, 186, '100만 토큰당, 2026년 10월 기준', { size: 11, c: 'ink2' });
+        P.text(170, 186, '100만 토큰당, 정가 기준', { size: 11, c: 'ink2' });
       }},
       errorDoors: { w: 340, h: 200, label: '401, 403, 429, 500 네 문을 내가 고칠 문과 기다렸다 다시 할 문으로 나눈 모습', draw(P) {
         ['401', '403', '429', '500'].forEach((n, i) => {
@@ -751,7 +753,7 @@
         P.text(127, 156, '어제는 깔았는데', { size: 12, c: 'ink2' });
         person(P, 292, 198, 'dizzy', 0.7);
       }},
-      t_class429: { w: 340, h: 200, label: '학생 서른 명이 한 키로 동시에 요청을 보내 서버 앞이 막힌 모습', draw(P) {
+      t_class429: { w: 340, h: 200, label: '학생 서른 명이 한 계정으로 동시에 요청을 보내 서버 앞이 막힌 모습', draw(P) {
         const moods = ['smile', 'happy', 'wink'];
         for (let r = 0; r < 3; r++) for (let c = 0; c < 4; c++) P.face(26 + c * 30, 40 + r * 34, 24, { mood: moods[(r + c) % 3] });
         P.arrow(136, 60, 196, 70, { c: 'soft', w: 2, head: 8 });
@@ -760,7 +762,7 @@
         server(P, 206, 30, 112, 100, 'Solar');
         P.text(262, 158, '429', { mono: true, size: 22, weight: 700, c: 'bad' });
         P.text(70, 158, '학생 30명', { size: 13, weight: 700 });
-        P.text(70, 184, '한 키로 동시에', { size: 12, c: 'ink2' });
+        P.text(70, 184, '한 계정으로 동시에', { size: 12, c: 'ink2' });
       }},
       t_streamBlank: { w: 340, h: 200, label: '조각 상자에서 글을 꺼내 answer 그릇에 모으는 모습, 꺼내는 칸과 모으는 기호가 빈칸', draw(P) {
         P.rrect(14, 24, 130, 96, 10, { fill: 'paper', w: 2 });
@@ -826,12 +828,11 @@
         term(P, 140, 30, 186, 76, ['$ python quiz.py', 'Error code: 404'], 11);
         person(P, 234, 198, 'dizzy', 0.6);
       }},
-      t_effortGone: { w: 340, h: 200, label: '코드에서 한 줄을 지웠더니 모래시계가 길어지고 토큰 막대가 커진 모습', draw(P) {
+      t_effortGone: { w: 340, h: 200, label: '코드의 reasoning_effort 값을 바꿨더니 모래시계가 길어지고 토큰 막대가 커진 모습', draw(P) {
         P.rrect(14, 24, 196, 108, 8, { fill: 'paper', w: 2 });
         P.text(26, 50, 'model=MODEL,', { mono: true, size: 11, anchor: 'start' });
         P.text(26, 76, 'messages=msgs,', { mono: true, size: 11, anchor: 'start' });
-        P.text(26, 102, 'reasoning_effort=…', { mono: true, size: 11, anchor: 'start', c: 'soft' });
-        P.line(22, 98, 160, 98, { c: 'bad', w: 2.4 });
+        P.text(26, 102, 'reasoning_effort="high"', { mono: true, size: 11, anchor: 'start', c: 'bad' });
         P.path('M244 24 L294 24 L276 62 L294 100 L244 100 L262 62 Z', { fill: 'hi', gap: 5, w: 2 });
         P.rrect(232, 116, 22, 30, 4, { fill: 'sky', fs: 'solid', w: 1.2 });
         P.rrect(264, 86, 22, 60, 4, { fill: 'warm', fs: 'solid', w: 1.2 });
@@ -920,7 +921,7 @@
       ]},
       { t: 'say', h: 'hello_solar.py ② 묻고, 답과 토큰을 꺼내요', code: { lang: 'py', src: src(['q = "변수를 한 문장으로 설명해 줘"', 'msgs = [{"role": "user", "content": q}]', 'resp = client.chat.completions.create(', '  model=MODEL,', '  messages=msgs,', '  reasoning_effort="none",', ')', 'print(resp.choices[0].message.content)', 'print("토큰:", resp.usage.total_tokens)']), out: '변수는 값을 담아 두고 이름으로 다시 꺼내\n쓰는 상자예요.\n토큰: 43' }, p: [
         '<code>messages</code>는 역할(<code>role</code>)과 내용(<code>content</code>)을 담은 딕셔너리의 리스트예요. 단원 2에서 본 system·user·assistant가 여기에 들어가요.',
-        '<code>reasoning_effort="none"</code>은 추론을 끄라는 뜻이에요. 값을 빼면 어떻게 되는지 공식 자료끼리 설명이 달라서(쿡북 실측은 "빼면 high"), 이 과정은 <b>늘 직접 적어요</b>. 짧은 설명이나 채점은 <code>none</code>이면 충분해요.',
+        '<code>reasoning_effort="none"</code>은 추론을 끄라는 뜻이에요. 안 적어도 추론은 꺼지지만, 이 과정은 의도가 코드에 드러나고 모델·기본값이 바뀌어도 그대로 돌게 <b>늘 직접 적어요</b>. 짧은 설명이나 채점은 <code>none</code>이면 충분해요.',
         '실행은 가상 환경을 켠 터미널에서 <code>python hello_solar.py</code>예요. 답은 실행할 때마다 조금씩 다르고, 토큰 수도 따라 달라져요.'
       ]},
       { t: 'say', h: '응답은 상자 속 상자예요', fig: 'respBox', table: { head: ['꺼내는 길', '들어 있는 것'], rows: [
@@ -930,7 +931,7 @@
         ['<code>resp.model</code>', '실제 버전 이름(예: <code>solar-pro4-260806</code>)'] ] }, p: [
         '<code>choices</code>는 목록이라 <code>[0]</code>으로 첫 칸을 고르고, 그 안 <code>message</code>의 <code>content</code>가 답 글이에요. <code>print(resp)</code>는 구조를 훑어볼 때만 써요.',
         '코드에는 별칭 <code>solar-pro4</code>를 썼지만 <code>resp.model</code>에는 실제 버전이 찍혀요. 별칭은 새 버전이 나오면 그쪽을 가리켜요.',
-        '요금은 토큰으로 매겨요. 지금 요금(<code>solar-pro4</code>, 100만 토큰당 입력 $0.30·출력 $1.20)으로 어림하면, 이런 짧은 질문은 1,000번 해도 몇 센트예요.'
+        '요금은 토큰으로 매겨요. 정가(<code>solar-pro4</code>, 100만 토큰당 입력 $0.30·출력 $1.20)로 어림하면, 이런 짧은 질문은 1,000번 해도 몇 센트예요.'
       ]},
       { t: 'sim', h: 'hello_solar.py를 돌려 봐요', p: '레슨 1에서 준비한 upstage-lab이에요. hello_solar.py를 열어 훑어본 뒤, 아래 터미널에서 두 번 실행해 보세요.',
         scene: { win: 'ide', folder: 'upstage-lab', files: LAB_FILES, open: '.gitignore', lang: 'plain', code: GITIGNORE, term: ['$ source .venv/bin/activate'], prompt: '' },
@@ -978,7 +979,7 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: '응답 읽기와 오류', sub: 'finish_reason과 usage, 오류 번호별 대처, 지수 백오프', min: 16, steps: [
+    { id: 'L3', type: 'lesson', title: '응답 읽기와 오류', sub: 'finish_reason과 usage, 오류 번호별 대처, 지수 백오프', min: 18, steps: [
       { t: 'say', h: 'finish_reason: 답이 왜 멈췄을까', fig: 'stopSign', table: { head: ['값', '뜻', '이럴 때'], rows: [
         ['<code>stop</code>', '할 말을 다 하고 멈췄어요', '정상'],
         ['<code>length</code>', '<code>max_tokens</code>에 닿아 잘렸어요', '상한을 늘리거나 나눠 부탁'],
@@ -989,18 +990,20 @@
       ]},
       { t: 'say', h: 'usage: 토큰을 세면 돈이 보여요', fig: 'tokenMeter', p: [
         '<code>resp.usage</code>에는 보낸 쪽 <code>prompt_tokens</code>, 만든 쪽 <code>completion_tokens</code>, 둘을 더한 <code>total_tokens</code>가 있어요. 추론을 켜면 생각에 쓴 토큰도 <code>completion_tokens</code>에 들어가요.',
-        '지금 요금으로 <code>solar-pro4</code>는 100만 토큰당 입력 $0.30, 출력 $1.20이라 <b>만든 쪽이 네 배</b> 비싸요. 학생 30명이 질문 10개씩(한 번에 입력 2천·출력 3백 토큰) 하면 약 $0.29로 어림돼요.',
-        '가벼운 일은 <code>solar-mini4</code>(입력 $0.10·출력 $0.40)로 바꾸면 더 싸요. 요금은 바뀔 수 있으니 수업에 쓰기 전에 가격 페이지를 확인해요.'
+        '정가로 <code>solar-pro4</code>는 100만 토큰당 입력 $0.30, 출력 $1.20이라 <b>만든 쪽이 네 배</b> 비싸요. 학생 30명이 질문 10개씩(한 번에 입력 2천·출력 3백 토큰) 하면 약 $0.29로 어림돼요.',
+        '가벼운 일은 <code>solar-mini4</code>(입력 $0.10·출력 $0.40)로 바꾸면 더 싸요. 정가 기준이라 할인 행사 중인 지금은 실제로 더 쌀 수 있고, 요금은 바뀌니 수업에 쓰기 전에 가격 페이지를 확인해요.'
       ]},
       { t: 'say', h: '오류 번호는 고칠 곳을 알려 줘요', fig: 'errorDoors', table: { head: ['번호', '뜻', '할 일'], rows: [
         ['<code>400</code>', '요청 모양이 틀림', '매개변수·메시지 모양 확인'],
-        ['<code>401</code>', '키가 틀렸거나 지워짐', '<code>.env</code> 값, 콘솔 API keys 확인'],
-        ['<code>403</code>', '크레딧 부족·결제 실패', '콘솔 Billing의 Credit 확인'],
+        ['<code>401</code> <code>invalid_api_key</code>', '키가 틀렸거나 지워짐', '<code>.env</code> 값, 콘솔 API keys 확인'],
+        ['<code>401</code> <code>api_key_is_blocked</code>', '키는 맞지만 막힘(대개 크레딧도 결제 수단도 없음)', '결제 수단 등록·크레딧 구매(새 키로는 안 풀려요)'],
+        ['<code>403</code> <code>api_key_is_not_allowed</code>', '크레딧 부족·결제 실패로 정지', '콘솔 Billing의 Credit·Payment 확인'],
         ['<code>404</code>', '주소가 틀림', '<code>base_url</code> 확인'],
-        ['<code>429</code>', '너무 많은 요청', '기다렸다 다시(지수 백오프)'],
+        ['<code>429</code> <code>too_many_requests</code>', '속도 제한(너무 많은 요청)', '<code>Retry-After</code>만큼 기다렸다 다시(지수 백오프)'],
+        ['<code>429</code> <code>usage_limit_exceeded</code>', '월 사용 한도(Limits)에 닿음', '다시 보내도 소용없어요. 크레딧·결제 수단·한도 확인'],
         ['<code>500</code>대', '서버 문제', '잠시 뒤 다시, 계속되면 문의'] ] }, p: [
-        '번호를 두 무리로 나눠 기억해요. 400·401·403·404는 <b>내가 고쳐야</b> 하는 오류, 429와 500대는 <b>기다렸다 다시</b> 하면 나아지는 오류예요.',
-        '429는 분당 요청 수나 토큰 수 한도를 넘었다는 뜻이에요. 한도는 등급마다 달라서 콘솔과 문서에서 직접 확인해요. 반 학생 30명이 한 키로 동시에 부르면 금방 걸릴 수 있어요.'
+        '번호를 두 무리로 나눠 기억해요. 400·401·403·404는 <b>내가 고쳐야</b> 하는 오류, 429 <code>too_many_requests</code>와 500대는 <b>기다렸다 다시</b> 하면 나아지는 오류예요. 같은 번호라도 갈래가 있으니, 응답의 <code>error.code</code>로 가려요.',
+        '<code>too_many_requests</code>는 분당 요청 수나 토큰 수 한도를 넘었다는 뜻이에요. 처음 등급(Tier 0)에서 <code>solar-pro4</code>는 1분에 100번·25만 토큰이고, 이 한도는 키마다가 아니라 <b>계정(조직)마다</b>라 키를 여러 개 만들어도 나눠 써요. 반 학생 30명이 한 계정으로 동시에 부르면 금방 걸릴 수 있어요.'
       ]},
       { t: 'try', lang: 'py', h: '연습장: 응답 읽고 오류에 대처하기', p: '흉내 낸 응답 딕셔너리에서 답·멈춘 까닭·토큰을 꺼내고, 오류 번호별 할 일을 고르는 함수를 돌려 보세요. <code>"stop"</code>을 <code>"length"</code>로 바꾸면 무엇이 더 찍히는지도 봐요.',
         src: src([
@@ -1036,14 +1039,14 @@
           'for code in [401, 403, 429, 500, 404]:',
           '    print(code, "→", what_to_do(code))'
         ]),
-        note: '진짜 응답은 <code>resp.choices[0]</code>처럼 점으로 읽지만, 여기 resp는 딕셔너리라 <code>resp["choices"][0]</code>로 읽어요. 함수에 400을 넣으면 무엇이 나오는지도 봐요.' },
+        note: '진짜 응답은 <code>resp.choices[0]</code>처럼 점으로 읽지만, 여기 resp는 딕셔너리라 <code>resp["choices"][0]</code>로 읽어요. 이 함수는 번호만 보지만, 진짜 도구는 429라도 <code>usage_limit_exceeded</code>면 기다려도 소용없으니 <code>error.code</code>까지 봐요.' },
       { t: 'say', h: '오류는 try/except로 받아 알려 줘요', code: { lang: 'py', src: src(['import openai', 'chat = client.chat.completions', '', 'def ask(msgs):', '    return chat.create(', '      model=MODEL, messages=msgs,', '      reasoning_effort="none")', '', 'try:', '    resp = ask(msgs)', 'except openai.AuthenticationError:', '    print("401: .env의 키를 확인해요")']) }, p: [
         '자주 부를 호출은 <code>ask(msgs)</code> 함수로 묶어 두면 편해요. 긴 이름 <code>client.chat.completions</code>에는 <code>chat</code>이라는 짧은 별명을 붙였어요.',
         'openai 패키지는 오류마다 예외를 만들어 둬요. 401은 <code>openai.AuthenticationError</code>, 429는 <code>openai.RateLimitError</code>로 잡아서, 학생 화면에는 알아듣기 쉬운 말을 보여 줘요.'
       ]},
       { t: 'say', h: '429에는 지수 백오프: 1초, 2초, 4초', fig: 'backoff', code: { lang: 'py', src: src(['import time', '', 'def ask_retry(msgs, tries=4):', '    wait = 1', '    for i in range(tries):', '        try:', '            return ask(msgs)', '        except openai.RateLimitError:', '            if i == tries - 1:', '                raise', '            time.sleep(wait)', '            wait *= 2  # 1초 → 2초 → 4초']) }, p: [
-        '429와 500대는 잠시 뒤에 다시 하면 되는 오류예요. 바로 다시 보내면 또 막히니, 기다림을 <b>두 배씩</b> 늘려요. 이걸 <b>지수 백오프</b>라고 해요.',
-        '끝없이 다시 하지 않게 횟수(<code>tries</code>)를 정해 두고, 다 쓰면 <code>raise</code>로 오류를 그대로 알려요. 401·403처럼 기다려도 안 낫는 오류는 다시 하지 않아요.',
+        '429 <code>too_many_requests</code>와 500대는 잠시 뒤에 다시 하면 되는 오류예요. 응답에 <code>Retry-After</code> 헤더가 있으면 그만큼 기다리고, 없으면 기다림을 <b>두 배씩</b> 늘려요. 이걸 <b>지수 백오프</b>라고 해요.',
+        '끝없이 다시 하지 않게 횟수(<code>tries</code>)를 정해 두고, 다 쓰면 <code>raise</code>로 오류를 그대로 알려요. 401·403처럼 기다려도 안 낫는 오류는 다시 하지 않아요. 429라도 <code>usage_limit_exceeded</code>(월 사용 한도에 닿음)면 기다려도 소용없어요.',
         '수업 도구라면 여기에 학생당 횟수 제한을 더해요. 과정 3 단원 3에서 해요.'
       ]},
       { t: 'q', kind: 'mc', fig: 'q_length', q: '정보 수업 퀴즈 10문제를 부탁했는데 7번에서 답이 끊겼고, <code>finish_reason</code>이 <code>"length"</code>예요. 무슨 뜻일까요?',
@@ -1052,11 +1055,11 @@
         ex: ['정상으로 끝나면 stop이에요.', '키가 틀리면 답 자체가 오지 않고 401 오류가 나요.', '도구를 부를 땐 tool_calls예요. 과정 5에서 만나요.', ''] },
       { t: 'q', kind: 'line', fig: 'q_errTable', q: '오류 번호별 할 일을 정리한 메모예요. <b>틀린 줄</b>을 눌러 보세요.', lang: 'plain',
         code: src(['401 → .env의 키 확인, 지웠으면 새 키', '403 → 콘솔 Billing에서 크레딧 확인', '429 → 키를 지우고 새로 만들기', '500 → 잠시 뒤 다시', '404 → base_url 주소 확인']), a: 2,
-        why: '429는 너무 많이, 너무 빨리 보냈다는 뜻이에요. 키 문제가 아니니 <b>잠시 기다렸다 간격을 늘려</b> 다시 보내요(지수 백오프).' },
+        why: '429 <code>too_many_requests</code>는 너무 많이, 너무 빨리 보냈다는 뜻이에요. 키 문제가 아니니 <b>잠시 기다렸다 간격을 늘려</b> 다시 보내요(지수 백오프). 월 사용 한도에 닿은 <code>usage_limit_exceeded</code>는 Limits·크레딧을 봐요.' },
       { t: 'q', kind: 'blank', fig: 'q_usageBlank', q: '토큰 수를 꺼내는 코드예요. 두 빈칸을 채워 보세요.', lang: 'py',
         code: src(['u = resp.usage', 'print("보낸 토큰:", u.[[1]])', 'print("만든 토큰:", u.[[2]])']),
         opts: [['completion_tokens', 'prompt_tokens'], ['prompt_tokens', 'total_tokens'], ['prompt_tokens', 'completion_tokens'], ['input_tokens', 'output_tokens']], a: 2,
-        why: '보낸 쪽(질문·기록)은 <code>prompt_tokens</code>, 만든 쪽(답, 추론 포함)은 <code>completion_tokens</code>, 둘을 더한 게 <code>total_tokens</code>예요. 지금 요금은 만든 쪽이 네 배 비싸요.',
+        why: '보낸 쪽(질문·기록)은 <code>prompt_tokens</code>, 만든 쪽(답, 추론 포함)은 <code>completion_tokens</code>, 둘을 더한 게 <code>total_tokens</code>예요. 정가로는 만든 쪽이 네 배 비싸요.',
         ex: ['두 칸이 서로 바뀌었어요.', '둘째 칸이 틀렸어요. total_tokens는 둘을 더한 값이에요.', '', 'Chat Completions 응답에서 쓰는 이름이 아니에요. 여기서는 prompt·completion이라고 불러요.'] },
       { t: 'q', kind: 'order', fig: 'q_backoffOrder', q: '429에 대비한 재시도 함수가 하는 일이에요. 순서대로 쌓아 보세요.',
         items: ['요청을 보낸다', '429가 오면 1초 기다렸다 다시 보낸다', '또 429면 2초 기다렸다 다시 보낸다', '정한 횟수를 다 쓰면 오류를 그대로 알린다'],
@@ -1065,7 +1068,7 @@
         opts: ['연습장은 딕셔너리, 진짜 응답은 SDK가 만든 객체라서', '파이썬 버전이 달라서 문법이 바뀐다', '점(.)이 더 빠른 방법이라 진짜 코드에서만 쓴다', '아무 차이 없다. 둘 다 어디서나 된다'], a: 0,
         why: '연습장의 resp는 응답을 흉내 낸 <b>딕셔너리</b>라 <code>["이름"]</code>으로, openai SDK가 돌려준 resp는 <b>객체</b>라 점(.)으로 읽어요. 과정 2에서 requests로 받는 <code>r.json()</code>은 딕셔너리라 대괄호로 읽어요.',
         ex: ['', '같은 파이썬에서도 담긴 것이 무엇이냐에 따라 달라요.', '속도 차이가 아니라 담긴 것의 종류 차이예요.', 'SDK 객체를 대괄호로 읽으면 오류가 나요.'] },
-      { t: 'sum', pts: ['<code>finish_reason</code>: stop 정상, length 잘림(max_tokens·추론 토큰), tool_calls 도구. 답을 쓰기 전에 확인한다.', '<code>usage</code>의 prompt·completion·total 토큰으로 비용을 어림한다. 지금 solar-pro4는 출력이 입력의 네 배.', '400·401·403·404는 고치고, 429·500대는 기다렸다 다시(지수 백오프, 횟수 제한). <code>openai.AuthenticationError</code>·<code>RateLimitError</code>로 잡는다.'] }
+      { t: 'sum', pts: ['<code>finish_reason</code>: stop 정상, length 잘림(max_tokens·추론 토큰), tool_calls 도구. 답을 쓰기 전에 확인한다.', '<code>usage</code>의 prompt·completion·total 토큰으로 비용을 어림한다. 정가로 solar-pro4는 출력이 입력의 네 배.', '400·401·403·404는 고치고, 429 too_many_requests·500대는 기다렸다 다시(지수 백오프, 횟수 제한). usage_limit_exceeded는 기다려도 소용없다. <code>openai.AuthenticationError</code>·<code>RateLimitError</code>로 잡는다.'] }
     ]},
 
     /* =================== L4 =================== */
@@ -1215,31 +1218,31 @@
           check: '줄 앞에 <code>(.venv)</code>가 있고, <code>git status --short</code>에 <code>.venv/</code>가 안 보이면 성공.' },
         { do: 'hello_solar.py로 첫 호출을 해요',
           how: '레슨 2의 코드를 한 줄씩 직접 쳐요. 질문은 내 수업 단원 것으로 바꾸고(학생 이름은 넣지 않아요), 두세 번 돌려 답이 어떻게 달라지는지 봐요.',
-          check: '답 글과 토큰 수가 찍히면 성공. <code>KeyError</code>면 .env의 이름, <code>401</code>이면 키 값과 base_url, <code>403</code>이면 Billing의 Credit을 확인해요.' },
+          check: '답 글과 토큰 수가 찍히면 성공. <code>KeyError</code>면 .env의 이름, <code>401</code>이면 키 값과 base_url(<code>api_key_is_blocked</code>면 결제 수단·크레딧), <code>403</code>이면 Billing의 Credit을 확인해요.' },
         { do: 'AGENTS.md에 업스테이지 규칙을 적고 커밋해요',
           how: '레슨 5의 열두 줄을 upstage-lab 맨 위 <code>AGENTS.md</code>로 옮겨요. 직접 써도 되고 에이전트에게 맡겨도 되지만, 키 값이 없는지는 내가 읽어 확인해요.',
           check: 'AGENTS.md에 <code>solar-pro4</code>, <code>https://api.upstage.ai/v1</code>, <code>UPSTAGE_API_KEY</code>, 옛 이름 금지가 있고 커밋됐으면 성공.' },
         { do: '에이전트에게 스트리밍 챗봇 chat.py를 맡겨요',
           how: 'Agents Window에서 아래 부탁을 붙여 넣어요. 다 되면 내 터미널에서 <code>python chat.py</code>로 돌려요.',
           check: '답이 조각으로 흘러나오고, "반복문이 뭐예요?" 다음 "예를 하나 들어 줘"에 반복문 예가 나오면 성공.',
-          prompt: 'upstage-lab에 터미널 챗봇 chat.py를 만들어 줘. 맥락: hello_solar.py처럼 OpenAI SDK로 업스테이지 Solar를 부르고, AGENTS.md의 업스테이지 규칙(MODEL = "solar-pro4", base_url, .env의 UPSTAGE_API_KEY, reasoning_effort)을 따라. 조건: ① stream=True로 답을 조각마다 바로 출력 ② 조각을 모은 전체 답을 history에 assistant로 붙이기 ③ system 메시지는 "중학생 눈높이로 짧게 답해요" ④ "끝"을 치면 종료 ⑤ history는 system과 최근 10개만 남기기 ⑥ 429가 나면 1·2·4초 기다렸다 다시 ⑦ 키를 화면에 찍지 않기. 확인: 다 만들면 실행 방법을 알려 주고, 모델 이름과 base_url이 몇 번째 줄에 있는지 알려 줘.' },
+          prompt: 'upstage-lab에 터미널 챗봇 chat.py를 만들어 줘. 맥락: hello_solar.py처럼 OpenAI SDK로 업스테이지 Solar를 부르고, AGENTS.md의 업스테이지 규칙(MODEL = "solar-pro4", base_url, .env의 UPSTAGE_API_KEY, reasoning_effort)을 따라. 조건: ① stream=True로 답을 조각마다 바로 출력 ② 조각을 모은 전체 답을 history에 assistant로 붙이기 ③ system 메시지는 "중학생 눈높이로 짧게 답해요" ④ "끝"을 치면 종료 ⑤ history는 system과 최근 10개만 남기기 ⑥ 429 too_many_requests면 Retry-After만큼(없으면 1·2·4초) 기다렸다 다시, usage_limit_exceeded면 다시 보내지 말고 알리기 ⑦ 키를 화면에 찍지 않기. 확인: 다 만들면 실행 방법을 알려 주고, 모델 이름과 base_url이 몇 번째 줄에 있는지 알려 줘.' },
         { do: 'Plan 모드로 quiz.py를 맡기고 커밋해요',
           how: '모드를 Plan으로(<kbd>shift+tab</kbd> 또는 <kbd>mod+.</kbd>) 바꾸고 아래 부탁을 보내요. 계획에 <code>solar-pro3</code>·<code>solar-mini</code>·<code>/v1/solar</code>가 보이면 Build 전에 "AGENTS.md 규칙대로 고쳐 줘"라고 해요. 다 되면 <code>git status</code>로 <code>.env</code>가 빠졌는지 보고 커밋해요.',
           check: '내 터미널에서 <code>python quiz.py</code>가 3문제를 찍고, quiz.py에서 "solar"를 찾으면 <code>solar-pro4</code>(또는 <code>solar-mini4</code>)만 나오고, <code>git log</code>에 커밋이 있으면 성공.',
           prompt: 'quiz.py를 만들어 줘. 맥락: 중학교 정보 "변수와 자료형" 단원 복습용이고, upstage-lab의 AGENTS.md에 업스테이지 규칙이 있어. 조건: ① AGENTS.md 규칙(모델 이름, base_url, 키 읽는 법, reasoning_effort)을 그대로 따를 것 ② Solar에게 4지선다 3문제를 정답과 한 줄 해설까지 만들게 해서 터미널에 출력 ③ API 호출은 한 번만, 학생 개인정보는 넣지 않기 ④ 30줄 안팎. 확인: 먼저 계획을 보여 주고, 다 만든 뒤 python quiz.py 실행 결과와 쓴 토큰 수(usage.total_tokens)를 알려 줘.' }
       ],
-      note: '예상 비용: 이 미션의 Solar 호출은 많아야 수십 번이고 한 번에 수백~수천 토큰이에요. 지금 요금(solar-pro4, 100만 토큰당 입력 $0.30·출력 $1.20, 2026년 10월 기준)으로 어림하면 몇 센트 안쪽이라 가입 크레딧 $10으로 넉넉해요. Cursor 에이전트 사용량은 Cursor 요금제에서 따로 빠져요. 키는 채팅·스크린샷·GitHub에 올리지 않고, 샜다면 콘솔 API keys에서 바로 지우고 새로 만들어요. 질문에 학생 이름·성적 같은 개인정보를 넣지 않아요.' },
+      note: '예상 비용: 이 미션의 Solar 호출은 많아야 수십 번이고 한 번에 수백~수천 토큰이에요. 정가(solar-pro4, 100만 토큰당 입력 $0.30·출력 $1.20)로 어림하면(지금은 할인 행사 중이라 실제로는 더 쌀 수 있어요) 몇 센트 안쪽이라 가입 크레딧 $10으로 넉넉해요. Cursor 에이전트 사용량은 Cursor 요금제에서 따로 빠져요. 키는 채팅·스크린샷·GitHub에 올리지 않고, 샜다면 콘솔 API keys에서 바로 지우고 새로 만들어요. 질문에 학생 이름·성적 같은 개인정보를 넣지 않아요.' },
 
     /* =================== T1 =================== */
-    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 13, pass: 0.7, steps: [
+    { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 14, pass: 0.7, steps: [
       { t: 'q', kind: 'mc', fig: 't_noModule', q: '연수장에서 옆자리 선생님이 어제 집에서 pip install까지 했다는데, 오늘 <code>python hello_solar.py</code>를 치니 <code>ModuleNotFoundError: No module named \'openai\'</code>가 나요. 터미널 줄 앞에 <code>(.venv)</code>가 없어요. 무엇부터 할까요?',
         opts: ['키가 틀렸으니 콘솔에서 새 키를 만든다', 'upstage-lab의 가상 환경을 다시 켜고 실행한다', 'hello_solar.py를 지우고 처음부터 다시 쓴다', 'openai 대신 requests로 코드를 바꾼다'], a: 1,
         why: '패키지는 가상 환경(<code>.venv</code>) 안에 깔렸는데, 터미널을 새로 열면 가상 환경이 꺼져 있어요. Mac은 <code>source .venv/bin/activate</code>, Windows는 <code>.venv\\Scripts\\activate</code>로 켜고 다시 실행해요.',
         ex: ['키는 서버에 가서야 확인돼요. 이 오류는 모듈을 못 찾은 것이라 키와 상관없어요.', '', '코드는 멀쩡해요. 파이썬이 패키지를 못 찾을 뿐이에요.', '바꿀 필요 없어요. 켜진 가상 환경 안에서는 openai가 보여요.'] },
-      { t: 'q', kind: 'mc', fig: 't_class429', q: '수업에서 학생 30명이 내 키 하나로 만든 질문 도우미를 동시에 쓰자 몇 명에게 <code>429</code>가 떴어요. 가장 알맞은 대처는?',
-        opts: ['누가 키를 몰래 쓰는 것이니 바로 지우고 새로 만든다', '크레딧이 바닥난 것이니 Billing에서 충전한다', '모델 이름을 solar-pro3로 바꿔 부담을 나눈다', '간격을 늘려 다시 보내고, 학생당 호출 수를 줄인다'], a: 3,
-        why: '429는 분당 요청·토큰 한도를 넘었다는 뜻이에요. 한 키로 반 전체가 동시에 부르면 금방 걸릴 수 있어요. 지수 백오프로 다시 하고, 학생당 횟수 제한(과정 3 단원 3)을 둬요.',
-        ex: ['키 문제는 401이에요. 429는 너무 빨리, 많이 보냈다는 신호예요.', '크레딧 부족은 403이에요.', 'solar-pro3는 2026-10-30에 끝나는 옛 모델이에요. 한도를 나누는 방법도 아니에요.', ''] },
+      { t: 'q', kind: 'mc', fig: 't_class429', q: '수업에서 학생 30명이 내 계정으로 만든 질문 도우미를 동시에 쓰자 몇 명에게 <code>429 too_many_requests</code>가 떴어요. 가장 알맞은 대처는?',
+        opts: ['키를 여러 개 더 만들어 학생 무리마다 나눠 쓰게 한다', '크레딧이 바닥난 것이니 Billing에서 충전한다', '모델 이름을 solar-pro3로 바꿔 부담을 나눈다', '간격을 늘려 다시 보내고, 학생당 호출 수를 줄인다'], a: 3,
+        why: '<code>too_many_requests</code>는 계정의 분당 요청·토큰 한도를 넘었다는 뜻이에요. 한 계정으로 반 전체가 동시에 부르면 금방 걸릴 수 있어요. <code>Retry-After</code>만큼(없으면 지수 백오프로) 기다렸다 다시 하고, 학생당 횟수 제한(과정 3 단원 3)을 둬요.',
+        ex: ['속도 제한은 키마다가 아니라 계정마다라 키를 늘려도 한도는 그대로예요.', '크레딧 부족은 <code>401 api_key_is_blocked</code>나 <code>403</code>이에요.', 'solar-pro3는 2026-10-30에 끝나는 옛 모델이에요. 한도를 나누는 방법도 아니에요.', ''] },
       { t: 'q', kind: 'blank', fig: 't_streamBlank', q: '스트리밍 답을 화면에 찍으면서 <code>answer</code>에 모으는 코드예요. 두 빈칸을 채워 보세요.', lang: 'py',
         code: src(['answer = ""', 'for chunk in stream:', '    t = chunk.choices[0].[[1]].content', '    if t:', '        print(t, end="", flush=True)', '        answer [[2]] t']),
         opts: [['delta', '+='], ['message', '+='], ['delta', '='], ['message', '=']], a: 0,
@@ -1261,16 +1264,16 @@
         ex: ['비공개여도 함께 쓰는 사람, 나중에 공개로 바꿀 때 키가 새요.', '키를 코드에 옮기면 더 쉽게 새요.', '', '적어 둔다고 키가 지켜지지 않아요. 아예 올라가지 않게 해야 해요.'] },
       { t: 'q', kind: 'mc', fig: 't_credit403', q: '연수 2일차 오후, 잘 되던 코드가 갑자기 <code>403</code>을 돌려줘요. 키 이름도 주소도 그대로예요. 먼저 볼 곳은?',
         opts: ['콘솔 Billing의 Credit', '<code>.gitignore</code>에 <code>.env</code>가 들어 있는지', 'AGENTS.md에 적어 둔 모델 이름과 base_url', '요청에 넣은 <code>max_tokens</code> 값이 너무 작은지'], a: 0,
-        why: '403은 크레딧이 모자라거나 결제가 실패했을 때 와요. 콘솔 <b>Billing</b>의 <b>Credit</b>에서 잔액을 확인해요.',
+        why: '403(<code>api_key_is_not_allowed</code>)은 크레딧이 모자라거나 결제가 실패해 키가 정지됐을 때 와요. 콘솔 <b>Billing</b>의 <b>Credit</b>에서 잔액을, <b>Payment</b>에서 결제 상태를 확인해요.',
         ex: ['', '.gitignore는 Git이 모른 척할 파일 목록이에요. 서버 응답과 상관없어요.', 'AGENTS.md는 에이전트에게 주는 안내예요. 이미 돌던 코드의 403과는 상관없어요.', 'max_tokens가 작으면 답이 잘릴(length) 뿐 403이 나지 않아요.'] },
       { t: 'q', kind: 'mc', fig: 't_404', q: '에이전트가 만든 quiz.py가 내 터미널에서 <code>404</code>를 내요. 에이전트는 "잘 돌아요"라고 했었어요. 먼저 확인할 것은?',
         opts: ['키가 지워졌을 수 있으니 콘솔에서 새로 만든다', 'base_url 주소가 AGENTS.md 규칙과 같은지', '크레딧이 떨어졌을 수 있으니 Billing에서 충전한다', 'reasoning_effort를 high로 올려 다시 돌린다'], a: 1,
         why: '404는 주소가 틀렸다는 뜻이에요. 오타 난 주소나 옛 예제에서 베낀 주소가 흔한 까닭이에요. AGENTS.md 규칙의 <code>https://api.upstage.ai/v1</code>과 대조해 고치고, 다음부터는 계획 단계에서 주소도 확인해요.',
         ex: ['키 문제는 401이에요.', '', '크레딧 문제는 403이에요.', '추론은 주소와 상관없어요. 느려지고 비싸지기만 해요.'] },
-      { t: 'q', kind: 'mc', fig: 't_effortGone', q: 'hello_solar.py에서 <code>reasoning_effort="none"</code> 줄을 지웠더니 답이 느려지고 토큰이 크게 늘었어요. 왜일까요?',
-        opts: ['그 줄이 스트리밍을 켜 두는 줄이라 지우면 꺼져서', '빼면 temperature가 2로 올라가서', '빼면 SDK가 더 큰 기본 모델로 바꿔 불러서', '빼면 추론이 켜질 수 있어서'], a: 3,
-        why: 'solar-pro4는 값을 빼면 추론이 켜진다고 공식 쿡북이 실측했어요(문서끼리 설명이 달라요). 그래서 이 과정은 <code>reasoning_effort</code>를 <b>늘 직접</b> 적어요. 간단한 설명·채점은 none, 어려운 여러 단계 문제는 high.',
-        ex: ['스트리밍은 stream=True로 따로 켜요. reasoning_effort와 상관없어요.', 'temperature는 따로 정하는 값이에요. 빼도 2가 되지 않아요.', 'SDK는 모델을 바꾸지 않아요. 모델은 model=MODEL이 정해서 그대로 solar-pro4예요.', ''] }
+      { t: 'q', kind: 'mc', fig: 't_effortGone', q: 'hello_solar.py의 <code>reasoning_effort="none"</code>을 <code>"high"</code>로 바꿨더니 답이 느려지고 토큰이 크게 늘었어요. 왜일까요?',
+        opts: ['그 줄이 스트리밍을 켜고 끄는 줄이라서', '"high"면 temperature가 저절로 2로 올라가서', '"high"면 SDK가 더 큰 기본 모델로 바꿔 불러서', '"high"면 답 전에 추론 글을 먼저 만들어서'], a: 3,
+        why: '<code>"high"</code>는 추론을 켜는 값이라 답 전에 추론 글을 먼저 만들고, 그 토큰도 <code>completion_tokens</code>에 세져요. 줄을 아예 지우면 추론은 꺼진 채지만, 의도가 보이게 <b>늘 직접</b> 적어요. 간단한 설명·채점은 none, 어려운 여러 단계 문제는 high.',
+        ex: ['스트리밍은 stream=True로 따로 켜요. reasoning_effort와 상관없어요.', 'temperature는 따로 정하는 값이에요. 추론을 켜도 2가 되지 않아요.', 'SDK는 모델을 바꾸지 않아요. 모델은 model=MODEL이 정해서 그대로 solar-pro4예요.', ''] }
     ]}
     ]
   });

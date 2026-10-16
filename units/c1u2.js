@@ -155,8 +155,8 @@
     '    print(i + 1, r.choices[0].message.content)']);
   const LOW_OUT = ['$ python temp_test.py 0.2', '1 변수는 값을 넣어 두는 이름표 붙은 상자예요.', '2 변수는 값을 넣어 두는 이름표 붙은 상자예요.', '3 변수는 값을 담아 두는 이름표 붙은 상자예요.'];
   const HIGH_OUT = ['$ python temp_test.py 1.5', '1 변수는 내용물을 바꿔 넣는 사물함이에요.', '2 변수는 이름이 적힌 칠판 한 칸 같아요.', '3 변수는 점수를 적었다 지웠다 하는 메모지예요.'];
-  const PG_NAV = ['Home', 'Playground', { name: 'Chat', sub: true }, 'API keys', 'Billing'];
-  const PG_ASIDE = [{ k: 'select', id: 'model', label: 'Model', value: 'solar-pro4' }];
+  const PG_NAV = ['Playground', { name: 'Chat', sub: true }, { name: 'Document Parse', sub: true }, 'API keys', 'Usage'];
+  const PG_ASIDE = [{ k: 'select', id: 'model', label: 'Model', value: 'Solar Pro 4' }];
   const Q_GUESS = '우리 학교 2학기 정보 수행평가는 언제, 무엇을 해?';
   const A_GUESS = '2학기 정보 수행평가는 11월 셋째 주에 "반복문으로 구구단 만들기"로 진행돼요. 배점은 30점이에요.';
   const Q_DOC = '아래 공지로만 답해 줘. 공지에 없으면 "공지에 없어요"라고 해 줘. [공지] 2학기 정보 수행평가: 12월 첫째 주, 리스트로 출석부 만들기. 질문: 언제, 무엇을 하고, 배점은 몇 점이야?';
@@ -171,6 +171,8 @@
     checked: { date: '2026-10-16' },
     sources: [
       'https://console.upstage.ai/docs/capabilities/generate/chat',
+      'https://console.upstage.ai/docs/capabilities/generate/reasoning',
+      'https://console.upstage.ai/docs/resources/faq',
       'https://console.upstage.ai/api/chat',
       'https://console.upstage.ai/docs/models',
       'https://console.upstage.ai/docs/models/history',
@@ -189,9 +191,9 @@
         opts: ['API가 알아서 기억하니 두 번째 질문만 보낸다', 'system에 "앞 대화를 꼭 기억해 둬"라는 규칙을 적어 둔다', '같은 API 키로 보내면 대화가 저절로 이어진다', '앞 질문과 앞 답을 messages에 붙여 함께 보낸다'], a: 3,
         why: 'API는 요청마다 따로라서 지난 대화를 기억하지 않아요. 앞 질문과 답을 messages에 차례로 붙이고 새 질문을 더해 한 요청으로 보내요.',
         ex: ['API는 기억하지 않아요. 두 번째 질문만 보내면 처음 만나는 셈이에요.', '규칙을 적어도 앞 대화가 요청 안에 없으면 읽을 수가 없어요.', 'API 키는 누가 부르는지 확인할 뿐, 대화를 이어 주지 않아요.', ''] },
-      { t: 'q', kind: 'mc', fig: 'k_empty', q: '<code>reasoning_effort</code>를 빼고 <code>max_tokens=100</code>으로 보냈더니 답이 비고 <code>finish_reason</code>이 <code>"length"</code>예요. 알맞은 설명과 고치기는?',
-        opts: ['추론 토큰이 100개를 다 썼다. reasoning_effort를 적는다', 'temperature가 높아 답이 흩어졌다. temperature를 0으로 낮춘다', 'API 키가 잘못돼 답이 막혔다. 키를 새로 만든다', '질문이 짧아 쓸 말이 없었다. 질문을 더 자세히 쓴다'], a: 0,
-        why: '공식 쿡북 실험에서 값을 빼니 추론이 켜졌고, 추론 토큰이 max_tokens를 다 써서 답이 비었어요. <code>reasoning_effort="none"</code>처럼 늘 직접 적고, 추론이 필요하면 max_tokens를 넉넉히 줘요.',
+      { t: 'q', kind: 'mc', fig: 'k_empty', q: '<code>reasoning_effort="high"</code>, <code>max_tokens=100</code>으로 보냈더니 <code>content</code>가 <code>None</code>이고 <code>finish_reason</code>이 <code>"length"</code>예요. 알맞은 설명과 고치기는?',
+        opts: ['추론 토큰이 100개를 다 썼다. max_tokens를 넉넉히 준다', 'temperature가 높아 답이 흩어졌다. temperature를 0으로 낮춘다', 'API 키가 잘못돼 답이 막혔다. 키를 새로 만든다', '질문이 짧아 쓸 말이 없었다. 질문을 더 자세히 쓴다'], a: 0,
+        why: '추론을 켜면 추론 토큰도 max_tokens 안에서 써요. 100개를 추론이 다 쓰면 답 자리가 없어 <code>content</code>가 <code>None</code>으로 와요. 추론이 필요하면 max_tokens를 넉넉히, 필요 없으면 <code>reasoning_effort="none"</code>으로 꺼요.',
         ex: ['', 'temperature는 뽑는 방식을 바꿀 뿐, 답 자리를 없애지 않아요.', '키가 틀리면 401 오류가 나요. 응답이 왔으니 키는 멀쩡해요.', '질문 길이는 입력 토큰이에요. 만들 자리(max_tokens)가 모자란 게 문제예요.'] }
     ],
 
@@ -219,15 +221,15 @@
         P.text(233, 150, '두 번째 요청', { size: 13, c: 'ink2' });
         P.text(170, 190, '이어서 답하게 하려면?', { size: 13, c: 'accent' });
       }},
-      k_empty: { w: 340, h: 200, label: '빈 답 말풍선과 finish_reason "length" 표, 갸웃하는 로봇', draw(P) {
+      k_empty: { w: 340, h: 200, label: '답이 없는 말풍선과 finish_reason "length" 표, 갸웃하는 로봇', draw(P) {
         P.bubble(20, 20, 150, 70, 60, 110);
-        P.text(95, 60, '( 빈 답 )', { size: 14, c: 'ink2' });
+        P.text(95, 60, 'content = None', { mono: true, size: 13, c: 'ink2' });
         P.robot(60, 150, 0.45, { mood: 'dizzy' });
         P.rrect(190, 40, 136, 56, 8, { fill: 'paper', w: 1.8 });
         P.text(258, 62, 'finish_reason', { mono: true, size: 12, weight: 700 });
         P.text(258, 84, '"length"', { mono: true, size: 13, weight: 700, c: 'bad' });
         P.text(258, 124, 'max_tokens=100', { mono: true, size: 12 });
-        P.text(150, 190, '왜 비었을까?', { size: 13, c: 'ink2' });
+        P.text(150, 190, '답은 어디 갔을까?', { size: 13, c: 'ink2' });
         head(P, 290, 166, 34, { mood: 'wow' });
       }},
 
@@ -278,7 +280,7 @@
         [0, 1, 2, 3].forEach(i => coin(P, 210 + i * 30, 78, 40));
         P.text(85, 126, '$0.30', { size: 16, weight: 700 });
         P.text(255, 126, '$1.20', { size: 16, weight: 700, c: 'bad' });
-        P.text(170, 154, '100만 토큰당 · solar-pro4 · 2026년 10월', { size: 12, c: 'ink2' });
+        P.text(170, 154, '100만 토큰당 · solar-pro4 · 정가', { size: 12, c: 'ink2' });
         clock(P, 46, 182, 26);
         P.text(196, 188, '답이 길수록 돈도 시간도 더 들어요', { size: 12, c: 'accent' });
       }},
@@ -621,7 +623,7 @@
         budget(P, 76, 104, 120, 30, [[1, 'sky', '추론']]);
         P.text(210, 124, '답 자리 없음', { size: 12, c: 'bad', anchor: 'start' });
         P.text(170, 22, 'max_tokens 상자', { size: 13, weight: 700 });
-        P.text(170, 166, 'finish_reason = "length", content = ""', { mono: true, size: 11 });
+        P.text(170, 166, 'finish_reason = "length", content = None', { mono: true, size: 11 });
         P.text(170, 192, '추론 토큰도 completion_tokens에 세져요', { size: 12, c: 'ink2' });
       }},
       cookbookRace: { w: 340, h: 200, label: '같은 계산 문제: none은 0.86초에 틀린 답, high는 12.85초에 맞는 답', draw(P) {
@@ -638,14 +640,14 @@
         P.text(230, 146, '12.85초', { size: 14, weight: 700, anchor: 'start' });
         P.text(255, 182, '답 맞음', { size: 14, weight: 700, c: 'good' });
       }},
-      alwaysWrite: { w: 340, h: 200, label: '공식 자료 두 장이 기본값을 서로 다르게 말하고, 코드에 reasoning_effort를 직접 적은 모습', draw(P) {
+      alwaysWrite: { w: 340, h: 200, label: '안 적으면 꺼진다는 공식 문서 쪽지와 의도가 안 보이는 코드 쪽지, 그래서 reasoning_effort를 직접 적은 코드', draw(P) {
         P.note(14, 20, 104, 70, { fill: 'paper' });
-        P.text(66, 44, '쿡북 실험', { size: 12, weight: 700 });
-        P.text(66, 72, '빼면 켜짐', { size: 13, weight: 700, c: 'bad' });
+        P.text(66, 44, '공식 문서', { size: 12, weight: 700 });
+        P.text(66, 72, '안 적으면 꺼짐', { size: 13, weight: 700, c: 'accent' });
         P.note(130, 20, 104, 70, { fill: 'paper' });
-        P.text(182, 44, 'Quickstart', { size: 12, weight: 700 });
-        P.text(182, 72, '기본 꺼짐', { size: 13, weight: 700, c: 'accent' });
-        head(P, 284, 56, 44, { mood: 'dizzy' });
+        P.text(182, 44, '코드만 보면', { size: 12, weight: 700 });
+        P.text(182, 72, '의도가 안 보여', { size: 13, weight: 700, c: 'warm' });
+        head(P, 284, 56, 44, { mood: 'wow' });
         P.rrect(40, 112, 260, 50, 8, { fill: 'ink', fs: 'solid' });
         P.text(56, 142, 'reasoning_effort="none"', { mono: true, size: 14, c: 'paper', anchor: 'start' });
         tick(P, 272, 136, 12);
@@ -661,14 +663,14 @@
         P.text(192, 77, 'effort="___"', { mono: true, size: 13, c: 'paper', anchor: 'start' });
         person(P, 270, 198, 'smile', 0.6);
       }},
-      q_emptyAns: { w: 340, h: 200, label: 'high와 max_tokens=50으로 보냈더니 빈 content가 돌아와 놀란 얼굴', draw(P) {
+      q_emptyAns: { w: 340, h: 200, label: 'high와 max_tokens=50으로 보냈더니 content가 None으로 돌아와 놀란 얼굴', draw(P) {
         P.rrect(14, 24, 160, 64, 8, { fill: 'ink', fs: 'solid' });
         P.text(26, 48, 'effort="high"', { mono: true, size: 12, c: 'paper', anchor: 'start' });
         P.text(26, 72, 'max_tokens=50', { mono: true, size: 12, c: 'paper', anchor: 'start' });
         P.arrow(180, 56, 210, 56, { c: 'accent', w: 2.2, head: 8 });
         P.rrect(216, 24, 110, 64, 8, { fill: 'paper', w: 2 });
         P.text(271, 48, 'content', { mono: true, size: 12, weight: 700 });
-        P.text(271, 76, '""', { mono: true, size: 18, weight: 700, c: 'bad' });
+        P.text(271, 76, 'None', { mono: true, size: 18, weight: 700, c: 'bad' });
         person(P, 170, 198, 'wow', 0.7);
         ask(P, 236, 150, 26);
       }},
@@ -895,11 +897,11 @@
         P.robot(270, 146, 0.5, { mood: 'wink' });
         shuffled(P);
       }},
-      t_emptyTrain: { w: 340, h: 200, label: '연수장 화면에 빈 content와 "length"가 뜨고 지켜보는 얼굴들', draw(P) {
+      t_emptyTrain: { w: 340, h: 200, label: '연수장 화면에 None인 content와 "length"가 뜨고 지켜보는 얼굴들', draw(P) {
         P.rrect(40, 14, 260, 110, 8, { fill: 'paper', w: 2 });
-        P.text(60, 48, 'content: ""', { mono: true, size: 14, anchor: 'start' });
+        P.text(60, 48, 'content: None', { mono: true, size: 14, anchor: 'start' });
         P.text(60, 80, 'finish_reason: "length"', { mono: true, size: 14, anchor: 'start', c: 'bad' });
-        P.text(60, 108, 'max_tokens=200', { mono: true, size: 13, anchor: 'start', c: 'ink2' });
+        P.text(60, 108, 'effort="high", max_tokens=200', { mono: true, size: 12, anchor: 'start', c: 'ink2' });
         P.line(170, 124, 170, 140, { w: 3 });
         [50, 110, 230, 290].forEach((x, i) => head(P, x, 164, 34, { mood: i === 1 ? 'wow' : 'smile' }));
         P.text(170, 172, '연수 실습 중', { size: 12, c: 'ink2' });
@@ -981,12 +983,12 @@
       ]},
       { t: 'say', h: '토큰은 곧 돈이고 시간이에요', fig: 'tokenCost', p: [
         '업스테이지 API는 <b>토큰 수로 값을 매겨요</b>. 내가 보낸 글(입력)과 모델이 만든 글(출력)을 따로 세고, 응답의 <code>usage</code>에 둘 다 찍혀 와요.',
-        '지금 가격으로는 출력이 입력보다 4배 비싸요. 그래서 "길게 써 줘"보다 "세 문장으로"가 돈도 시간도 아껴요.'
+        '정가로는 출력이 입력보다 4배 비싸요(지금은 할인 행사 중이라 실제로는 더 쌀 수 있어요). 그래서 "길게 써 줘"보다 "세 문장으로"가 돈도 시간도 아껴요.'
       ], table: { head: ['100만 토큰당', '<code>solar-pro4</code>', '<code>solar-mini4</code>'], rows: [
         ['입력(보낸 글)', '$0.30', '$0.10'],
         ['출력(만든 글)', '$1.20', '$0.40'] ] },
         code: { lang: 'json', src: src(['"usage": {', '  "prompt_tokens": 25,', '  "completion_tokens": 8,', '  "total_tokens": 33', '}']) },
-        tip: '어림 예: 학생 30명 × 질문 10개 × (입력 2천 + 출력 3백 토큰) ≈ 입력 60만·출력 9만 토큰 ≈ <code>solar-pro4</code>로 약 $0.29예요(2026년 10월 가격, 부가세 별도). 가격은 바뀌니 수업 전에 업스테이지 가격 페이지를 확인해요.' },
+        tip: '어림 예: 학생 30명 × 질문 10개 × (입력 2천 + 출력 3백 토큰) ≈ 입력 60만·출력 9만 토큰 ≈ <code>solar-pro4</code>로 약 $0.29예요(정가 기준, 부가세 별도). 할인 행사 중엔 더 쌀 수 있고 가격은 바뀌니, 수업 전에 업스테이지 가격 페이지를 확인해요.' },
       { t: 'q', kind: 'mc', fig: 'q_howAnswer', q: '<code>solar-pro4</code>가 답을 만드는 방식을 가장 정확하게 말한 것은?',
         opts: ['질문과 같은 글을 인터넷에서 검색해 찾아서 그대로 옮겨 온다', '앞의 글을 보고 다음 토큰을 하나씩 골라 이어 붙인다', '답 전체를 먼저 다 정해 두고 한 번에 꺼낸다', '학습 때 외운 문답표에서 같은 질문을 찾아 꺼낸다'], a: 1,
         why: 'LLM은 지금까지의 글을 보고 다음 토큰 후보마다 확률을 매기고, 하나 골라 붙이고, 다시 맞히기를 되풀이해요.',
@@ -1003,9 +1005,9 @@
         opts: ['total_tokens', 'max_tokens', 'completion_tokens', 'reasoning_effort'], a: 2,
         why: '<code>prompt_tokens</code>는 보낸 글(입력), <code>completion_tokens</code>는 만든 글(출력), <code>total_tokens</code>는 둘을 더한 값이에요.',
         ex: ['total_tokens는 입력과 출력을 더한 값이에요.', 'max_tokens는 응답이 아니라 요청에 적는 상한이에요.', '', 'reasoning_effort는 요청에 적는 추론 설정이에요. usage에 찍히는 숫자가 아니에요.'] },
-      { t: 'q', kind: 'mc', fig: 'q_inOut', q: '지금 <code>solar-pro4</code> 가격으로, 같은 1,000토큰이라도 값이 더 비싼 쪽은?',
+      { t: 'q', kind: 'mc', fig: 'q_inOut', q: '<code>solar-pro4</code> 정가로, 같은 1,000토큰이라도 값이 더 비싼 쪽은?',
         opts: ['모델이 만든 답(출력) 1,000토큰', '내가 보낸 글(입력) 1,000토큰', '입력과 출력은 늘 같은 값이다', '토큰과 상관없이 요청 한 번에 값이 정해진다'], a: 0,
-        why: '100만 토큰당 입력 $0.30, 출력 $1.20이라 출력이 4배 비싸요(2026년 10월 기준). 답을 짧게 받으면 돈과 시간이 함께 줄어요.',
+        why: '100만 토큰당 입력 $0.30, 출력 $1.20이라 출력이 4배 비싸요(정가 기준). 답을 짧게 받으면 돈과 시간이 함께 줄어요.',
         ex: ['', '입력은 출력의 4분의 1 값이에요.', '입력과 출력을 따로 세고 값도 달라요.', '값은 토큰 수로 매겨요. 요청 횟수가 같아도 글 길이에 따라 달라요.'] },
       { t: 'sum', pts: ['LLM은 지금까지의 글을 보고 다음 토큰을 예측한다. 후보마다 확률을 매기고, 하나 골라 붙이고, 다시 맞히기를 되풀이한다.', '토큰은 모델이 다루는 글 조각. 자르는 방식이 모델마다 달라 글자 수와 토큰 수가 다르다. 정확한 수는 usage로 확인한다.', '값은 토큰 수로 매기고 입력·출력을 따로 센다. 지금 solar-pro4는 출력이 입력의 4배. 답이 길수록 느리고 비싸다.'] }
     ]},
@@ -1152,9 +1154,9 @@
         ['<code>"high"</code>, <code>"xhigh"</code>, <code>"max"</code>', '켜요(뒤로 갈수록 더 많이)'] ] } },
       { t: 'say', h: '추론 토큰도 max_tokens 안에서 써요', fig: 'budget', p: [
         '추론 글도 모델이 만든 토큰이라 <code>max_tokens</code> 한도 안에서 써요. 추론이 먼저 자리를 차지하고, <b>남은 자리에 답</b>이 들어가요.',
-        '그래서 max_tokens가 작으면 추론만 하다 끝나 <b>보이는 답이 비고</b> <code>finish_reason</code>이 <code>"length"</code>로 와요. 공식 쿡북에서 값을 빼고 <code>max_tokens=100</code>으로 보냈더니 추론 토큰 100개, 답은 빈 글자였어요.',
+        '그래서 추론을 켰는데 max_tokens가 작으면 추론만 하다 끝나요. 이때 답 <code>content</code>는 <b><code>None</code>(값 없음)</b>으로 오고 <code>finish_reason</code>은 <code>"length"</code>예요. 공식 문서도 이 경우를 따로 경고해요.',
         '추론 토큰은 <code>completion_tokens</code>에 함께 세져요. 화면에 안 보여도 모델이 만든 토큰이라 그만큼 사용량이 늘어요.'
-      ], code: { lang: 'json', src: src(['"finish_reason": "length",', '"usage": {', '  "completion_tokens": 100,', '  "completion_tokens_details": {', '    "reasoning_tokens": 100', '  }', '}']) } },
+      ], code: { lang: 'json', src: src(['"message": { "content": null },', '"finish_reason": "length",', '"usage": {', '  "completion_tokens": 100,', '  "completion_tokens_details": {', '    "reasoning_tokens": 100', '  }', '}']) } },
       { t: 'say', h: '켜면 느려지고 비싸져요: 공식 쿡북의 실험', fig: 'cookbookRace', p: [
         '공식 쿡북은 <b>같은 계산 문제</b>를 추론을 끄고(<code>"none"</code>) 한 번, 켜고(<code>"high"</code>) 한 번 보내 비교했어요.',
         '켜니 정답을 맞혔지만 시간은 15배쯤, 토큰은 12배 가까이 들었어요. 쿡북도 높은 effort는 토큰·시간·비용을 늘리고 <b>더 좋은 답을 보장하지 않는다</b>고 적어 두었어요.'
@@ -1162,21 +1164,21 @@
         ['걸린 시간', '0.86초', '12.85초'],
         ['토큰', '전체 119', '추론 1,274 · 전체 1,392'],
         ['답', '틀림', '맞음'] ] } },
-      { t: 'say', h: '기본값이 자료마다 달라서, 늘 직접 적어요', fig: 'alwaysWrite', p: [
-        '<code>reasoning_effort</code>를 빼면 어떻게 될까요? 공식 쿡북 실험에서는 <b>빼니까 추론이 켜졌어요</b>(<code>"high"</code>처럼). 그런데 다른 공식 안내(Quickstart)에는 기본이 꺼져 있다는 설명이 있어요.',
-        '그래서 이 앱의 규칙은 하나예요. <b><code>reasoning_effort</code>를 늘 직접 적어요.</b> 문서 설명이 바뀌어도 내 코드는 내가 정한 대로 움직여요.',
+      { t: 'say', h: '안 적으면 꺼져요. 그래도 늘 직접 적어요', fig: 'alwaysWrite', p: [
+        '<code>reasoning_effort</code>를 안 적거나 <code>null</code>로 보내면 <code>solar-pro4</code>·<code>solar-mini4</code> 모두 <b>추론이 꺼져요</b>(공식 reasoning 문서). 켜려면 <code>"low"</code>~<code>"max"</code> 가운데 하나를 적어야 해요.',
+        '그래도 이 앱의 규칙은 하나예요. <b><code>reasoning_effort</code>를 늘 직접 적어요.</b> 코드만 읽어도 추론을 켰는지 껐는지 의도가 드러나고, 모델이나 기본값이 바뀌어도 내가 정한 대로 움직여요.',
         '수업 도구 대부분(채점·추출·짧은 설명)은 <code>"none"</code>으로 시작하고, 정말 여러 단계가 필요한 일만 켜서 결과와 시간을 비교해요.'
       ], code: { lang: 'py', src: src(['MODEL = "solar-pro4"', 'resp = client.chat.completions.create(', '    model=MODEL,', '    messages=msgs,', '    reasoning_effort="none",', ')']) },
-        tip: '연수장에서 옆 사람과 속도·결과가 다르면 <code>reasoning_effort</code>를 적었는지부터 비교해요.' },
+        tip: '연수장에서 옆 사람과 속도·결과가 다르면 <code>reasoning_effort</code> 값부터 비교해요. 곧 끝나는 옛 <code>solar-mini</code>는 이 값을 아예 받지 않아 400 오류가 나요.' },
       { t: 'q', kind: 'blank', fig: 'q_effortBlank', q: '수업 공지 글에서 날짜만 뽑는 정해진 일이에요. 공식 쿡북 권장에 맞게 빈칸을 채우면?', lang: 'py',
         code: src(['resp = client.chat.completions.create(', '    model=MODEL, messages=msgs,', '    temperature=0.1,', '    reasoning_effort="[[1]]")']),
         opts: ['high', 'max', 'none', 'xhigh'], a: 2,
         why: '정해진 추출·분류는 낮은 temperature와 추론 끄기(<code>"none"</code>)가 쿡북의 권장이에요. 빠르고 토큰도 적게 들어요.',
         ex: ['"high"는 어려운 여러 단계 문제에 쓰는 값이에요. 날짜 뽑기엔 느리고 비싸기만 해요.', '"max"는 추론을 가장 많이 하는 쪽이에요. 정해진 추출엔 맞지 않아요.', '', '"xhigh"도 추론을 많이 켜는 값이에요.'] },
-      { t: 'q', kind: 'mc', fig: 'q_emptyAns', q: '<code>reasoning_effort="high"</code>, <code>max_tokens=50</code>으로 보냈더니 <code>content</code>가 빈 글자예요. 왜일까요?',
+      { t: 'q', kind: 'mc', fig: 'q_emptyAns', q: '<code>reasoning_effort="high"</code>, <code>max_tokens=50</code>으로 보냈더니 <code>content</code>가 <code>None</code>이에요. 왜일까요?',
         opts: ['추론 토큰이 50개를 먼저 다 써서 답 자리가 없었다', 'high에서는 답이 늘 reasoning에만 담긴다', '크레딧이 다 떨어져 답이 지워졌다', 'temperature를 안 적어서 답을 고르지 못했다'], a: 0,
         why: '추론 토큰도 max_tokens 안에서 써요. 50개를 추론이 다 쓰면 답 자리가 남지 않아요. 추론이 필요하면 max_tokens를 넉넉히, 아니면 <code>"none"</code>으로 꺼요.',
-        ex: ['', 'reasoning은 추론 글이고 답은 content예요. 자리가 넉넉하면 답도 content에 와요.', '크레딧이 모자라면 403 오류가 나요. 빈 답이 오지 않아요.', 'temperature를 안 적으면 기본 1.0으로 뽑아요. 빈 답의 까닭이 아니에요.'] },
+        ex: ['', 'reasoning은 추론 글이고 답은 content예요. 자리가 넉넉하면 답도 content에 와요.', '크레딧이 모자라면 401·403 오류가 나요. 응답 자체가 오지 않아요.', 'temperature를 안 적으면 기본 1.0으로 뽑아요. 빈 답의 까닭이 아니에요.'] },
       { t: 'q', kind: 'mc', fig: 'q_whenOn', q: '추론을 켜서(<code>"high"</code>) 시간과 결과를 비교해 볼 만한 일은?',
         opts: ['학생 질문이 수업 질문인지 잡담인지 둘 중 하나로 나누기', '여러 단계로 풀어야 하는 알고리즘 문제의 풀이 검토하기', '공지 글에서 날짜와 장소만 뽑기', '"안녕하세요" 인사말 한 줄 만들기'], a: 1,
         why: '쿡북은 어려운 여러 단계 문제에 high 이상을 권해요. 그래도 늘 낫다는 보장은 없으니 none과 결과·시간을 비교해 봐요.',
@@ -1185,7 +1187,7 @@
         opts: ['맞다. high는 늘 더 좋은 답을 보장한다', '맞다. 추론 토큰은 사용량에 세지 않아 손해가 없다', '틀리다. high에서는 추론 토큰이 max_tokens 밖에서 따로 늘어 위험하다', '틀리다. 15배쯤 느리고 토큰이 늘며, 좋은 답이 보장되지도 않는다'], a: 3,
         why: '추론은 일에 맞춰 켜요. 학생이 기다리는 챗봇에서 매번 10초 넘게 걸리면 수업이 멈추고, 토큰도 크게 늘어요.',
         ex: ['쿡북도 더 좋은 답을 보장하지 않는다고 적었어요.', '추론 토큰도 completion_tokens에 세져요.', '반대예요. 추론 토큰은 max_tokens 안에서 써요.', ''] },
-      { t: 'sum', pts: ['추론을 켜면 답(content) 전에 추론 글(reasoning)을 먼저 만든다. none·minimal은 끄고, low·medium·high·xhigh·max는 켠다.', '추론 토큰도 max_tokens 안에서 쓰고 completion_tokens에 세진다. 작으면 답이 비고 finish_reason이 "length".', '켜면 느리고 비싸며 더 좋은 답을 보장하지 않는다(쿡북: none 0.86초 오답, high 12.85초 정답). 기본값이 자료마다 달라 늘 직접 적는다.'] }
+      { t: 'sum', pts: ['추론을 켜면 답(content) 전에 추론 글(reasoning)을 먼저 만든다. none·minimal은 끄고, low·medium·high·xhigh·max는 켠다.', '추론 토큰도 max_tokens 안에서 쓰고 completion_tokens에 세진다. 추론을 켰는데 작으면 content가 None, finish_reason이 "length".', '켜면 느리고 비싸며 더 좋은 답을 보장하지 않는다(쿡북: none 0.86초 오답, high 12.85초 정답). 안 적으면 꺼지지만, 의도를 드러내려 늘 직접 적는다.'] }
     ]},
 
     /* =================== QB =================== */
@@ -1231,10 +1233,10 @@
         '여러 교육청·기관의 AI 활용 안내에도 "AI 정보는 공식 출처로 사실 확인", "최종 판단은 교사"가 들어 있어요. 우리 학교·교육청 지침을 먼저 확인해요.',
         '학생에게도 같은 습관을 가르쳐요. "AI가 그랬어요"가 아니라 "AI가 이렇게 말했는데, 확인해 보니…"로 말하게요.'
       ]},
-      { t: 'sim', h: 'Playground에서 지어낸 답과 근거 있는 답 비교하기', p: '콘솔 Playground의 Chat에서 같은 걸 두 번 물어봐요. 처음엔 그냥, 다음엔 공지 자료를 붙여서요. 실제 답은 다를 수 있고, 모른다고 답할 때도 있어요.',
+      { t: 'sim', h: 'Playground에서 지어낸 답과 근거 있는 답 비교하기', p: '콘솔 Playground의 Chat에서 같은 걸 두 번 물어봐요. 처음엔 그냥, 다음엔 공지 자료를 붙여서요. 실제로는 Solar Pro 4를 고르면 Solar Chat 새 탭에서 답하고, 답도 다를 수 있어요.',
         scene: { win: 'web', url: 'console.upstage.ai', brand: 'Upstage Console', nav: PG_NAV, page: 'Chat', blocks: pgChat([]), aside: PG_ASIDE },
         steps: [
-          { goal: '우리 학교 수행평가를 물어요', type: Q_GUESS, into: 'chat', say: '모델은 우리 학교 계획을 본 적이 없어요. 어떻게 답할까요?' },
+          { goal: '우리 학교 수행평가를 물어요', type: Q_GUESS, into: 'chat', say: '모델은 우리 학교 계획을 본 적이 없어요. 어떻게 답할까요? (실제 화면에서는 solar-pro4를 고르면 Solar Chat 새 탭에서 답해요.)' },
           { goal: '보내요', click: 'btn:send', then: { blocks: pgChat([{ me: Q_GUESS }, { ai: A_GUESS }]) },
             say: '날짜·주제·배점까지 매끄럽게 썼지만 모두 지어낸 내용이에요. 이게 <b>환각</b>이에요.' },
           { goal: '공지를 붙여 다시 물어요', type: Q_DOC, into: 'chat', say: '근거 자료와 "없으면 없다고"를 함께 적었어요.' },
@@ -1265,26 +1267,26 @@
       intro: '이번 단원에서 배운 원리를 진짜로 확인해 봐요. 1~3번은 콘솔 <b>Playground</b>에서, 5번은 내 Cursor에서 해요. 끝낸 것부터 체크하고 한 줄 메모를 남겨요. 학생 이름·성적 같은 개인정보는 어디에도 넣지 않아요.',
       tasks: [
         { do: 'Playground Chat에서 같은 질문을 세 번 보내 비교해요',
-          how: '콘솔 왼쪽 <b>Playground</b> 아래 <b>Chat</b>을 열어요(화면 모양은 바뀔 수 있어요). 새 대화를 열 때마다 같은 질문을 보내요: <code>파이썬 변수를 중학생에게 한 문장 비유로 설명해 줘</code>.',
+          how: '콘솔 위쪽 막대의 <b>Playground</b>에서 <b>Chat</b>을 열고 Solar Pro 4를 골라요. 질문은 <b>Solar Chat</b> 새 탭으로 열려 거기서 답해요(화면 모양은 바뀔 수 있어요). 새 대화를 열 때마다 같은 질문을 보내요: <code>파이썬 변수를 중학생에게 한 문장 비유로 설명해 줘</code>.',
           check: '세 답을 메모에 옮기고 같은 점·다른 점을 한 줄씩 적었으면 성공. 답이 다르면 레슨 3의 표집 때문이에요.' },
-        { do: '(선택) temperature를 바꿔 같은 질문을 다시 해요',
-          how: 'Playground에 temperature를 바꾸는 칸이 보이면 0.2와 1.5로 각각 세 번씩 보내요. 공식 문서에 Playground 조절 칸 설명이 없어서, 칸을 못 찾으면 건너뛰고 이 과정 단원 3에서 코드로 해요(레슨 3 모의 화면의 <code>temp_test.py</code>).',
-          check: '0.2의 세 답이 1.5의 세 답보다 서로 비슷한지 메모했으면 성공. 건너뛰었다면 체크만 하고 넘어가요.' },
+        { do: '(선택) Playground의 모델 목록과 설정 칸을 살펴봐요',
+          how: 'Chat의 모델 목록을 열어 봐요. Solar Pro 4·Solar Mini 4는 질문을 Solar Chat 새 탭으로 보내고, System Prompt·Temperature 같은 설정 칸은 곧 끝나는 옛 모델(Solar Pro 3 등)을 골랐을 때만 보여요. 그래서 temperature 실험은 이 과정 단원 3에서 코드로 해요(레슨 3 모의 화면의 <code>temp_test.py</code>).',
+          check: '모델 목록에 무엇이 있는지, Solar Pro 4를 골랐을 때 설정 칸이 보이는지 메모했으면 성공.' },
         { do: '환각을 부르는 질문 셋을 보내고 기록해요',
           how: '① 2026년 2월 뒤의 일(예: "2026년 9월에 나온 교육 정책 소식 3가지") ② 큰 수 계산(예: <code>4782 × 3659</code>) ③ 출처(예: "변수 개념을 다룬 논문 두 편을 제목과 주소까지"). 계산은 계산기나 파이썬으로, 주소는 직접 열어 확인해요.',
           check: '질문마다 "맞음 / 틀림 / 모른다고 함"을 표로 적었으면 성공. 지어낸 답이 나왔다면 그것도 좋은 수업 자료예요.' },
         { do: '내 수업으로 토큰과 비용을 어림해요',
-          how: '지금 <code>solar-pro4</code> 가격(100만 토큰당 입력 $0.30, 출력 $1.20)으로 먼저 예시를 계산해요: 학생 30명 × 질문 10개 × (입력 2천 + 출력 3백 토큰). 그다음 내 반 학생 수·질문 수로 바꿔 한 번 더 해요.',
-          check: '예시가 약 $0.29로 나오고 내 수업 숫자로도 계산했으면 성공. 가격은 바뀌니 <code>upstage.ai/pricing/api</code>에서 확인해요.' },
+          how: '<code>solar-pro4</code> 정가(100만 토큰당 입력 $0.30, 출력 $1.20)로 먼저 예시를 계산해요: 학생 30명 × 질문 10개 × (입력 2천 + 출력 3백 토큰). 그다음 내 반 학생 수·질문 수로 바꿔 한 번 더 해요.',
+          check: '예시가 약 $0.29로 나오고 내 수업 숫자로도 계산했으면 성공. 지금은 할인 행사 중이라 실제로는 더 쌀 수 있으니 <code>upstage.ai/pricing/api</code>에서 확인해요.' },
         { do: 'Cursor 에이전트에게 temperature 계산 스크립트를 맡겨요',
           how: 'Cursor로 <code>upstage-lab</code> 폴더를 열어요(아직 없으면 빈 폴더를 만들고 <code>git init</code>). 시작 전에 <code>git status</code>를 보고 바뀐 게 있으면 먼저 커밋해요. 이 스크립트는 API를 부르지 않아서 키도 돈도 들지 않아요.',
           check: '<code>python temp_lab.py</code>(Mac에서 안 되면 <code>python3</code>)를 돌렸을 때 0.2에서 1등 확률이 가장 크고 1.5에서 가장 작으면 성공. 확인했으면 커밋해요.',
           prompt: '업스테이지한입 c1u2에서 배운 temperature 계산을 확인하고 싶어. upstage-lab 폴더에 temp_lab.py를 만들어 줘.\n- 조건: 파이썬 표준 라이브러리 math만 쓰고, API·인터넷·API 키는 쓰지 마.\n- 다음 조각 후보 4개 "반복", "여러", "계속", "한"의 점수(logit)는 2.0, 1.0, 0.5, 0.1이야.\n- temperature 0.2, 1.0, 1.5마다 점수를 temperature로 나누고 math.exp로 확률을 계산해서, 후보별 확률을 소수 첫째 자리까지 %로 출력해.\n- 주석은 한국어로, 20줄 이내로.\n- 다른 파일은 바꾸지 마.\n- 다 만들면 직접 실행해서 출력을 보여 주고, temperature가 낮을수록 1등 확률이 커지는지 한 줄로 확인해 줘.' },
         { do: '연수에서 물어볼 질문을 메모해요',
-          how: '오늘 헷갈렸거나 문서끼리 달랐던 것을 질문으로 바꿔요. 예: "Playground에서 reasoning_effort 기본값은 무엇인가요?", "연수 실습 계정의 속도 제한은 얼마인가요?"',
+          how: '오늘 헷갈렸거나 문서끼리 달랐던 것을 질문으로 바꿔요. 예: "Solar Chat에서 받은 답과 API로 받은 답이 다른 까닭은 무엇일까요?", "학생 30명이 동시에 쓰려면 어느 등급(Tier)이 필요할까요?"',
           check: '1일차 13:00 「Solar로 보는 LLM의 원리」 시간에 물을 질문 3개를 메모했으면 성공.' }
       ],
-      note: '예상 비용: Playground 질문 열 번 안팎은 아주 적어요(지금 가격으로 1센트 안팎). 키 없이도 Playground를 써 볼 수 있다는 안내가 있지만, 쓴 만큼 크레딧이 줄었는지 <b>Billing</b>의 <b>Usage</b>에서 확인해요. 이 미션은 API 키를 쓰지 않아요. 키를 채팅 칸이나 메모에 붙이지 않아요.' },
+      note: '예상 비용: Playground는 무료라 크레딧이 줄지 않아요. Chat은 로그인 없이도 써 볼 수 있어요. 다만 Playground에 넣은 글은 모델 개선에 쓰일 수 있으니 학생 정보는 넣지 않아요. 이 미션은 API 키를 쓰지 않아요. 키를 채팅 칸이나 메모에 붙이지 않아요.' },
 
     /* =================== T1 =================== */
     { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 12, pass: 0.7, steps: [
@@ -1303,9 +1305,9 @@
       { t: 'q', kind: 'order', fig: 't_turnOrder', q: '수업 챗봇이 학생의 두 번째 질문에 앞 대화를 이어 답하도록, messages를 만드는 순서로 쌓아 보세요.',
         items: ['system에 선생님 역할과 규칙을 넣는다', '학생의 첫 질문을 user로 넣는다', '모델의 첫 답을 assistant로 붙인다', '학생의 두 번째 질문을 user로 붙여 보낸다'],
         why: '규칙은 맨 앞, 그다음 대화가 오간 차례 그대로 붙여요. API는 기억하지 않으니 이 목록 전체를 한 요청으로 보내요.' },
-      { t: 'q', kind: 'mc', fig: 't_emptyTrain', q: '연수 실습에서 <code>max_tokens=200</code>만 적고 <code>reasoning_effort</code>는 빼고 보냈더니, <code>content</code>가 빈 글자이고 <code>finish_reason</code>이 <code>"length"</code>예요. 먼저 할 일은?',
-        opts: ['API 키를 지우고 콘솔에서 새 키를 만들어 바꾼다', 'temperature를 0으로 낮춰 답이 나오게 한다', 'reasoning_effort="none"을 직접 적는다', 'base_url 끝에 /solar를 붙여 다시 보내 본다'], a: 2,
-        why: '값을 빼면 추론이 켜질 수 있어요(쿡북 실험). 추론 토큰이 200을 다 써서 답 자리가 없었던 거예요. 늘 직접 적어요.',
+      { t: 'q', kind: 'mc', fig: 't_emptyTrain', q: '연수 실습에서 공지 글의 날짜만 뽑으려고 <code>reasoning_effort="high"</code>, <code>max_tokens=200</code>으로 보냈더니, <code>content</code>가 <code>None</code>이고 <code>finish_reason</code>이 <code>"length"</code>예요. 먼저 할 일은?',
+        opts: ['API 키를 지우고 콘솔에서 새 키를 만들어 바꾼다', 'temperature를 0으로 낮춰 답이 나오게 한다', 'reasoning_effort를 "none"으로 바꿔 추론을 끈다', 'base_url 끝에 /solar를 붙여 다시 보내 본다'], a: 2,
+        why: '추론을 켜면 추론 토큰도 max_tokens 안에서 써요. 200개를 추론이 다 써서 답 자리가 없었던 거예요. 날짜 뽑기엔 추론이 필요 없으니 <code>"none"</code>으로 꺼요(추론이 필요한 일이면 max_tokens를 넉넉히).',
         ex: ['키 문제면 401 오류가 나요. 응답이 왔으니 키는 멀쩡해요.', 'temperature는 뽑는 방식을 바꿀 뿐, 추론 토큰이 자리를 차지하는 문제는 그대로예요.', '', '옛 예제의 주소예요. 지금은 https://api.upstage.ai/v1을 써요.'] },
       { t: 'q', kind: 'mc', fig: 't_slowChat', q: '학생 질문을 받는 챗봇이 대화가 길어질수록 느려지고 사용량이 빨리 늘어요. 왜일까요?',
         opts: ['매번 앞의 대화를 모두 다시 보내 입력 토큰이 쌓여서', '모델이 대화를 기억하느라 저장 요금이 붙어서', 'temperature가 대화마다 저절로 올라가서', '질문이 50개를 넘으면 그때부터 값이 두 배가 되어서'], a: 0,
@@ -1315,9 +1317,9 @@
         opts: ['AI가 계산한 것이니 맞다고 알려 준다', '계산기나 코드로 직접 확인해 보게 한다', 'temperature를 0으로 다시 물으면 늘 맞는다고 알려 준다', '자릿수가 많아서 틀린 것이니 짧은 곱셈은 믿어도 된다고 알려 준다'], a: 1,
         why: 'LLM은 계산기를 돌리지 않고 숫자 토큰을 이어 써요. 실제 답은 11,390,967이에요. 확인하는 습관이 AI 리터러시의 시작이에요.',
         ex: ['실제로 계산해 보면 11,390,967이에요. AI 답도 확인이 필요해요.', '', '낮은 temperature는 일정하게 만들 뿐, 계산이 맞는다는 보장은 아니에요.', '짧은 계산도 틀릴 수 있어요. 숫자는 늘 확인해요.'] },
-      { t: 'q', kind: 'mc', fig: 't_costCalc', q: '지금 <code>solar-pro4</code> 가격(100만 토큰당 입력 $0.30, 출력 $1.20)으로 어림해요. 학생 30명이 질문 10개씩, 한 번에 입력 2천·출력 3백 토큰이면 대략 얼마일까요?',
+      { t: 'q', kind: 'mc', fig: 't_costCalc', q: '<code>solar-pro4</code> 정가(100만 토큰당 입력 $0.30, 출력 $1.20)로 어림해요. 학생 30명이 질문 10개씩, 한 번에 입력 2천·출력 3백 토큰이면 대략 얼마일까요?',
         opts: ['약 $2.9', '약 $0.03', '약 $29', '약 $0.29'], a: 3,
-        why: '입력 30 × 10 × 2,000 = 60만 토큰 → $0.18, 출력 30 × 10 × 300 = 9만 토큰 → 약 $0.11. 합쳐서 약 $0.29예요(부가세 별도, 가격은 바뀔 수 있어요).',
+        why: '입력 30 × 10 × 2,000 = 60만 토큰 → $0.18, 출력 30 × 10 × 300 = 9만 토큰 → 약 $0.11. 합쳐서 약 $0.29예요(정가·부가세 별도라 할인 중엔 실제로 더 쌀 수 있어요).',
         ex: ['열 배 많아요. 100만으로 나눌 때 0을 하나 덜 뗐어요.', '열 배 적어요. 입력 60만 토큰만 해도 $0.18이에요.', '백 배 많아요. 토큰 수를 100만으로 나누는 걸 잊었어요.', ''] },
       { t: 'q', kind: 'mc', fig: 't_bothKnobs', q: '연수 실습에서 답이 들쭉날쭉해서 temperature와 top_p를 한꺼번에 크게 바꿨더니, 무엇 때문에 달라졌는지 모르겠어요. 공식 쿡북 권장에 맞는 방법은?',
         opts: ['둘 중 하나만 조절하고 하나씩 바꿔 비교한다', 'top_p는 0으로, temperature는 2로 둘 다 끝까지 바꾼다', 'reasoning_effort를 "max"로 올리면 들쭉날쭉이 사라진다', 'max_tokens를 줄이면 답이 일정해진다'], a: 0,

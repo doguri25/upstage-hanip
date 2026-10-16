@@ -160,7 +160,11 @@
   }
 
   /* ---------- 모의 화면에서 되풀이하는 조각 ---------- */
-  const NAV = ['Home', 'Playground', { name: 'Chat', sub: true }, { name: 'Document Parse', sub: true }, 'API keys', 'Billing'];
+  const NAV = ['Playground', { name: 'Chat', sub: true }, { name: 'Document Parse', sub: true }, { name: 'Document OCR', sub: true }];
+  // Document Parse Playground 오른쪽 Configuration(실제 콘솔 화면의 칸 이름)
+  const DP_ASIDE = [{ k: 'h', text: 'Configuration' }, { k: 'select', id: 'mode', label: 'Mode', value: 'Standard' }, { k: 'select', id: 'ocr', label: 'OCR Mode', value: 'Auto' },
+    { k: 'toggle', id: 'merge', label: 'Merge Multipage Tables', on: false }, { k: 'toggle', id: 'chart', label: 'Chart Recognition', on: true }];
+  const TABS = on => ({ k: 'tabs', id: 'view', items: ['Preview', 'HTML', 'JSON'], on });
   const DOCS = ['3단원_학습지.pdf', '수행평가_안내.hwp'];
   const H_DP = { k: 'h', text: 'Document Parse' };
   const FILES_ON = { k: 'files', id: 'doc', items: DOCS, on: '3단원_학습지.pdf' };
@@ -181,6 +185,7 @@
   const TABLE_HTML = src(['<table>', '  <tr><td>입력</td><td>처리</td><td>출력</td></tr>', '  <tr><td>두 수</td><td>더하기</td><td>합</td></tr>', '</table>']);
   const TABLE_MD = src(['| 입력 | 처리 | 출력 |', '| --- | --- | --- |', '| 두 수 | 더하기 | 합 |']);
   const PARA = '두 수를 입력받아 합을 출력하는 과정을 표로 정리해 봐요.';
+  const ELS_JSON = src(['{', '  "elements": [', '    {"category": "header", "page": 1},', '    {"category": "heading1", "page": 1},', '    {"category": "list", "page": 1},', '    {"category": "paragraph", "page": 1},', '    {"category": "table", "page": 1},', '    …', '  ]', '}']);
 
   const LAB = ['.venv/', '.env', '.gitignore', 'hello_solar.py', 'parse.py', 'unit3.pdf'];
   const HELLO = src(['import os', 'from dotenv import load_dotenv', 'from openai import OpenAI', '', 'load_dotenv()', 'client = OpenAI(', '    api_key=os.environ["UPSTAGE_API_KEY"],', '    base_url="https://api.upstage.ai/v1",', ')', 'MODEL = "solar-pro4"']);
@@ -216,11 +221,16 @@
     checked: { date: '2026-10-16' },
     sources: [
       'https://console.upstage.ai/docs/capabilities/parse/document-parsing',
+      'https://console.upstage.ai/docs/capabilities/parse/input-requirements',
+      'https://console.upstage.ai/docs/capabilities/parse/understanding-output',
+      'https://console.upstage.ai/docs/models/document-parse',
       'https://console.upstage.ai/api/parse/document-parsing',
       'https://console.upstage.ai/api/parse/document-parsing/async',
       'https://console.upstage.ai/docs/getting-started',
       'https://console.upstage.ai/docs/models/history',
       'https://console.upstage.ai/docs/resources/error-codes',
+      'https://console.upstage.ai/docs/guides/rate-limits',
+      'https://console.upstage.ai/docs/resources/faq',
       'https://www.upstage.ai/pricing/api',
       'https://github.com/UpstageAI/upstage-extensions-hub'
     ],
@@ -328,20 +338,18 @@
       }},
 
       /* ---------- L2 설명 그림 ---------- */
-      consoleNav: { w: 340, h: 210, label: '콘솔 왼쪽 메뉴에서 Playground 아래 Document Parse를 고른 모습', draw(P) {
+      consoleNav: { w: 340, h: 210, label: '콘솔 Playground의 왼쪽 메뉴에서 Document Parse를 고른 모습', draw(P) {
         win(P, 10, 10, 320, 166);
         P.text(56, 26, 'console.upstage.ai', { mono: true, size: 9, anchor: 'start', c: 'ink2' });
         P.line(122, 32, 122, 176, { w: 1.3 });
-        P.text(20, 52, 'Home', { size: 11, anchor: 'start' });
-        P.text(20, 72, 'Playground', { size: 11, anchor: 'start' });
-        P.text(30, 92, 'Chat', { size: 10, anchor: 'start', c: 'ink2' });
-        P.rrect(24, 100, 94, 18, 4, { fill: 'hi', gap: 4, w: 1.2 });
-        P.text(30, 113, 'Document Parse', { size: 10, anchor: 'start', weight: 700 });
-        P.text(20, 138, 'API keys', { size: 11, anchor: 'start' });
-        P.text(20, 158, 'Billing', { size: 11, anchor: 'start' });
+        P.text(20, 52, 'Playground', { size: 11, anchor: 'start' });
+        P.text(30, 76, 'Chat', { size: 10, anchor: 'start', c: 'ink2' });
+        P.rrect(24, 86, 94, 18, 4, { fill: 'hi', gap: 4, w: 1.2 });
+        P.text(30, 99, 'Document Parse', { size: 10, anchor: 'start', weight: 700 });
+        P.text(30, 124, 'Document OCR', { size: 10, anchor: 'start', c: 'ink2' });
         P.rrect(138, 44, 178, 84, 8, { c: 'soft', w: 1.6 });
         file(P, 204, 52, 46, 60, 'PDF', null, 'paper', 11);
-        P.text(196, 156, '키 없이 체험', { size: 13, weight: 700, c: 'accent' });
+        P.text(196, 156, '로그인하면 키 없이', { size: 12, weight: 700, c: 'accent' });
         P.face(290, 152, 30, { mood: 'happy' });
         P.text(170, 200, '화면 모양은 바뀔 수 있어요', { size: 12, c: 'ink2' });
       }},
@@ -469,12 +477,12 @@
         P.text(284, 178, '테두리 하나', { size: 11, c: 'ink2' });
         P.text(108, 194, 'elements의 칸 하나', { size: 12, weight: 700, c: 'accent' });
       }},
-      twelve: { w: 340, h: 200, label: '요소 이름 12가지 칩이 세 줄로 놓인 모습', draw(P) {
-        const names = ['heading1', 'paragraph', 'list', 'table', 'figure', 'chart', 'equation', 'caption', 'header', 'footer', 'index', 'footnote'];
-        const fills = ['hi', 'paper', 'good', 'sky', 'pink', 'pink', 'warm', 'paper', 'soft', 'soft', 'paper', 'paper'];
-        names.forEach((n, i) => chip(P, 8 + (i % 4) * 82, 16 + Math.floor(i / 4) * 44, 76, 34, n, fills[i], 11));
+      thirteen: { w: 340, h: 200, label: '요소 이름 13가지 칩이 세 줄로 놓인 모습', draw(P) {
+        const names = ['heading1', 'paragraph', 'list', 'table', 'figure', 'chart', 'equation', 'caption', 'header', 'footer', 'index', 'footnote', 'code'];
+        const fills = ['hi', 'paper', 'good', 'sky', 'pink', 'pink', 'warm', 'paper', 'soft', 'soft', 'paper', 'paper', 'sky'];
+        names.forEach((n, i) => chip(P, 6 + (i % 5) * 66, 16 + Math.floor(i / 5) * 44, 62, 34, n, fills[i], 10));
         P.text(170, 172, '공식 문서의 요소 이름 전부', { size: 13, weight: 700, c: 'accent' });
-        P.text(170, 194, 'heading2는 없어요', { size: 12, c: 'ink2' });
+        P.text(170, 194, '소제목 깊이는 sub_category로', { size: 12, c: 'ink2' });
       }},
       chartEq: { w: 340, h: 200, label: '막대그래프는 표로, 수식은 LaTeX 글자로 바뀌는 모습', draw(P) {
         P.line(22, 24, 22, 92, { w: 2 });
@@ -617,12 +625,12 @@
         P.text(170, 172, '스캔본엔 ocr, 복잡한 표엔 mode', { size: 13, c: 'accent' });
         P.text(170, 194, 'enhanced는 쪽당 값이 더 비싸요', { size: 12, c: 'ink2' });
       }},
-      bigDoc: { w: 340, h: 200, label: '300쪽 문서를 동기로 보내면 앞 100쪽만, 비동기로 보내면 번호표를 받고 10쪽 묶음으로 받는 모습', draw(P) {
+      bigDoc: { w: 340, h: 200, label: '300쪽 문서를 동기로 보내면 413 오류로 거절되고, 비동기로 보내면 번호표를 받고 10쪽 묶음으로 받는 모습', draw(P) {
         book(P, 14, 46, 84, 104, '300쪽');
         P.arrow(112, 70, 156, 70, { c: 'accent', w: 2.2, head: 8 });
         P.text(134, 60, '동기', { size: 11, weight: 700 });
         P.rect(162, 46, 72, 48, { fill: 'paper', fs: 'solid', w: 1.8 });
-        P.text(198, 76, '100쪽만', { size: 12, weight: 700, c: 'bad' });
+        P.text(198, 76, '413 거절', { size: 12, weight: 700, c: 'bad' });
         P.arrow(112, 126, 156, 132, { c: 'accent', w: 2.2, head: 8 });
         P.text(134, 152, '비동기', { size: 11, weight: 700 });
         P.rrect(162, 112, 72, 40, 6, { fill: 'hi', gap: 5 });
@@ -772,9 +780,9 @@
         file(P, 250, 28, 78, 88, 'lesson.key', 'wow', 'hi', 10);
         P.text(170, 190, '연수장, 옆자리 선생님 노트북', { size: 12, c: 'ink2' });
       }},
-      t_100: { w: 340, h: 200, label: '120쪽 교과서와 쪽수 100이 찍힌 터미널', draw(P) {
+      t_100: { w: 340, h: 200, label: '120쪽 교과서와 413 오류가 찍힌 터미널', draw(P) {
         book(P, 18, 46, 92, 116, '120쪽');
-        term(P, 136, 40, 190, 70, ['$ python parse.py', '쪽수: 100'], 11);
+        term(P, 136, 40, 190, 70, ['$ python parse.py', 'HTTPError: 413'], 11);
         ask(P, 231, 150, 28);
         P.text(170, 194, '연수 실습 중', { size: 12, c: 'ink2' });
       }},
@@ -877,7 +885,7 @@
         ['학습지(표·빈칸)', '표가 한 줄로 뭉개져요', '표는 <code>table</code> 요소로'],
         ['교과서 한 쪽(2단·그림)', '단 순서가 섞여요', '읽는 순서대로, 그림 설명은 <code>caption</code>으로'],
         ['스캔한 시험지', '복사할 글자가 없어요', 'OCR로 글자를 읽어 요소로'],
-        ['HWP 공문', '한글 프로그램 없이는 열기도 어려워요', 'HWP·HWPX도 받는다고 안내돼 있어요(2026년 5월 문서, 직접 확인)'] ] } },
+        ['HWP 공문', '한글 프로그램 없이는 열기도 어려워요', 'HWP·HWPX도 그대로 받아요'] ] } },
       { t: 'say', h: '파싱한 글은 과정 2·3 내내 쓰여요', fig: 'journey', p: [
         '이번 단원에서 만든 Markdown은 다음 단원들의 재료예요. c2u2에서는 문항·정답을 뽑고, c2u3에서는 조각으로 나눠 검색하고, c3u1에서는 내 수업자료로 대답하는 보조 에이전트를 만들어요.',
         '연수 1일차 14:00 「수업자료를 데이터로」 차시가 바로 이 흐름이에요. 파싱이 엉망이면 뒤의 검색과 답도 엉망이 되니, 첫 단추를 잘 끼워요.',
@@ -902,43 +910,45 @@
     ]},
 
     /* =================== L2 =================== */
-    { id: 'L2', type: 'lesson', title: 'Playground에서 학습지 파싱해 보기', sub: '파일 고르기 → 요소 강조 → 요소별 결과', min: 10, steps: [
+    { id: 'L2', type: 'lesson', title: 'Playground에서 학습지 파싱해 보기', sub: '파일 고르기 → 요소 강조 → 요소별 결과', min: 11, steps: [
       { t: 'say', h: '콘솔 Playground에서 키 없이 먼저 해 봐요', fig: 'consoleNav', p: [
-        'c1u1에서 둘러본 콘솔의 <b>Playground</b> 아래에 <b>Document Parse</b>가 있어요. 공식 안내에 따르면 견본이나 내 파일로 HTML·Markdown 변환을 API 키 없이 해 볼 수 있어요.',
-        '콘솔 화면 모양은 바뀔 수 있어요. 메뉴 이름이나 단추 자리가 이 앱과 다르면, 왼쪽 메뉴에서 Playground 아래 Document Parse를 찾으면 돼요.',
+        '콘솔 위쪽 막대의 <b>Playground</b>로 들어가면 왼쪽 메뉴에 <b>Chat</b>, <b>Document Parse</b>, <b>Document OCR</b>이 있어요. Document Parse는 <b>로그인만 하면</b> API 키 없이 견본이나 내 파일로 변환 결과를 볼 수 있어요(로그인 없이 보는 데모는 지금 잠시 멈춰 있어요).',
+        '콘솔 화면 모양은 바뀔 수 있어요. 메뉴 자리가 이 앱과 다르면, Playground 왼쪽 메뉴의 PARSE 묶음에서 Document Parse를 찾으면 돼요.',
         '코드를 짜기 전에 Playground로 "내 자료가 어떻게 읽히나"를 먼저 보면, 뒤에서 <code>mode</code>나 <code>ocr</code>을 고를 때 감이 와요.'
       ]},
       { t: 'say', h: '결과는 요소마다 테두리와 이름표로 보여요', fig: 'highlightFig', p: [
         '파싱이 끝나면 문서 쪽 위에 요소마다 강조 표시가 붙어요. 이름표는 Document Parse가 붙인 요소 이름(<code>category</code>)이에요. <code>header</code>는 머리말, <code>heading1</code>은 제목, <code>table</code>은 표예요.',
         '예전 안내에는 올린 문서의 첫 쪽을 보여 준다고 되어 있어요. 여러 쪽짜리 자료를 통째로 다루는 건 레슨 4의 <code>parse.py</code>로 해요.',
-        '이 앱의 연습 화면에서는 요소를 누르면 그 요소의 HTML과 Markdown이 아래에 나와요. 진짜 콘솔에서 결과를 펼쳐 보는 방법은 다를 수 있어요.'
+        '진짜 콘솔은 결과를 <b>Preview · HTML · JSON</b> 탭으로 보여 주고, 요소마다 "1 - Header"처럼 번호와 종류를 붙여요. 이 앱의 연습 화면에서는 요소를 누르면 그 요소의 HTML과 Markdown이 아래에 나와요.'
       ]},
       { t: 'say', h: 'Playground에서 눈여겨볼 네 가지', fig: 'checkFour', table: { head: ['볼 것', '왜'], rows: [
         ['표가 <code>table</code>로 나왔나', '칸의 짝이 살아야 채점·검색에 써요'],
         ['읽는 순서가 맞나', '2단·글상자 자료는 순서가 섞이기 쉬워요'],
         ['머리말·꼬리말', '쪽마다 되풀이돼서 자료로 쓸 땐 걸러요(레슨 5)'],
         ['그림·차트', '그래프는 표로 바뀌기도 해요(레슨 3)'] ] }, p: [
-        '표가 복잡하거나 스캔본이라 결과가 엉성하면 <b>mode</b>를 바꿔 볼 수 있어요. 기본 <code>standard</code>는 싸고 빠르고, <code>enhanced</code>는 복잡한 표·차트·스캔본을 더 잘 다루는 대신 비싸요. 업스테이지 블로그에는 enhanced도 Playground에서 시험해 볼 수 있다고 나와 있어요.',
-        '<b>학생 개인정보가 담긴 문서는 올리지 않아요.</b> 이름·성적·상담 기록이 든 파일 대신 내가 만든 학습지나 공개 자료로 시험하고, 학교·교육청 지침도 먼저 확인해요.'
+        '표가 복잡하거나 스캔본이라 결과가 엉성하면 <b>mode</b>를 바꿔 볼 수 있어요. 기본 <code>standard</code>는 싸고 빠르고, <code>enhanced</code>는 복잡한 표·차트·스캔본을 더 잘 다루는 대신 비싸요. Playground에서는 오른쪽 <b>Configuration</b>의 <b>Mode</b>(Standard/Enhanced)와 <b>OCR Mode</b>(Auto/Force)로 바꿔 봐요.',
+        '<b>학생 개인정보가 담긴 문서는 올리지 않아요.</b> 공식 FAQ에 따르면 Playground에 넣은 내용은 모델 개선에 쓰일 수 있어요(API로 보낸 내용은 학습에 쓰지 않는다고 안내해요). 내가 만든 학습지나 공개 자료로 시험하고, 학교·교육청 지침도 먼저 확인해요.'
       ]},
-      { t: 'sim', h: 'Playground에서 학습지를 파싱해 봐요', p: '콘솔 왼쪽 메뉴의 Playground 아래 Document Parse로 가서 학습지를 고르고, 표·문단·머리말 요소를 하나씩 눌러 봐요.',
-        scene: { win: 'web', url: 'console.upstage.ai', brand: 'Upstage Console', nav: NAV, page: 'Home', blocks: [{ k: 'h', text: 'Home' }] },
+      { t: 'sim', h: 'Playground에서 학습지를 파싱해 봐요', p: 'Playground 왼쪽 메뉴의 Document Parse로 가서 학습지를 고르고, 표·문단·머리말 요소를 하나씩 눌러 본 뒤 JSON 탭도 열어 봐요.',
+        scene: { win: 'web', url: 'console.upstage.ai', brand: 'Upstage Console', nav: NAV, page: 'Chat', blocks: [{ k: 'h', text: 'Chat' }] },
         steps: [
-          { goal: 'Playground 아래 Document Parse를 눌러요', click: 'nav:Document Parse', then: { page: 'Document Parse', blocks: [H_DP, { k: 'files', id: 'doc', items: DOCS }] },
-            say: '문서를 올려 파싱해 보는 곳이에요. 이 연습 화면은 내 컴퓨터에서 파일을 고르는 장면을 파일 목록으로 단순하게 옮겼어요.' },
-          { goal: '<code>3단원_학습지.pdf</code>를 골라요', click: 'file:3단원_학습지.pdf', then: { blocks: [H_DP, FILES_ON, pg(0)] },
-            say: '쪽 위에 요소마다 테두리와 이름표가 붙었어요. 이 연습 화면에서는 파일을 고르면 바로 결과가 나와요. 진짜 콘솔은 단추나 순서가 다를 수 있어요.' },
-          { goal: '표 요소(<code>table</code>)를 눌러요', click: 'el:5', then: { blocks: [H_DP, FILES_ON, pg(5), { k: 'code', lang: 'html', label: 'table · HTML', src: TABLE_HTML }, { k: 'code', lang: 'md', label: 'table · Markdown', src: TABLE_MD }] },
+          { goal: '왼쪽 메뉴에서 Document Parse를 눌러요', click: 'nav:Document Parse', then: { page: 'Document Parse', blocks: [H_DP, { k: 'files', id: 'doc', items: DOCS }], aside: DP_ASIDE },
+            say: '오른쪽 <b>Configuration</b>에서 Mode(Standard/Enhanced)·OCR Mode(Auto/Force) 같은 설정을 골라요. 진짜 콘솔은 로그인해야 쓸 수 있고, 이 연습 화면은 파일 고르는 장면을 목록으로 줄였어요.' },
+          { goal: '<code>3단원_학습지.pdf</code>를 골라요', click: 'file:3단원_학습지.pdf', then: { blocks: [H_DP, FILES_ON, TABS('Preview'), pg(0)] },
+            say: '결과가 <b>Preview · HTML · JSON</b> 탭으로 나왔어요. 진짜 화면은 요소마다 "1 - Header"처럼 번호와 종류를 붙이고, 이 연습 화면은 파일을 고르면 바로 결과가 나오게 줄였어요.' },
+          { goal: '표 요소(<code>table</code>)를 눌러요', click: 'el:5', then: { blocks: [H_DP, FILES_ON, TABS('Preview'), pg(5), { k: 'code', lang: 'html', label: 'table · HTML', src: TABLE_HTML }, { k: 'code', lang: 'md', label: 'table · Markdown', src: TABLE_MD }] },
             say: '표가 HTML에서는 <code>&lt;table&gt;</code>, Markdown에서는 <code>|</code> 줄로 나왔어요. 칸의 짝이 그대로 살아 있어요.' },
-          { goal: '표 위의 문단 요소(<code>paragraph</code>)를 눌러요', click: 'el:4', then: { blocks: [H_DP, FILES_ON, pg(4), { k: 'code', lang: 'html', label: 'paragraph · HTML', src: '<p>' + PARA + '</p>' }, { k: 'code', lang: 'md', label: 'paragraph · Markdown', src: PARA }] },
+          { goal: '표 위의 문단 요소(<code>paragraph</code>)를 눌러요', click: 'el:4', then: { blocks: [H_DP, FILES_ON, TABS('Preview'), pg(4), { k: 'code', lang: 'html', label: 'paragraph · HTML', src: '<p>' + PARA + '</p>' }, { k: 'code', lang: 'md', label: 'paragraph · Markdown', src: PARA }] },
             say: '문단은 HTML에서 <code>&lt;p&gt;</code>로 감싸이고, Markdown에서는 글 그대로예요. 연습 화면이라 줄였지만, 실제 결과에는 <code>id</code> 같은 속성이 더 붙을 수 있어요.' },
-          { goal: '맨 위 머리말 요소(<code>header</code>)를 눌러요', click: 'el:1', then: { blocks: [H_DP, FILES_ON, pg(1), { k: 'code', lang: 'md', label: 'header · Markdown', src: '한입고등학교 정보과' }] },
-            say: '<b>header</b>(머리말)예요. 쪽마다 되풀이되는 학교 이름이라, 자료로 쓸 땐 레슨 5에서 걸러 내요.' } ],
+          { goal: '맨 위 머리말 요소(<code>header</code>)를 눌러요', click: 'el:1', then: { blocks: [H_DP, FILES_ON, TABS('Preview'), pg(1), { k: 'code', lang: 'md', label: 'header · Markdown', src: '한입고등학교 정보과' }] },
+            say: '<b>header</b>(머리말)예요. 쪽마다 되풀이되는 학교 이름이라, 자료로 쓸 땐 레슨 5에서 걸러 내요.' },
+          { goal: '<b>JSON</b> 탭을 눌러요', click: 'tab:JSON', then: { blocks: [H_DP, FILES_ON, TABS('JSON'), { k: 'code', lang: 'json', label: 'JSON', src: ELS_JSON }] },
+            say: 'JSON 탭에는 요소마다 이름(<code>category</code>)과 쪽(<code>page</code>)이 담긴 목록이 보여요. 연습 화면이라 칸을 줄였고, 레슨 3에서 이 <code>elements</code>를 자세히 읽어요.' } ],
         end: '진짜 콘솔에서도 개인정보 없는 내 학습지로 해 봐요. 메뉴와 단추 모양은 바뀔 수 있어요.' },
       { t: 'q', kind: 'mc', fig: 'q_noKey', q: '연수장에서 아직 API 키를 못 만든 옆자리 선생님이 Document Parse가 어떤 결과를 내는지 먼저 보고 싶대요. 가장 빠른 방법은?',
         opts: ['parse.py를 먼저 짜서 .env의 키 자리를 비운 채 실행한다', 'Chat Playground에 PDF 내용을 복사해 붙인다', '키를 만들 때까지 기다렸다가 parse.py로만 한다', 'Playground의 Document Parse에서 해 본다'], a: 3,
-        why: 'Playground의 Document Parse는 API 키 없이 견본이나 내 파일로 변환 결과를 볼 수 있다고 안내돼 있어요. 코드는 키가 생긴 뒤에 짜도 돼요.',
-        ex: ['API는 키가 있어야 해요. 키 없이 보내면 401 같은 오류가 나요.', 'Chat은 Solar와 대화하는 곳이에요. 복사한 순간 이미 표 구조가 사라져서 파싱 결과를 볼 수 없어요.', '기다릴 필요 없어요. Playground는 키 없이도 체험할 수 있어요.', ''] },
+        why: 'Playground의 Document Parse는 로그인만 하면 API 키 없이 견본이나 내 파일로 변환 결과를 볼 수 있어요. 코드는 키가 생긴 뒤에 짜도 돼요.',
+        ex: ['API는 키가 있어야 해요. 키 없이 보내면 401 같은 오류가 나요.', 'Chat은 Solar와 대화하는 곳이에요. 복사한 순간 이미 표 구조가 사라져서 파싱 결과를 볼 수 없어요.', '기다릴 필요 없어요. 로그인만 하면 Playground는 키 없이도 써 볼 수 있어요.', ''] },
       { t: 'q', kind: 'mc', fig: 'q_headerTag', q: 'Playground 결과에서 쪽 맨 위 "한입고등학교 정보과"에 <code>header</code> 이름표가 붙었어요. 이 요소를 어떻게 보면 좋을까요?',
         opts: ['학습지의 제목이니 가장 중요한 요소로 남긴다', '쪽마다 되풀이되는 머리말이라, 자료로 쓸 땐 걸러 낼 후보다', '파싱이 잘못된 것이니 enhanced로 다시 돌린다', 'header는 웹 페이지의 머리 정보라 화면에 안 보이는 글이다'], a: 1,
         why: '<code>header</code>는 쪽 위쪽 머리말이에요. 쪽마다 되풀이되니 검색·챗봇 자료에서는 소음이 돼요. 레슨 5에서 category로 걸러 내요.',
@@ -946,11 +956,11 @@
       { t: 'q', kind: 'mc', fig: 'q_privacy', q: '학생 30명의 이름과 점수가 적힌 수행평가 채점표 스캔본으로 Playground의 표 인식을 시험해 보려 해요. 어떻게 할까요?',
         opts: ['Playground는 키 없이 쓰는 체험판이라 괜찮다', '이름 칸만 잘라 내면 지침은 따로 볼 필요 없다', '개인정보가 없는 내 수업자료나 같은 꼴의 가짜 표로 시험한다', '결과만 확인하고 Playground 화면을 닫으면 남지 않으니 괜찮다'], a: 2,
         why: '학생 개인정보는 AI 서비스에 넣지 않는 게 원칙이에요. 표 인식은 같은 꼴의 가짜 표(가명, 지어낸 점수)로도 충분히 시험할 수 있어요. 학교·교육청 지침도 먼저 확인해요.',
-        ex: ['키가 없어도 파일은 서비스로 보내져요. 체험판이라고 개인정보를 넣어도 되는 건 아니에요.', '점수와 반·번호만으로도 학생을 알아볼 수 있어요. 지침 확인은 늘 먼저예요.', '', '화면을 닫아도 이미 서비스로 보낸 사실은 남아요. 처음부터 넣지 않아요.'] },
+        ex: ['키가 없어도 파일은 서비스로 보내지고, 공식 FAQ는 Playground 입력이 모델 개선에 쓰일 수 있다고 해요.', '점수와 반·번호만으로도 학생을 알아볼 수 있어요. 지침 확인은 늘 먼저예요.', '', '화면을 닫아도 이미 서비스로 보낸 사실은 남아요. 처음부터 넣지 않아요.'] },
       { t: 'q', kind: 'order', fig: 'q_pgOrder', q: 'Playground로 내 학습지를 처음 파싱해 보는 순서예요. 순서대로 쌓아 보세요.',
-        items: ['콘솔 왼쪽 메뉴에서 Playground 아래 Document Parse를 연다', '개인정보가 없는 내 학습지 파일을 올린다', '요소마다 붙은 테두리와 이름표를 훑어본다', '훑어본 요소 중 표를 골라 결과가 칸의 짝을 지켰는지 확인한다'],
+        items: ['콘솔에 로그인해 Playground의 Document Parse를 연다', '개인정보가 없는 내 학습지 파일을 올린다', '요소마다 붙은 테두리와 이름표를 훑어본다', '훑어본 요소 중 표를 골라 결과가 칸의 짝을 지켰는지 확인한다'],
         why: '화면을 열어야 올리고, 올려야 결과가 나오고, 전체를 훑은 뒤에 표처럼 중요한 요소를 자세히 봐요.' },
-      { t: 'sum', pts: ['콘솔 Playground → Document Parse에서 키 없이 견본·내 파일로 먼저 시험한다. 화면 모양은 바뀔 수 있다.', '결과는 요소마다 강조 표시와 category 이름표. 표·읽는 순서·머리말·그림을 눈여겨본다.', '엉성하면 mode(standard ↔ enhanced)를 바꿔 본다. 학생 개인정보가 든 문서는 올리지 않는다.'] }
+      { t: 'sum', pts: ['콘솔 Playground → Document Parse에서 로그인만 하면 키 없이 견본·내 파일로 먼저 시험한다. 화면 모양은 바뀔 수 있다.', '결과는 Preview·HTML·JSON 탭, 요소마다 번호와 종류 이름표. 표·읽는 순서·머리말·그림을 눈여겨본다.', '엉성하면 Configuration의 Mode(Standard ↔ Enhanced)를 바꿔 본다. Playground 입력은 모델 개선에 쓰일 수 있으니 학생 개인정보가 든 문서는 올리지 않는다.'] }
     ]},
 
     /* =================== QA =================== */
@@ -970,12 +980,12 @@
     ]},
 
     /* =================== L3 =================== */
-    { id: 'L3', type: 'lesson', title: '요소와 카테고리 읽기', sub: '12가지 이름, 차트·수식, 비율 좌표', min: 13, steps: [
+    { id: 'L3', type: 'lesson', title: '요소와 카테고리 읽기', sub: '13가지 이름, 차트·수식, 비율 좌표', min: 13, steps: [
       { t: 'say', h: '결과의 알맹이는 elements 목록이에요', fig: 'elemCard', p: [
         'API로 받은 결과에는 문서 전체를 이은 <code>content</code>와, 요소 하나하나를 담은 <code>elements</code> 목록이 함께 와요. Playground에서 본 테두리 하나가 elements의 칸 하나예요.',
         '요소마다 번호(<code>id</code>), 이름(<code>category</code>), 쪽(<code>page</code>), 내용(<code>content</code>의 text·html·markdown), 위치(<code>coordinates</code>)가 있어요.'
       ], code: { lang: 'json', src: src(['{', '  "id": 5,', '  "category": "table",', '  "page": 1,', '  "content": {', '    "markdown": "| 입력 | 처리 | ...",', '    "html": "<table>...</table>",', '    "text": "입력 처리 출력 ..."', '  },', '  "coordinates": [{…}, {…}, {…}, {…}]', '}']) } },
-      { t: 'say', h: '요소 이름(category)은 12가지예요', fig: 'twelve', table: { head: ['category', '뜻', '학습지에서 예'], rows: [
+      { t: 'say', h: '요소 이름(category)은 13가지예요', fig: 'thirteen', table: { head: ['category', '뜻', '학습지에서 예'], rows: [
         ['<code>heading1</code>', '제목', '3단원 알고리즘과 프로그래밍'],
         ['<code>paragraph</code>', '문단', '활동 안내 글'],
         ['<code>list</code>', '목록', '학습 목표 두 줄'],
@@ -987,9 +997,10 @@
         ['<code>header</code>', '머리말', '학교 이름'],
         ['<code>footer</code>', '꼬리말', '쪽 번호'],
         ['<code>index</code>', '목차·찾아보기', '교과서 차례'],
-        ['<code>footnote</code>', '각주', '쪽 아래 짧은 풀이'] ] }, p: [
-        '이 12가지가 공식 문서의 요소 이름 전부예요. 제목은 <code>heading1</code> 하나뿐이고, <code>heading2</code> 같은 이름은 없어요.',
-        '최근 버전 안내에는 소제목 깊이를 <code>sub_category</code>로 알려 준다는 말이 있어요. 쓸 일이 생기면 공식 문서를 직접 확인해요.'
+        ['<code>footnote</code>', '각주', '쪽 아래 짧은 풀이'],
+        ['<code>code</code>', '코드 블록', '파이썬 예제 코드'] ] }, p: [
+        '이 13가지가 공식 문서의 요소 이름 전부예요. <code>code</code>는 enhanced 모드에서 나오고, HTML로는 <code>&lt;pre&gt;&lt;code&gt;</code>로 감싸여요. 제목은 <code>heading1</code> 하나뿐이고 <code>heading2</code> 같은 이름은 없어요.',
+        '소제목 깊이는 enhanced 모드에서 요소의 <code>sub_category</code>(<code>h2</code>~<code>h6</code>)로 알려 주고, HTML도 <code>&lt;h2&gt;</code>~<code>&lt;h6&gt;</code>로 나와요.'
       ]},
       { t: 'say', h: '차트는 표로, 수식은 LaTeX로 나와요', fig: 'chartEq', p: [
         '<code>chart_recognition</code>이 기본으로 켜져 있어서, 막대·꺾은선·원그래프를 알아보면 <code>chart</code> 요소로 만들고 값을 표로 바꿔 줘요. 알아보지 못하면 <code>figure</code>가 되고 그림 속 글자만 남아요.',
@@ -1019,10 +1030,10 @@
           'print("높이:", ys[2] - ys[1], "px")'
         ]),
         note: '비율이라서 쪽 크기가 바뀌어도 coordinates 값은 그대로예요.' },
-      { t: 'q', kind: 'mc', mono: true, fig: 'q_twelveOdd', q: 'Document Parse가 돌려주는 요소 이름(category) 12가지에 <b>없는</b> 것은?',
+      { t: 'q', kind: 'mc', mono: true, fig: 'q_twelveOdd', q: 'Document Parse가 돌려주는 요소 이름(category) 13가지에 <b>없는</b> 것은?',
         opts: ['footnote', 'caption', 'heading2', 'index'], a: 2,
-        why: '제목은 <code>heading1</code> 하나뿐이에요. <code>heading2</code>는 12가지에 없어요. 소제목 깊이는 최근 버전에서 <code>sub_category</code>로 온다는 안내가 있으니 필요하면 직접 확인해요.',
-        ex: ['footnote는 각주예요. 12가지에 있어요.', 'caption은 그림·표 설명이에요. 12가지에 있어요.', '', 'index는 목차·찾아보기예요. 12가지에 있어요.'] },
+        why: '제목은 <code>heading1</code> 하나뿐이에요. <code>heading2</code>는 13가지에 없어요. 소제목 깊이는 enhanced 모드에서 <code>sub_category</code>(h2~h6)로 와요.',
+        ex: ['footnote는 각주예요. 13가지에 있어요.', 'caption은 그림·표 설명이에요. 13가지에 있어요.', '', 'index는 목차·찾아보기예요. 13가지에 있어요.'] },
       { t: 'q', kind: 'mc', fig: 'q_eqFmt', q: '정보 학습지의 시간 복잡도 식 O(n²)이 <code>equation</code> 요소로 나왔어요. 이 요소의 <code>content.markdown</code>에는 어떤 꼴로 들어 있을까요?',
         opts: ['식 그림 파일의 주소', 'LaTeX로 적은 식', '"수식"이라는 낱말 하나', '좌표 숫자 네 쌍'], a: 1,
         why: '수식은 html·markdown에 <b>LaTeX</b>로 들어가요. MathJax 같은 도구로 다시 식 모양으로 그릴 수 있어요. <code>text</code>는 OCR 결과라 부정확할 수 있어요.',
@@ -1034,10 +1045,10 @@
       { t: 'q', kind: 'mc', fig: 'q_chartFail', q: '막대그래프가 있는 진로 통계 쪽을 파싱했는데, 그래프가 <code>chart</code>가 아니라 <code>figure</code>로 나오고 축 글자만 있어요. 무슨 뜻일까요?',
         opts: ['차트는 원래 늘 figure로 나온다', 'output_formats에 chart를 넣지 않아서다', '좌표가 1을 넘어서 그림 밖으로 나갔다', '차트 인식이 실패해 그림으로 처리됐다. 표로 바꾼 값은 없다'], a: 3,
         why: '차트 인식에 성공하면 <code>chart</code> 요소와 값 표가 나오고, 실패하면 <code>figure</code>로 그림 속 글자만 남아요. 이럴 땐 <code>mode</code>를 enhanced로 바꿔 보거나, 값을 직접 표로 적어 둬요.',
-        ex: ['chart도 12가지 요소 이름에 있어요. 인식에 성공하면 chart로 나와요.', 'output_formats는 text·html·markdown 중에서 골라요. chart는 그 값이 아니에요.', '좌표는 늘 0~1 사이예요. 그림 밖으로 나가는 일은 없어요.', ''] },
+        ex: ['chart도 13가지 요소 이름에 있어요. 인식에 성공하면 chart로 나와요.', 'output_formats는 text·html·markdown 중에서 골라요. chart는 그 값이 아니에요.', '좌표는 늘 0~1 사이예요. 그림 밖으로 나가는 일은 없어요.', ''] },
       { t: 'q', kind: 'line', fig: 'q_lineCoord', q: '요소 하나를 꺼내 찍는 코드예요. 실행하면 오류가 나요. <b>틀린 줄</b>을 눌러 보세요.', lang: 'py', code: src(['e = data["elements"][4]', 'print(e["category"])', 'print(e["page"])', 'print(e["content"]["markdown"])', 'print(e["coordinates"]["x"])']), a: 4,
         why: '<code>coordinates</code>는 꼭짓점 네 개가 든 <b>목록</b>이에요. 글자 키로 바로 꺼낼 수 없어서 TypeError가 나요. <code>e["coordinates"][0]["x"]</code>처럼 몇 번째 꼭짓점인지 먼저 골라요.' },
-      { t: 'sum', pts: ['API 결과 = content(전체) + elements(요소 목록). 요소마다 id·category·page·content·coordinates.', 'category 12가지: heading1·paragraph·list·table·figure·chart·equation·caption·header·footer·index·footnote. heading2는 없다.', '차트는 표로(실패하면 figure), 수식은 LaTeX. 좌표는 꼭짓점 4개의 0~1 비율.'] }
+      { t: 'sum', pts: ['API 결과 = content(전체) + elements(요소 목록). 요소마다 id·category·page·content·coordinates.', 'category 13가지: heading1·paragraph·list·table·figure·chart·equation·caption·header·footer·index·footnote·code. heading2는 없고, 소제목 깊이는 enhanced의 sub_category(h2~h6).', '차트는 표로(실패하면 figure), 수식은 LaTeX. 좌표는 꼭짓점 4개의 0~1 비율.'] }
     ]},
 
     /* =================== L4 =================== */
@@ -1063,10 +1074,11 @@
       ], code: { lang: 'py', src: src(['opts["ocr"] = "force"', 'opts["mode"] = "enhanced"']) } },
       { t: 'say', h: '쪽수 한도와 받는 파일 형식을 알아 둬요', fig: 'bigDoc', table: { head: ['', '동기', '비동기'], rows: [
         ['주소', '<code>…/document-digitization</code>', '<code>…/document-digitization/async</code>'],
-        ['쪽수', '100쪽까지(넘으면 앞 100쪽만)', '큰 문서(한도는 직접 확인)'],
+        ['쪽수', '100쪽까지(넘으면 413 오류로 거절)', '2,000쪽까지'],
         ['받는 것', '결과 JSON 바로', '<code>request_id</code> → 상태 확인 → 10쪽 묶음마다 <code>download_url</code>(15분 유효)'] ] }, p: [
-        '한 번에 결과를 받는 <b>동기</b> 요청은 100쪽까지예요. 교과서처럼 큰 문서는 <b>비동기</b> 주소로 보내고, 받은 <code>request_id</code>로 <code>GET …/requests/{request_id}</code>를 불러 상태를 확인한 뒤 묶음마다 결과를 받아요. 결과는 30일 보관돼요.',
-        '받는 형식은 JPEG, PNG, BMP, PDF, TIFF, HEIC, DOCX, PPTX, XLSX, <b>HWP, HWPX</b>, 크기는 50MB까지예요. 다만 2026년 5월 문서 기준이라, 학교 공문 HWP를 넣기 전에 최신 공식 문서를 직접 확인해요.'
+        '한 번에 결과를 받는 <b>동기</b> 요청은 100쪽까지예요. 넘으면 앞부분만 처리하는 게 아니라 <b>413 오류</b>로 통째로 거절해요.',
+        '교과서처럼 큰 문서는 <b>비동기</b> 주소(2,000쪽까지)로 보내고, 받은 <code>request_id</code>로 <code>GET …/requests/{request_id}</code>를 불러 상태를 확인한 뒤 묶음마다 결과를 받아요. 결과는 30일 보관돼요.',
+        '받는 형식은 JPEG, PNG, BMP, TIFF, HEIC, WEBP, PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX, CSV, TSV, <b>HWP, HWPX</b>예요. 크기 한도는 공식 문서끼리 50MB·100MB로 다르게 적혀 있어서, <b>50MB 안으로 두고 큰 파일은 작게 나눠 보내요</b>.'
       ]},
       { t: 'sim', h: 'parse.py를 돌려 봐요', p: 'upstage-lab에서 parse.py를 열고, 아래 터미널에서 실행해 봐요. 칸을 누르면 명령이 저절로 쳐져요.',
         scene: { win: 'ide', folder: 'upstage-lab', files: LAB, open: 'hello_solar.py', lang: 'py', code: HELLO, term: [] },
@@ -1091,9 +1103,9 @@
         ex: ['$0.03은 enhanced 한 쪽 값이에요.', '', '$0.9는 30쪽을 enhanced로 했을 때예요.', '$3은 쪽당 $0.1로 잘못 계산한 값이에요.'] },
       { t: 'q', kind: 'mc', fig: 'q_300', q: '교육과정 해설서 PDF가 300쪽이에요. 빠짐없이 파싱하려면?',
         opts: ['동기 parse.py로 보내면 알아서 300쪽을 다 처리한다', '<code>mode</code>를 enhanced로 하면 쪽수 한도가 사라진다', '300쪽을 한 장짜리 긴 이미지로 이어 붙여 한 번에 보낸다', '비동기로 보내고 <code>request_id</code>로 묶음별 결과를 받는다'], a: 3,
-        why: '동기는 100쪽까지라 앞 100쪽만 처리돼요. 큰 문서는 비동기로 보내 <code>request_id</code>로 상태를 보고, 10쪽 묶음마다 <code>download_url</code>에서 결과를 받아요.',
-        ex: ['동기는 100쪽까지예요. 나머지 200쪽은 처리되지 않아요.', 'mode는 분석 방식이에요. 쪽수 한도와 상관없고 값만 더 들어요.', '한 쪽 크기(픽셀)에도 한도가 있고, 글자가 너무 작아져 읽기 어려워요.', ''] },
-      { t: 'sum', pts: ['parse.py = requests.post(…/v1/document-digitization) + Bearer 키 + files의 document + data의 model·output_formats(JSON 글자).', '스캔본은 ocr="force", 복잡한 표·차트는 mode="enhanced"(쪽당 $0.03, standard는 $0.01). 오류는 raise_for_status로 잡는다.', '동기 100쪽까지, 큰 문서는 비동기(request_id → 묶음 결과). 형식에 HWP·HWPX(2026년 5월 문서), 50MB — 최신 목록은 직접 확인.'] }
+        why: '동기는 100쪽을 넘으면 413 오류로 거절돼요. 큰 문서는 비동기(2,000쪽까지)로 보내 <code>request_id</code>로 상태를 보고, 10쪽 묶음마다 <code>download_url</code>에서 결과를 받아요.',
+        ex: ['동기는 100쪽까지예요. 300쪽 파일은 413 오류로 거절돼 한 쪽도 처리되지 않아요.', 'mode는 분석 방식이에요. 쪽수 한도와 상관없고 값만 더 들어요.', '한 쪽 크기(픽셀)에도 한도가 있고, 글자가 너무 작아져 읽기 어려워요.', ''] },
+      { t: 'sum', pts: ['parse.py = requests.post(…/v1/document-digitization) + Bearer 키 + files의 document + data의 model·output_formats(JSON 글자).', '스캔본은 ocr="force", 복잡한 표·차트는 mode="enhanced"(쪽당 $0.03, standard는 $0.01). 오류는 raise_for_status로 잡는다.', '동기 100쪽까지(넘으면 413 거절), 큰 문서는 비동기(2,000쪽까지, request_id → 묶음 결과). 형식은 PDF·DOCX·XLSX·HWP·HWPX 등 17가지, 크기는 50MB 안으로 작게 나눠.'] }
     ]},
 
     /* =================== QB =================== */
@@ -1101,7 +1113,7 @@
       { t: 'q', kind: 'mc', fig: 'qb_ticket', q: '250쪽 교과서 PDF를 비동기 주소(<code>…/document-digitization/async</code>)로 보냈어요. 응답으로 바로 받는 것은?',
         opts: ['250쪽 전체의 markdown', '앞 100쪽의 결과', '<code>request_id</code>(번호표)', '처리가 끝났다는 안내 메일'], a: 2,
         why: '비동기는 바로 <code>request_id</code>(번호표)를 줘요. 그걸로 상태를 확인하고, 끝난 묶음의 <code>download_url</code>에서 결과를 받아요. 주소는 15분만 유효하니 받으면 바로 저장해요.',
-        ex: ['결과는 처리가 끝난 뒤 묶음마다 따로 받아요.', '앞 100쪽만 처리하는 건 동기 요청이에요.', '', '번호표로 내가 직접 상태를 확인해요.'] },
+        ex: ['결과는 처리가 끝난 뒤 묶음마다 따로 받아요.', '비동기는 2,000쪽까지 받아요. 동기도 100쪽을 넘으면 413으로 거절할 뿐 앞부분만 주지 않아요.', '', '번호표로 내가 직접 상태를 확인해요.'] },
       { t: 'q', kind: 'mc', fig: 'qb_twoKnobs', q: '"결과를 Markdown으로 받고 싶다"와 "복잡한 표를 더 꼼꼼히 분석하고 싶다". 각각 어느 매개변수를 바꿀까요?',
         opts: ['<code>output_formats</code> / <code>mode</code>', '<code>mode</code> / <code>output_formats</code>', '둘 다 <code>output_formats</code>', '<code>ocr</code> / <code>output_formats</code>'], a: 0,
         why: '<code>output_formats</code>는 결과의 <b>꼴</b>(text·html·markdown), <code>mode</code>는 <b>분석 방식</b>(standard·enhanced·auto)이에요.',
@@ -1193,7 +1205,7 @@
           how: 'Cursor 터미널에서 <code>git status</code>를 보고 <code>git add -A</code>, <code>git commit -m "c2u1 시작 전"</code>. 커밋한 뒤에 학습지 PDF를 <code>unit3.pdf</code>처럼 짧은 이름으로 폴더에 복사해 둬요.',
           check: '<code>git log --oneline</code> 맨 위에 방금 커밋이 보이고, <code>git status</code>에 <code>.env</code>가 한 번도 나오지 않으면 성공.' },
         { do: 'Playground에서 내 학습지를 파싱해 봐요',
-          how: '콘솔 왼쪽 메뉴의 <b>Playground</b> 아래 <b>Document Parse</b>에서 학습지를 올려요. 화면 모양이 이 앱과 다르면 Playground 아래 Document Parse를 찾아요.',
+          how: '콘솔에 로그인하고 위쪽 막대의 <b>Playground</b>로 들어가 왼쪽 메뉴의 <b>Document Parse</b>에서 학습지를 올려요. 결과는 <b>Preview · HTML · JSON</b> 탭으로 볼 수 있어요.',
           check: '표가 <code>table</code>로 나왔는지, <code>header</code>·<code>footer</code> 이름표가 어디 붙었는지 메모에 한 줄로 적었으면 성공(예: "표 1개 table, 학교 이름 header").' },
         { do: 'Cursor 에이전트에게 parse.py를 맡기고 직접 실행해요',
           how: 'upstage-lab을 Cursor로 열고 Agent에게 아래 부탁을 붙여 넣어요. 코드가 오면 키를 화면에 찍는 줄이 없는지 먼저 읽고, 터미널에서 <code>python parse.py unit3.pdf</code>를 직접 실행해요.',
@@ -1207,10 +1219,10 @@
           check: '<code>data/unit3.md</code>에 학교 이름(머리말 글자)이 남아 있지 않고, <code>[1쪽]</code> 같은 쪽 표시가 들어 있으면 성공.',
           prompt: PROMPT_CLEAN },
         { do: '쓴 비용을 확인하고 커밋해요',
-          how: '콘솔 <b>Billing</b>의 <b>Usage</b>에서 오늘 사용량을 보고, 어림(standard 쪽당 $0.01)과 비교해요. 그다음 <code>parse.py</code>·<code>clean.py</code>를 커밋해요. 수업자료 원본과 <code>data/</code>를 저장소에 올릴지는 저작권과 학교 지침을 보고 정하고, 망설여지면 <code>.gitignore</code>에 <code>data/</code>와 <code>*.pdf</code>를 넣어요.',
+          how: '콘솔 왼쪽 메뉴의 <b>Usage</b>에서 오늘 사용량을 보고(반영까지 10분쯤 걸릴 수 있어요), 어림(standard 쪽당 $0.01)과 비교해요. 그다음 <code>parse.py</code>·<code>clean.py</code>를 커밋해요. 수업자료 원본과 <code>data/</code>를 저장소에 올릴지는 저작권과 학교 지침을 보고 정하고, 망설여지면 <code>.gitignore</code>에 <code>data/</code>와 <code>*.pdf</code>를 넣어요.',
           check: 'Usage에서 본 사용량과 내 어림을 메모에 적고, <code>.env</code> 없이 커밋이 끝났으면 성공.' }
       ],
-      note: '예상 비용(지금 가격, 부가세 별도): 학습지 5쪽 standard ≈ $0.05, 스캔본 2쪽 ≈ $0.02. 실수로 enhanced로 돌리면 쪽당 세 배($0.03)예요. 모두 합쳐도 $0.1 안팎이라 새 계정 무료 크레딧 $10으로 넉넉해요. 처음엔 2쪽짜리 짧은 파일로 시험하고, 100쪽 넘는 교과서를 통째로 보내지 않아요. 키는 <code>.env</code>에만 두고 코드·스크린샷·채팅에 붙이지 않아요.' },
+      note: '예상 비용(지금 가격, 부가세 별도): 학습지 5쪽 standard ≈ $0.05, 스캔본 2쪽 ≈ $0.02. 실수로 enhanced로 돌리면 쪽당 세 배($0.03)예요. 모두 합쳐도 $0.1 안팎이라 새 계정 무료 크레딧 $10으로 넉넉해요. 처음엔 2쪽짜리 짧은 파일로 시험하고, 100쪽 넘는 교과서를 동기로 통째로 보내지 않아요(413 오류). 속도 제한은 키가 아니라 계정마다라, 한 계정을 여럿이 함께 쓰면 Tier 0 기준 Document Parse 1초 3번·1분 500쪽에 금방 닿아 429가 나요. 연수에서는 각자 자기 계정의 키를 써요. 키는 <code>.env</code>에만 두고 코드·스크린샷·채팅에 붙이지 않아요.' },
 
     /* =================== T1 =================== */
     { id: 'T1', type: 'test', title: '단원 형성평가', sub: '10문제 · 7문제 이상 맞히면 통과', min: 11, pass: 0.7, steps: [
@@ -1218,10 +1230,10 @@
         opts: ['API 키가 틀렸으니 새 키를 만든다', 'PDF로 내보낸 뒤 그 파일로 다시 보낸다', '크레딧이 떨어졌으니 Billing에서 충전한다', '잠시 기다렸다 같은 파일을 다시 보낸다'], a: 1,
         why: '415는 지원하지 않는 파일이라는 뜻이에요. Keynote 파일은 지원 형식에 없으니, PDF처럼 지원하는 형식으로 내보내 다시 보내요.',
         ex: ['키 문제는 401이에요.', '', '크레딧 부족은 403이에요.', '기다렸다 다시 보내는 건 429나 5xx일 때예요. 파일이 그대로면 결과도 그대로예요.'] },
-      { t: 'q', kind: 'mc', fig: 't_100', q: '연수 실습에서 120쪽짜리 교과서 PDF를 parse.py(동기)로 보냈더니, 오류 없이 끝났는데 <code>usage.pages</code>가 100이에요. 왜일까요?',
-        opts: ['PDF의 뒤 20쪽이 빈 쪽이라 세지 않았다', '연수장 와이파이가 느려 뒤 20쪽이 전송 중에 사라졌다', '무료 크레딧으로는 100쪽까지만 처리된다', '동기 요청은 100쪽까지라 앞 100쪽만 처리됐다'], a: 3,
-        why: '동기 요청은 100쪽까지 처리해요. 남은 쪽까지 하려면 비동기로 보내거나, 파일을 나눠 보내요.',
-        ex: ['빈 쪽 여부가 아니라 동기 요청의 쪽수 한도 때문이에요.', '네트워크가 느리면 오류가 나지, 쪽이 조용히 빠지지 않아요.', '크레딧과 쪽수 한도는 상관없어요.', ''] },
+      { t: 'q', kind: 'mc', fig: 't_100', q: '연수 실습에서 120쪽짜리 교과서 PDF를 parse.py(동기)로 보냈더니 <code>413</code> 오류가 났어요. 가장 알맞은 대처는?',
+        opts: ['API 키를 지우고 새 키를 만들어 다시 보낸다', '잠시 기다렸다 같은 파일을 그대로 다시 보낸다', '<code>mode</code>를 enhanced로 바꿔 다시 보낸다', '비동기로 보내거나 100쪽 이하로 나눠 보낸다'], a: 3,
+        why: '동기 요청은 100쪽까지라, 넘는 파일은 앞부분만 처리하지 않고 413 오류로 통째로 거절해요. 비동기(2,000쪽까지)로 보내거나 파일을 나눠 보내요.',
+        ex: ['키 문제는 401이에요. 413은 파일이 너무 커서 거절됐다는 뜻이에요.', '파일이 그대로면 몇 번을 다시 보내도 413이에요.', 'mode는 분석 방식이에요. 쪽수 한도는 그대로예요.', ''] },
       { t: 'q', kind: 'blank', fig: 't_blank2', q: 'parse.py에서 Document Parse에 보낼 값을 적고 있어요. 두 빈칸을 채워 보세요.', lang: 'py', code: src(['opts = {"model": [[1]],', '        "output_formats": [[2]]}']),
         opts: [['"solar-pro4"', `'["markdown"]'`], ['"information-extract"', `'["html"]'`], ['"document-parse"', `'["markdown"]'`], ['"document-parse"', '"standard"']], a: 2,
         why: '모델은 <code>"document-parse"</code>, 결과 꼴은 JSON 글자 <code>\'["markdown"]\'</code>이에요.',

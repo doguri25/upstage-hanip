@@ -51,7 +51,6 @@ function simScreen(sc, on){
   const fld = (b, into) => field(into, b.value, b.ph || '', 'w-in' + (b.area ? ' area' : '') + (b.mono ? ' mono' : ''));
   const bt = (x, i, plain) => T('b:' + x, { class:'st w-btn' + (i || plain ? '' : ' pri') }, x);
   const code = (src, lang) => h('pre', { class:'w-code' }, ...String(src || '').split('\n').map(l => h('div', { html:highlight(l, lang) || '&nbsp;' })));
-  const EL = { heading1:'제목', heading2:'소제목', heading3:'소제목', paragraph:'문단', table:'표', figure:'그림', chart:'차트', equation:'수식', list:'목록', caption:'설명', footnote:'각주', header:'머리말', footer:'꼬리말', index:'목차' };
   const block = b => {
     switch (b.k){
       case 'h': return h('div', { class:'w-h' }, h('div', null, h('b', null, b.text), b.sub ? h('small', { html:b.sub }) : null), h('span', { class:'sp' }), ...(b.btns || []).map((x, i) => bt(x, i, b.plain)));

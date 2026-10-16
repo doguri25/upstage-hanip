@@ -15,7 +15,7 @@
 - L2 **소버린 AI가 왜 중요할까**: 뜻(데이터·모델·인프라를 스스로 통제), 한국어·한국 교육과정·문화 이해, 교육 데이터 보호, 공급 중단 위험. 국가 프로젝트 현황은 `ref/upstage-docs/context.md`에 근거가 있는 것만. 장단점을 균형 있게(무조건 국산이 좋다가 아니라 "선택지와 통제권").
 - QA 헷갈림: 소버린 AI vs 오픈 모델 vs 내 컴퓨터에서 돌리기 / 웹 채팅 서비스 vs API / 모델 vs 서비스.
 - L3 **업스테이지와 Solar 가족**: `solar-pro4`·`solar-mini4`, Document Parse, Information Extract, 임베딩, Studio. 별칭(`solar-pro4`)과 버전 이름(`solar-pro4-260806`), 종료 일정 읽기(`solar-pro3` 2026-10-30 종료 → 옛 예제 조심).
-- L4 **콘솔 둘러보기**(모의 화면: Home → Playground → API keys → Billing의 Usage·Credit): 무료 크레딧 $10, Playground는 브라우저에서 바로 체험.
+- L4 **콘솔 둘러보기**(모의 화면: API keys → Playground → Usage → Limits → Billing의 Credit): 무료 크레딧 $10, Playground는 브라우저에서 바로 체험.
 - QB 헷갈림: API 키 vs 로그인 비밀번호 / Usage vs Credit / Playground vs API.
 - L5 **API 키 만들고 지키기**(모의 화면: API keys → Create new key → 이름 → 키 복사): 키는 한 번 복사해 `.env`로, 코드·깃허브·채팅방·화면 공유 금지, 샜으면 지우고 새로 만들기. 학생에게 내 키를 나눠 주지 않는다(→ 과정 3에서 서버 구조).
 - M1 콘솔 가입, Playground Chat에서 수업 질문 3개, `연수용` 키 만들기·안전 보관, Billing에서 크레딧 확인, 연수 지도 준비물 체크.
@@ -47,7 +47,7 @@
 - L1 **왜 파싱하나**: PDF는 사람 눈용, 복사하면 표가 깨지고 순서가 섞임, LLM은 구조 있는 글이 필요. 학습지·교과서 쪽·시험지·HWP 공문.
 - L2 **Playground에서 해 보기**(모의 화면: 파일 올리기 → 요소 강조 → Markdown/HTML 보기).
 - QA 헷갈림: OCR vs 파싱 / HTML vs Markdown vs text / standard vs enhanced.
-- L3 **요소와 카테고리**: 12가지, `heading1`·`table`·`figure`·`chart`·`equation`(LaTeX) 등, 좌표는 비율, 머리말·꼬리말.
+- L3 **요소와 카테고리**: 13가지(`code` 포함), `heading1`·`table`·`figure`·`chart`·`equation`(LaTeX) 등, 좌표는 비율, 머리말·꼬리말.
 - L4 **parse.py**: FACTS 5절 표준 코드, `ocr="force"`(스캔본), `mode`와 비용, 동기 100쪽·비동기, 지원 형식(HWP·HWPX), 50MB.
 - QB 헷갈림: 동기 vs 비동기 / `output_formats` vs `mode` / `content.markdown` vs `elements`.
 - L5 **결과 다듬기**: `elements`에서 header·footer 빼기, 표만 모으기, 쪽 번호 달기, `data/*.md`로 저장. 연습장(py): 흉내 낸 elements 목록 다루기.

@@ -1,21 +1,22 @@
-# 업스테이지한입 사실 기준표 (2026-10-16)
+# 업스테이지한입 사실 기준표 (2026-10-16, 실제 콘솔·공식 문서 직접 대조)
 
 레슨에 쓰는 업스테이지 사실은 **이 표가 기준**이다. 근거 메모는 `ref/upstage-docs/core.md`, `ref/upstage-docs/document-ai.md`, `ref/upstage-docs/context.md`(커밋하지 않음)에 있다.
 
-> 조사 한계: 이 문서를 만든 환경에서는 `*.upstage.ai` 페이지를 직접 열 수 없었다. 그래서 (1) 업스테이지가 GitHub `UpstageAI/upstage-extensions-hub`에 그대로 복사해 둔 공식 API 문서(2026-05), (2) 공식 쿡북·SDK 코드(`Solar-Pro4-Cookbook` 2026-08 등), (3) 공식 페이지의 검색 요약으로 확인했다. 아래 ⚠️ 표시는 공식 자료끼리 다르거나 직접 확인이 필요한 것이다. 레슨에서는 **흐리게 쓰거나 "직접 확인해요"** 로 돌린다.
+> 2026-10-16 갱신: 공식 문서를 마크다운으로 직접 받아(`console.upstage.ai/llms.txt`가 가리키는 `*.md`, 메모는 `ref/upstage-docs/live/`) 대조했고, 로그인한 실제 콘솔 화면도 열어 메뉴를 확인했다. 아래 ⚠️ 표시는 그래도 공식 자료끼리 다르거나 직접 확인이 필요한 것이다. 레슨에서는 **흐리게 쓰거나 "직접 확인해요"** 로 돌린다.
 
 ## 1. 계정·콘솔·키·비용
 
 | 항목 | 레슨에 쓰는 사실 | 근거 주소(sources에 넣을 것) |
 | --- | --- | --- |
-| 콘솔 | `console.upstage.ai`. 메뉴: **Home**, **Playground**(아래에 Chat, Document Parse 등), **API keys**, **Billing**(아래에 Usage·Credit·Payment) ⚠️ 화면 모양은 바뀔 수 있음 | https://console.upstage.ai/docs/getting-started |
+| 콘솔 | `console.upstage.ai`. 위쪽 막대: **Documentation · API Reference · Playground**. 로그인 뒤 왼쪽(조직 관리): 조직 이름(Default Organization) 아래 **API keys, Usage, Limits, Members**, **BILLING**(Credit, Payment), **Settings**. **Home 메뉴는 없다.** Playground 왼쪽: GENERATE **Chat** / PARSE **Document Parse, Document OCR** (2026-10-16 실제 화면) | https://console.upstage.ai/docs/getting-started |
 | 시작 순서 | 가입 → API 키 만들기 → 첫 요청 → 다른 기능 둘러보기 | 같은 곳 |
-| 무료 크레딧 | 새 계정 **$10**. 유효 기간·카드 등록 필요 여부는 문서에 없음 → "콘솔 Billing에서 확인해요" | 같은 곳 |
-| API 키 만들기 | **API keys** 페이지 → **Create new key** ⚠️(예전 문서는 Create API Key). 키는 `up_`으로 시작 | 같은 곳 |
+| 무료 크레딧 | 새 계정 **$10**. 크레딧마다 유효 기간이 있다(Credit 화면: "Credits apply only during their valid period", 목록의 Valid period). 교육·비영리·연구기관은 Document Parse·Solar Pro 최대 1년 무료(AWS AI Initiative, 조건은 직접 확인) | 같은 곳, https://console.upstage.ai/docs/resources/faq |
+| 월 사용 한도 | **Limits → Usage limit**: 조직의 월 사용 한도($), 달마다 초기화, **Set**. 결제 수단을 등록해야 켤 수 있음. 닿으면 `429 usage_limit_exceeded` | 실제 콘솔, https://console.upstage.ai/docs/resources/error-codes |
+| API 키 만들기 | **API keys** 페이지 → **Create new key**(확정). 표 열 Name·Owner·Key·Created (UTC)·Last used (UTC), 키는 `up_****…`로 가려 보임. 아래에 Example codes. 키는 `up_`으로 시작 | 같은 곳 |
 | 키 보관 | 환경 변수 이름 `UPSTAGE_API_KEY`. 코드에 직접 쓰지 않음. `.env` + `.gitignore` | https://github.com/UpstageAI/upstage-extensions-hub |
-| Playground | 콘솔에서 브라우저로 Chat·Document Parse를 써 볼 수 있음. 키 없이도 체험 가능하다는 안내가 있음 ⚠️ Chat Playground의 세부 화면(드롭다운·시스템 프롬프트 칸·View code)은 문서에 없음 → 모의 화면에 그리지 않거나 아주 단순하게 | https://console.upstage.ai/docs/getting-started |
-| 크레딧이 떨어지면 | 결제 수단이 있으면 멈추지 않고 청구됨. 크레딧 부족이면 `403` | https://www.upstage.ai/pricing/api |
-| 속도 제한 | 분당 요청 수(RPM)·분당 토큰 수(TPM) 제한이 있고, 넘으면 `429`. 지금 `solar-pro4`는 100 RPM 안팎 ⚠️ 등급별 수치는 직접 확인 → **"반 학생 30명이 한 키로 동시에 부르면 금방 걸릴 수 있어요"** 를 가르친다 | https://console.upstage.ai/docs/guides/rate-limits |
+| Playground | 무료(FAQ: 로그인·결제 수단 없이). Chat에서 **Solar Pro 4·Mini 4를 고르면 질문이 Solar Chat 새 탭으로 열린다**. System Prompt·Reasoning Effort·Max Tokens·Temperature 칸은 곧 끝나는 옛 모델에서만 보임 → 매개변수 실험은 코드로. Document Parse 데모는 지금 로그인해야 됨(결과 탭 Preview·HTML·JSON, 설정 Mode·OCR Mode·Merge Multipage Tables·Chart Recognition). **Playground 입력은 모델 개선에 쓰일 수 있음**(API는 학습·저장 안 함) → 학생 정보 금지 | https://console.upstage.ai/docs/resources/faq |
+| 크레딧이 떨어지면 | 결제 수단이 있으면 멈추지 않고 청구됨. 크레딧이 없고 결제 수단도 없으면 `401 api_key_is_blocked`(새 키로 안 풀림), 결제 실패 등은 `403 api_key_is_not_allowed` | https://console.upstage.ai/docs/resources/error-codes |
+| 속도 제한 | **키마다가 아니라 조직(계정)마다**("All keys share the same limits"). Tier 0: `solar-pro4` 100 RPM·250,000 TPM, `solar-mini4` 100 RPM·50,000 TPM, Document Parse 3 RPS·500 PPM, IE 1 RPS·300 PPM, 임베딩 100 RPM·300,000 TPM. 크레딧을 사면 등급이 오를 수 있음(Limits에 지금 Tier 표시). 넘으면 `429 too_many_requests` → **"반 학생 30명이 한 계정으로 동시에 부르면 금방 걸려요"** | https://console.upstage.ai/docs/guides/rate-limits |
 
 ## 2. 모델 (2026-10-16 기준)
 
@@ -62,9 +63,9 @@ print(resp.choices[0].message.content)
   - `temperature` 0~2, 기본 1.0. 낮으면(0.2 이하) 일정하게, 높으면(0.8 이상) 다양하게. `top_p` 0~1, 기본 1.0 — 둘 중 하나만 조절하는 게 보통.
   - `max_tokens`: 만들 최대 토큰. **추론 토큰도 여기에 들어가서**, 너무 작으면 보이는 답이 비고 `finish_reason`이 `length`.
   - `stream=True`: 조각(`delta`)으로 받기. 추론이 켜져 있으면 `delta.reasoning`이 먼저 온다.
-  - `reasoning_effort`: `"none"`·`"minimal"`(추론 끔), `"low"`·`"medium"`·`"high"`·`"xhigh"`·`"max"`(켬). ⚠️ **값을 빼면 어떻게 되는지 공식 자료끼리 다르다**(쿡북 실측은 "빼면 high"). → 레슨 규칙: **늘 직접 적는다**. 추출·분류·채점은 `"none"` + 낮은 temperature, 어려운 여러 단계 문제는 `"high"` + 넉넉한 max_tokens. 추론을 켜면 느려지고 토큰(돈)이 늘며, 늘 더 좋은 답을 보장하지는 않는다. (쿡북 실측: 같은 계산 문제에서 none 0.86초 오답, high 12.85초 정답)
+  - `reasoning_effort`: `"none"`·`"minimal"`(추론 끔), `"low"`·`"medium"`·`"high"`·`"xhigh"`·`"max"`(켬). **값을 빼거나 `null`이면 추론 꺼짐**(공식 Reasoning 문서, 확정). 옛 `solar-mini`는 이 값을 받지 않음(400). 추론을 켰는데 max_tokens가 모자라면 `content`는 `None`, `finish_reason`은 `length`. → 레슨 규칙: 의도를 코드에 드러내려고 **늘 직접 적는다**. 추출·분류·채점은 `"none"` + 낮은 temperature, 어려운 여러 단계 문제는 `"high"` + 넉넉한 max_tokens. 추론을 켜면 느려지고 토큰(돈)이 늘며, 늘 더 좋은 답을 보장하지는 않는다. (쿡북 실측: 같은 계산 문제에서 none 0.86초 오답, high 12.85초 정답)
 - 구조화 출력: `response_format={"type":"json_schema","json_schema":{"name":…, "strict":True, "schema":{…}}}`. 모든 object에 `"additionalProperties": False`, 모든 속성을 `required`에. 결과는 `message.content`에 **JSON 글자**로 → `json.loads`.
-- 오류: `400` 요청 모양 틀림, `401` 키 틀림·삭제됨, `403` 크레딧 부족(결제 실패 등), `404` 주소 틀림, `405` http로 보냄, `415` 지원 안 하는 파일, `422` 파일 손상, `429` 너무 많은 요청 → 기다렸다 다시(지수 백오프 1·2·4초), `5xx` 서버 문제 → 잠시 뒤 다시. OpenAI SDK에서는 `openai.AuthenticationError`, `openai.RateLimitError` 등.
+- 오류(갈래는 `error.code`로): `400` 요청 모양 틀림, `401 invalid_api_key` 키 틀림·삭제됨, `401 api_key_is_blocked` 크레딧 없고 결제 수단 없음(새 키로 안 풀림), `403 api_key_is_not_allowed` 결제 실패 등으로 정지, `404` 주소 틀림, `405` HTTP 메서드 틀림(http로 보내면 301로 https에 넘겨짐), `413` 너무 큼, `415` 지원 안 하는 파일, `422` 파일 손상, `429 too_many_requests` 속도 제한 → `Retry-After`만큼 기다렸다 다시(지수 백오프 1·2·4초), `429 usage_limit_exceeded` 월 사용 한도에 닿음 → 다시 보내도 소용없음, `5xx`·`504` 서버 문제 → 잠시 뒤 다시. OpenAI SDK에서는 `openai.AuthenticationError`, `openai.RateLimitError` 등.
 - 근거 주소: https://console.upstage.ai/docs/capabilities/generate/chat , https://console.upstage.ai/api/chat , https://console.upstage.ai/docs/resources/error-codes , https://github.com/UpstageAI/Solar-Pro4-Cookbook
 
 ## 4. 도구 호출 (Tool calling / Function calling)
@@ -93,30 +94,32 @@ md = r.json()["content"]["markdown"]
 ```
 
 - 응답: `content.markdown`·`content.html`·`content.text`(전체), `elements[]`(요소마다 `id`, `category`, `page`, `content{text,html,markdown}`, `coordinates`(0~1 비율 꼭짓점 4개)), `usage.pages`.
-- 요소 `category` 12가지: `heading1`, `paragraph`, `list`, `table`, `figure`, `chart`, `equation`(LaTeX로), `caption`, `header`, `footer`, `index`, `footnote`. ⚠️ 제목 깊이(소제목)는 최근 enhanced에서 `sub_category`로 온다는 안내가 있음 — `heading2`는 쓰지 않는다.
-- 쪽수: 동기 100쪽까지(넘으면 앞 100쪽), 큰 문서는 비동기 `…/document-digitization/async` → `request_id` → `GET …/requests/{id}` 상태 확인 → 묶음(10쪽)마다 `download_url`(15분 유효). 결과 30일 보관.
-- 파일: JPEG, PNG, BMP, PDF, TIFF, HEIC, DOCX, PPTX, XLSX, **HWP, HWPX**(2026-05 문서), 50MB까지 ⚠️ 최신 목록은 직접 확인.
+- 요소 `category` 13가지: `heading1`, `paragraph`, `list`, `table`, `figure`, `chart`, `equation`(LaTeX로), `caption`, `header`, `footer`, `index`, `footnote`, `code`(`<pre><code>`). 제목 깊이(소제목)는 enhanced 모드에서 `sub_category`(`h2`~`h6`)로 온다(확정) — `heading2` category는 없다.
+- 쪽수: 동기 100쪽까지(**넘으면 `413`으로 거절**), 비동기 2,000쪽까지, 큰 문서는 비동기 `…/document-digitization/async` → `request_id` → `GET …/requests/{id}` 상태 확인 → 묶음(10쪽)마다 `download_url`(15분 유효). 결과 30일 보관.
+- 파일: JPEG, PNG, BMP, TIFF, HEIC, WEBP, PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX, CSV, TSV, **HWP, HWPX**. 크기 ⚠️ 입력 요구사항 문서는 동기 100MB·비동기 500MB, 오류 코드 표는 50MB → 레슨은 **"50MB 안으로, 작게 나눠 보내요"**.
 - RAG·LLM에 넣을 때는 `markdown`, 웹 화면에 보일 때는 `html`을 권한다(공식 권장표).
-- 콘솔 Playground에서 키 없이 써 볼 수 있고, 요소마다 강조 표시를 보여 준다 ⚠️ 탭 구성은 문서에 없음.
+- 콘솔 Playground에서 로그인하면(API 키 없이) 써 볼 수 있다. 결과는 Preview·HTML·JSON 탭, 요소마다 번호와 종류(예: "2 - Heading1"). 게스트 데모는 2026-10-16 현재 일시 중단.
 - 근거 주소: https://console.upstage.ai/docs/capabilities/parse/document-parsing , https://console.upstage.ai/api/parse/document-parsing
 
 ## 6. Information Extract
 
 - OpenAI SDK, `base_url="https://api.upstage.ai/v1/information-extraction"`, `model="information-extract"`, `messages=[{"role":"user","content":[{"type":"image_url","image_url":{"url":"data:application/octet-stream;base64,…"}}]}]`(파일을 base64로), `response_format={"type":"json_schema","json_schema":{"name":"…","schema":{…}}}`. 결과는 `choices[0].message.content` JSON 글자 → `json.loads`.
 - 스키마 규칙: 맨 위는 `object`, **첫 단계 속성은 `string`·`integer`·`number`·`array`만**(첫 단계에 object 안 됨), **배열 안에 배열 안 됨**(배열 안 object는 됨 → 문항 목록에 씀), 속성마다 `type`과 `description`(설명이 정확도를 좌우). 동기: 100쪽, 속성 100개, 스키마 15,000자까지.
-- 선택(베타): `extra_body={"confidence": True}` → 값마다 `"high"`/`"low"`(숫자 아님), `"mode": "enhanced"`(복잡한 표·손글씨), `"location"`, `"chunking"`.
-- 스키마 자동 생성 기능이 있다 ⚠️ 호출 방법이 공식 자료끼리 다름 → 레슨은 "콘솔이나 문서에서 확인"으로.
+- 선택(베타): `extra_body={"confidence": True}` → 값마다 `"high"`/`"low"`(숫자 아님), `choices[0].message.tool_calls` 중 이름이 `additional_values`인 호출의 `arguments`에 온다. `"mode": "enhanced"`(복잡한 표·손글씨), `"location"`(+`location_granularity`), `"split"`. 스키마 자료형에 `boolean`도 된다.
+- 스키마 자동 생성: `POST https://api.upstage.ai/v1/information-extraction/schema-generation`(견본 파일 3개까지). 레슨은 "문서에서 확인" 정도로만.
 - 텍스트(이미 파싱한 글)에서 뽑을 때는 Solar의 구조화 출력(3절)도 쓸 수 있다: 파일·이미지 → IE, 글 → Solar 구조화 출력.
 - 근거 주소: https://console.upstage.ai/docs/capabilities/extract/universal-extraction
 
 ## 7. 임베딩
 
 - `client.embeddings.create(model="solar-embedding-2-passage", input=[…])`(문서 조각), `model="solar-embedding-2-query"`(질문). `base_url="https://api.upstage.ai/v1"`. 결과 `resp.data[i].embedding`(숫자 1,024개).
-- 한 요청에 글 100개까지, 조각은 짧게(수백 토큰) ⚠️ 정확한 상한은 직접 확인. 같은 쪽(passage끼리 저장, query로 찾기)을 지킨다.
+- 한 요청에 글 100개·합계 204,800토큰까지, 글 하나는 8k 컨텍스트. 조각은 짧게(수백 토큰). 같은 쪽(passage끼리 저장, query로 찾기)을 지킨다.
 - 비교는 코사인 유사도(내적 ÷ 길이 곱). 업스테이지 임베딩은 길이가 1로 맞춰져 있어 내적만으로 된다는 설명이 있지만, 레슨 코드는 코사인 공식을 그대로 쓴다.
 - 근거 주소: https://console.upstage.ai/api/embeddings , https://console.upstage.ai/docs/capabilities/embed
 
-## 8. 가격 (2026-10 검색 기준 ⚠️ 바뀔 수 있음, 부가세 별도)
+## 8. 가격 (정가, 2026-10-16 공식 가격표 ⚠️ 바뀔 수 있음, 부가세 별도)
+
+지금 `solar-pro4`·`solar-mini4`는 할인 행사 중이라 실제로 내는 값은 더 낮을 수 있다 → 레슨은 **"정가 기준"** 으로 쓴다.
 
 | 제품 | 가격 |
 | --- | --- |
@@ -126,12 +129,12 @@ md = r.json()["content"]["markdown"]
 | Document Parse | 쪽당 standard $0.01, enhanced $0.03 |
 | Information Extract | 쪽당 standard $0.04, enhanced $0.06 |
 
-레슨에서는 "지금 가격으로 어림하면"으로 쓰고 근거 https://www.upstage.ai/pricing/api 를 단다. 어림 예: 20쪽 학습지 파싱 ≈ $0.2, 학생 30명 × 질문 10개 × (입력 2천 + 출력 3백 토큰) ≈ 입력 60만·출력 9만 토큰 ≈ `solar-pro4`로 약 $0.29.
+레슨에서는 "정가로 어림하면"으로 쓰고 근거 https://www.upstage.ai/pricing/api 를 단다. 어림 예: 20쪽 학습지 파싱 ≈ $0.2, 학생 30명 × 질문 10개 × (입력 2천 + 출력 3백 토큰) ≈ 입력 60만·출력 9만 토큰 ≈ `solar-pro4`로 약 $0.29.
 
 ## 9. 그 밖
 
 - **langchain-upstage**(0.7.7): 기본 모델이 곧 끝나는 `solar-mini`, 기본 주소가 옛 `…/v1/solar`라서 쓰려면 `ChatUpstage(model="solar-pro4")`처럼 꼭 적는다. 레슨은 OpenAI SDK + requests를 기본으로 한다.
 - **Upstage MCP 서버**(`mcp-upstage`, PyPI): 도구 `parse_document`, `extract_information`(채팅 도구는 없음). `uvx mcp-upstage`로 실행, 설정에 `UPSTAGE_API_KEY`. Cursor에서는 커서한입에서 배운 `.cursor/mcp.json`의 `mcpServers`에 넣는다. 근거 https://github.com/UpstageAI/mcp-upstage
-- **Upstage Studio**: 문서 처리(Parse → Classify → Extract) 에이전트를 화면에서 만드는 노코드 도구. 근거 https://www.upstage.ai/products/studio
+- **Upstage Studio**: 문서 처리 에이전트를 화면에서 만드는 노코드 도구. 노드는 Parse·Classify·Extract·Instruct. 2026-09-01부터 조직 단위 구독 요금(Free 등). 근거 https://console.upstage.ai/docs/studio
 - **Responses API**도 solar-pro4·mini4에서 된다는 안내가 있지만 레슨은 Chat Completions로 통일한다.
 - 공식 쿡북: https://github.com/UpstageAI/cookbook (옛 모델 이름이 많으니 모델 이름을 바꿔 읽게 가르친다), https://github.com/UpstageAI/Solar-Pro4-Cookbook
