@@ -1,0 +1,9 @@
+dist/
+shots/
+node_modules/
+.vercel/
+.DS_Store
+.vercel
+.env*
+ref/
+scratchpad/

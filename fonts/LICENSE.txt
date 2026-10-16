@@ -1,0 +1,2 @@
+나눔스퀘어라운드(NanumSquareRound) © NAVER Corporation, SIL Open Font License 1.1.
+웹 글꼴 파일은 npm @kfonts/nanum-square-round 0.2.0에서 가져왔다.
