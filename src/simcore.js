@@ -54,6 +54,7 @@ const SIM = (() => {
     const one = b => { if (!b || b.id == null || !(b.id in vals)) return b; const v = vals[b.id];
       if (b.k === 'toggle') return Object.assign({}, b, { on:!!v });
       if (b.k === 'tabs' || b.k === 'files') return Object.assign({}, b, { on:v });
+      if (b.k === 'page') return Object.assign({}, b, { els:(b.els || []).map((e, i) => Object.assign({}, e, { on:i + 1 === +v })) });
       return Object.assign({}, b, { value:v }); };
     const s = Object.assign({}, sc);
     if (s.blocks) s.blocks = s.blocks.map(one);
@@ -68,7 +69,7 @@ const SIM = (() => {
     if (p && p.set) s = setVals(s, p.set);
     return s;
   }
-  /* 누르면 저절로 바뀌는 것: 스위치(tog:)는 켜고 끄기, 탭(tab:)·파일(file:)은 고르기 */
+  /* 누르면 저절로 바뀌는 것: 스위치(tog:)는 켜고 끄기, 탭(tab:)·파일(file:)·문서 요소(el:)는 고르기(블록에 id가 있을 때) */
   function autoClick(sc, t){
     if (sc.win !== 'web') return sc;
     const [k, v] = [t.slice(0, t.indexOf(':')), t.slice(t.indexOf(':') + 1)];
@@ -76,6 +77,7 @@ const SIM = (() => {
       if (k === 'tog' && b.k === 'toggle' && b.id === v) return setVals(sc, { [b.id]:!b.on });
       if (k === 'tab' && b.k === 'tabs' && (b.items || []).includes(v) && b.id != null) return setVals(sc, { [b.id]:v });
       if (k === 'file' && b.k === 'files' && (b.items || []).includes(v) && b.id != null) return setVals(sc, { [b.id]:v });
+      if (k === 'el' && b.k === 'page' && b.pick && b.id != null) return setVals(sc, { [b.id]:+v });
     }
     return sc;
   }

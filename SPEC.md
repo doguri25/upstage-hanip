@@ -105,7 +105,7 @@ Cursor 단축키가 나오면 HTML로 보이는 곳에 **`<kbd>mod+shift+p</kbd>
 | `secret` | 한 번만 보이는 키 | `value`, `btn` | `b:<버튼>` |
 | `cards` | 카드 고르기 | `items:[{ id, title, desc, on }]` | `card:<id>` |
 | `steps` | 진행 단계 | `items`, `on`(지금 번호, 0부터) | |
-| `page` | 문서 한 쪽 미리보기(Document Parse) | `els:[{ cat, text, rows, items, on }]`, `show`(요소 테두리·이름표), `pick`, `label` | `el:<1부터 번호>` |
+| `page` | 문서 한 쪽 미리보기(Document Parse) | `id`, `els:[{ cat, text, rows, items, on }]`, `show`(요소 테두리·이름표), `pick`, `label` | `el:<1부터 번호>`(id가 있으면 누른 요소가 저절로 강조, `set:{ <id>: 번호 }`도 됨) |
 
 `page`의 `cat`은 Document Parse가 돌려주는 요소 이름(`ref/upstage-docs/document-ai.md`에 있는 이름만) 중 `heading1`, `paragraph`, `table`(`rows`), `figure`, `chart`, `list`(`items`), `caption`, `equation`, `footnote`, `header`, `footer` 등을 쓴다.
 
