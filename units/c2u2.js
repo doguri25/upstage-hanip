@@ -288,7 +288,8 @@
         P.face(87, 112, 28, { mood: 'happy' });
         P.rrect(178, 14, 150, 120, 10, { fill: 'paper', w: 1.8 });
         P.text(190, 40, 'choice_list', { mono: true, size: 12, weight: 700, anchor: 'start' });
-        ['no mark text', '1  1    4', '1  2    8', '2  1    101'].forEach((r, i) => P.text(196, 64 + i * 18, r, { mono: true, size: 11, anchor: 'start', c: i ? 'ink' : 'accent' }));
+        [['no', 'mark', 'text'], ['1', '1', '4'], ['1', '2', '8'], ['2', '1', '101']].forEach((r, i) =>
+          r.forEach((v, j) => P.text([204, 244, 292][j], 64 + i * 18, v, { mono: true, size: 11, c: i ? 'ink' : 'accent' })));
         P.text(87, 160, '① 한 줄 글자로', { size: 13, weight: 700 });
         P.text(253, 160, '② 첫 단계에 따로', { size: 13, weight: 700 });
         P.text(170, 192, '둘 다 IE 규칙에 맞아요', { size: 12, c: 'ink2' });
@@ -626,7 +627,7 @@
         ask(P, 30, 110, 20, 'accent');
       }},
       q_privacy: { w: 340, h: 200, label: '이름 칸이 있는 학생 답안지 더미 앞에서 써도 되는지 망설이는 얼굴', draw(P) {
-        for (let i = 0; i < 4; i++) P.note(20 + i * 14, 20 + i * 10, 110, 130, { fill: 'paper' });
+        for (let i = 0; i < 4; i++) P.note(20 + i * 14, 16 + i * 10, 110, 124, { fill: 'paper' });
         P.text(74, 78, '이름:', { size: 12, anchor: 'start', weight: 700 });
         P.rrect(108, 66, 50, 16, 3, { fill: 'soft', fs: 'solid', c: null });
         for (let i = 0; i < 4; i++) P.line(74, 104 + i * 16, 156 - (i % 2) * 14, 104 + i * 16, { c: 'soft', w: 2.4 });

@@ -27,6 +27,11 @@
     P.circle(cx, bottom - 90 * s, 62 * s, { fill: 'paper' });
     P.face(cx, bottom - 88 * s, 50 * s, { mood: mood || 'smile' });
   }
+  // 동그란 머리 + 얼굴(d = 얼굴 크기)
+  function head(P, cx, cy, d, mood) {
+    P.circle(cx, cy, d * 1.24, { fill: 'paper' });
+    P.face(cx, cy + 1, d, { mood: mood || 'smile' });
+  }
   // 방패(안전장치)
   function shield(P, cx, cy, s, fill) {
     P.path(`M${cx} ${cy - 30 * s} L${cx + 26 * s} ${cy - 20 * s} L${cx + 24 * s} ${cy + 8 * s} Q${cx + 18 * s} ${cy + 26 * s} ${cx} ${cy + 34 * s} Q${cx - 18 * s} ${cy + 26 * s} ${cx - 24 * s} ${cy + 8 * s} L${cx - 26 * s} ${cy - 20 * s} Z`, { fill: fill || 'good', gap: 5, w: 2 });
@@ -148,15 +153,15 @@
         P.text(170, 182, '이름을 붙이면 막을 길이 보여요', { size: 13, c: 'accent' });
       }},
       dataOut: { w: 340, h: 200, label: '학생이 쓴 전화번호가 API 서버와 기록 파일 두 곳으로 가는 모습', draw(P) {
-        person(P, 54, 196, 'smile', 0.7);
-        P.bubble(10, 14, 100, 40, 50, 66);
+        person(P, 54, 168, 'smile', 0.6);
+        P.bubble(10, 14, 100, 40, 50, 74);
         P.text(60, 39, '010-…', { mono: true, size: 13 });
         P.arrow(110, 96, 196, 56, { c: 'accent', w: 2.4, head: 9 });
         P.arrow(110, 116, 196, 140, { c: 'accent', w: 2.4, head: 9 });
         server(P, 202, 20, 74, 66);
         P.text(239, 102, 'API 서버', { size: 12, weight: 700 });
         doc(P, 210, 116, 60, 56, 'hi', 2);
-        P.text(304, 150, 'log', { mono: true, size: 12, weight: 700 });
+        P.text(278, 150, 'log', { mono: true, size: 12, weight: 700, anchor: 'start' });
         P.text(170, 192, '한 번 나가면 여러 곳에 남아요', { size: 13, c: 'ink2' });
       }},
       rulebook: { w: 340, h: 200, label: '교육부 기준, 개인정보 보호법, 교육청 지침 세 문서를 먼저 확인하는 모습', draw(P) {
@@ -214,8 +219,8 @@
         P.rect(254, 30, 60, 38, { fill: 'hi', gap: 5 });
         P.path('M254 30 L284 52 L314 30', { w: 1.6 });
         card(P, 70, 116);
-        P.face(100, 134, 18, { mood: 'happy' });
-        P.face(130, 134, 18, { mood: 'smile' });
+        head(P, 100, 134, 18, 'happy');
+        head(P, 130, 134, 18, 'smile');
         P.rrect(84, 150, 64, 14, 4, { fill: 'warm', gap: 4, w: 1.4 });
         P.robot(270, 146, 0.45, { mood: 'wow' });
         ask(P, 116, 40, 22, 'warm');
@@ -288,7 +293,7 @@
         P.note(20, 14, 170, 170, { fill: 'paper' });
         [60, 130, 70, 120, 80, 140].forEach((w, i) => P.line(36, 40 + i * 24, 36 + w, 40 + i * 24, { c: i % 2 ? 'ink2' : 'accent', w: i % 2 ? 2.6 : 3.4 }));
         lens(P, 226, 96, 60);
-        P.face(300, 48, 40, { mood: 'wow' });
+        head(P, 300, 48, 40, 'wow');
       }},
       q_whichLayer: { w: 340, h: 200, label: '자료 쪽지 끝의 전화번호가 로봇을 거쳐 학생 화면으로 가려는 모습과 물음표', draw(P) {
         doc(P, 12, 24, 80, 104, 'paper', 4);
@@ -337,7 +342,7 @@
         P.line(256, 90, 256, 130, { w: 3 });
         P.line(236, 130, 276, 130, { w: 3 });
         P.text(256, 166, '감시', { size: 14, weight: 700 });
-        P.face(166, 76, 40, { mood: 'wow' });
+        head(P, 166, 76, 40, 'wow');
         ask(P, 166, 136, 24);
       }},
 
@@ -375,7 +380,7 @@
         tag(P, 16, 144, 110, '010-9876-5432', 'paper', 11);
         lens(P, 210, 90, 70);
         P.text(210, 96, '[?]', { mono: true, size: 16, weight: 700 });
-        P.face(300, 48, 40, { mood: 'wink' });
+        head(P, 300, 48, 40, 'wink');
       }},
       q_schemaBlank: { w: 340, h: 200, label: '중괄호 상자 안의 빈칸과 고민하는 로봇', draw(P) {
         P.rrect(16, 20, 210, 150, 12, { fill: 'paper', fs: 'solid', w: 2 });
@@ -413,10 +418,10 @@
         P.bubble(10, 20, 96, 56, 40, 94);
         P.text(58, 44, '이전 지시', { size: 12, weight: 700 });
         P.text(58, 62, '무시해!', { size: 12, weight: 700, c: 'bad' });
-        P.face(40, 114, 34, { mood: 'wink' });
+        head(P, 40, 114, 34, 'wink');
         doc(P, 128, 20, 84, 104, 'paper', 3);
         P.text(170, 100, '숨은 글', { size: 11, c: 'soft' });
-        P.face(282, 58, 50, { mood: 'proud' });
+        head(P, 282, 58, 50, 'proud');
         P.rrect(258, 48, 48, 12, 5, { fill: 'ink', fs: 'solid' });
         P.text(282, 108, '"연극이야"', { size: 12, weight: 700 });
         P.text(58, 152, '직접 지시', { size: 13, weight: 700 });
@@ -446,7 +451,7 @@
       q_rolePlay: { w: 340, h: 200, label: '소설 놀이를 하자는 말풍선과 가면, 금칙어 검사를 통과한 표시', draw(P) {
         P.bubble(14, 16, 170, 56, 60, 100);
         P.text(99, 50, '소설 쓰기 놀이 하자!', { size: 13, weight: 700 });
-        P.face(60, 132, 50, { mood: 'wink' });
+        head(P, 60, 132, 50, 'wink');
         P.rrect(36, 120, 48, 12, 5, { fill: 'ink', fs: 'solid' });
         box(P, 210, 30, 116, 36, '금칙어 검사', 'good', 12);
         tick(P, 312, 46, 7);
@@ -503,7 +508,7 @@
       quota: { w: 340, h: 200, label: '학생마다 붙은 질문 수 막대, 다 쓴 학생은 빨간 막대', draw(P) {
         [['07', 3, 'smile'], ['15', 20, 'wow'], ['22', 11, 'happy']].forEach(([n, k, m], i) => {
           const cx = 60 + i * 110;
-          P.face(cx, 46, 46, { mood: m });
+          head(P, cx, 46, 46, m);
           P.text(cx, 94, n + '번', { size: 13, weight: 700 });
           P.rrect(cx - 40, 106, 80, 14, 6, { c: 'ink2', w: 1.4 });
           P.rrect(cx - 40, 106, 80 * k / 20, 14, 6, { fill: k >= 20 ? 'bad' : 'good', fs: 'solid', w: 1 });
@@ -554,7 +559,7 @@
 
       /* ---------- L5 문제 그림 ---------- */
       q_429class: { w: 340, h: 200, label: '여러 학생 얼굴에서 한꺼번에 화살표가 서버로 몰리고 서버에 429가 뜬 모습', draw(P) {
-        for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) P.face(30 + c * 40, 40 + r * 50, 30, { mood: ['happy', 'smile', 'wink'][(r + c) % 3] });
+        for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) head(P, 30 + c * 40, 40 + r * 50, 30, ['happy', 'smile', 'wink'][(r + c) % 3]);
         for (let i = 0; i < 3; i++) P.arrow(150, 40 + i * 50, 214, 90, { c: 'soft', w: 2, head: 8 });
         server(P, 222, 40, 90, 100);
         P.text(267, 168, '429', { mono: true, size: 20, weight: 700, c: 'bad' });
@@ -592,7 +597,7 @@
         P.text(28, 52, 'log.jsonl', { mono: true, size: 12, weight: 700, anchor: 'start' });
         [180, 150, 190, 120].forEach((w, i) => P.line(28, 76 + i * 20, 28 + w, 76 + i * 20, { c: i === 1 ? 'warm' : 'soft', w: 3 }));
         lens(P, 190, 96, 50);
-        P.face(290, 60, 40, { mood: 'wow' });
+        head(P, 290, 60, 40, 'wow');
         ask(P, 292, 124, 26);
       }},
 
@@ -683,9 +688,9 @@
         P.path('M14 52 L95 16 L176 52 Z', { fill: 'warm', gap: 6, w: 2 });
         [34, 82, 130].forEach(x => P.rect(x, 66, 24, 24, { fill: 'sky', fs: 'solid', w: 1.4 }));
         P.rect(80, 110, 30, 40, { fill: 'hi', gap: 4, w: 1.6 });
-        P.face(40, 172, 26, { mood: 'happy' });
-        P.face(80, 172, 26, { mood: 'smile' });
-        P.face(120, 172, 26, { mood: 'wink' });
+        head(P, 40, 172, 26, 'happy');
+        head(P, 80, 172, 26, 'smile');
+        head(P, 120, 172, 26, 'wink');
         doc(P, 190, 70, 44, 56, 'hi', 2);
         person(P, 280, 196, 'wow', 0.75);
         ask(P, 312, 60, 26);
@@ -703,15 +708,15 @@
         P.drop(300, 40, 6);
       }},
       t_crisisRule: { w: 340, h: 200, label: '고개 숙인 학생 얼굴과 위기 신호 규칙 쪽지, 그리고 선생님', draw(P) {
-        P.face(60, 70, 60, { mood: 'sad' });
-        P.drop(94, 58, 5);
+        head(P, 60, 70, 60, 'sad');
+        P.drop(104, 50, 5);
         P.note(124, 30, 100, 110, { fill: 'hi' });
         P.text(174, 60, '위기 신호', { size: 13, weight: 700 });
         P.line(140, 80, 206, 80, { c: 'soft', w: 2.4 });
         P.line(140, 94, 196, 94, { c: 'soft', w: 2.4 });
         ask(P, 174, 128, 24);
         person(P, 290, 170, 'smile', 0.7);
-        P.line(60, 160, 250, 160, { c: 'accent', w: 2 });
+        P.curveArrow(96, 104, 170, 196, 250, 150, { c: 'accent', w: 2, head: 8 });
       }}
     },
 
@@ -738,7 +743,7 @@
         '교육부는 2025년 12월 「학습지원 소프트웨어 선정 기준」을 안내했어요. 학생 개인정보를 처리하는 도구는 개인정보 최소 수집, 수집 항목·이용 기간 명시, 아동 개인정보 보호 절차 같은 필수기준을 지키고 <b>학교운영위원회 심의</b>를 거치게 했어요.',
         '선생님이 직접 만든 챗봇도 이 절차에 들어가는지는 아직 분명하지 않아요. 학생 개인정보를 다룬다면 해당할 가능성이 크니 <b>학교에 먼저 물어요</b>.',
         '나이도 봐야 해요. 개인정보 보호법은 <b>만 14세 미만</b> 아동의 개인정보를 처리하면서 동의가 필요할 때 <b>법정대리인 동의</b>를 받게 해요. 서울시교육청의 2023년 지침처럼 초등은 교사 시연, 중학생은 보호자 허락과 교사 지도 아래, 고등학생은 보호자 동의 뒤 직접 쓰도록 학교급별로 단계를 나눈 예도 있어요.'
-      ], tip: '법 조문과 지침은 바뀌고, 교육청마다 달라요. 이 레슨은 방향만 잡아 줘요. <b>학교·교육청 지침을 먼저 확인해요.</b>' },
+      ], tip: '법 조문과 지침은 바뀌고, 교육청마다 달라요. 조문은 국가법령정보센터에서 원문으로 보고, 이 레슨은 방향만 잡는 데 써요. <b>학교·교육청 지침을 먼저 확인해요.</b>' },
       { t: 'say', h: '안전장치의 목적은 배움을 지키는 거예요', fig: 'balance', p: [
         '한국교육과정평가원의 생성형 AI 가이드라인(2026년 10월 보도)은 "투명하게", "안전하게", "공정하게", "책임지고 판단하라" 같은 원칙을 내세워요. 최종 판단은 교사 몫이라는 뜻이에요.',
         '투명하게는 화면에 <b>"AI가 만든 답이에요. 틀릴 수 있어요"</b>를 늘 보이게 두는 것부터 시작해요. 2026년 1월 시행된 인공지능 기본법에도 생성형 AI 결과물 표시 이야기가 있는데, 교사 개인이나 학교가 그 의무를 지는지는 아직 확인이 필요해요.',

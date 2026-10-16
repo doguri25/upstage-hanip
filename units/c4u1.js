@@ -616,7 +616,7 @@
         laptop(P, 30, 40, 160, 100, 'paper');
         P.circle(110, 90, 40, { c: 'accent', w: 3 });
         P.path('M110 70 L110 76', { c: 'accent', w: 3 });
-        P.text(110, 160, 'exec(답안)', { mono: true, size: 12, weight: 700 });
+        P.text(110, 176, 'exec(답안)', { mono: true, size: 12, weight: 700 });
         person(P, 272, 196, 'dizzy', 0.75);
         P.text(268, 40, '연수장', { size: 13, weight: 700, c: 'ink2' });
         P.drop(316, 96, 6);
@@ -648,22 +648,20 @@
         person(P, 294, 198, 'wow', 0.55);
       }},
       t_shortAns: { w: 340, h: 200, label: '모양이 조금씩 다른 답 쪽지 세 장과 정답 쪽지 하나', draw(P) {
-        P.note(14, 20, 96, 40, { fill: 'paper' });
-        P.text(62, 46, 'append()', { mono: true, size: 12 });
-        P.note(122, 20, 96, 40, { fill: 'paper' });
-        P.text(170, 46, '.append', { mono: true, size: 12 });
-        P.note(230, 20, 96, 40, { fill: 'paper' });
-        P.text(278, 46, 'Append', { mono: true, size: 12 });
+        P.note(30, 20, 104, 40, { fill: 'paper' });
+        P.text(82, 46, 'append()', { mono: true, size: 12 });
+        P.note(206, 20, 104, 40, { fill: 'paper' });
+        P.text(258, 46, '.append', { mono: true, size: 12 });
         P.rrect(110, 100, 120, 36, 8, { fill: 'good', gap: 5 });
         P.text(170, 124, 'append', { mono: true, size: 13, weight: 700 });
         P.text(170, 92, '정답', { size: 12, weight: 700, c: 'ink2' });
-        ask(P, 62, 92, 20);
-        ask(P, 278, 92, 20);
+        ask(P, 82, 92, 20);
+        ask(P, 258, 92, 20);
         P.text(170, 176, '이것들도 맞게 보고 싶어요', { size: 12, c: 'ink2' });
       }},
       t_args: { w: 340, h: 200, label: '연수장 노트북 화면에 TypeError가 줄줄이 뜬 모습과 어리둥절한 얼굴', draw(P) {
-        laptop(P, 24, 30, 180, 110, 'ink');
-        [56, 76, 96, 116].forEach(y => P.text(36, y, 'TypeError', { mono: true, size: 11, anchor: 'start', c: 'bad' }));
+        laptop(P, 24, 30, 180, 110, 'paper');
+        [56, 76, 96, 116].forEach(y => P.text(36, y, 'TypeError', { mono: true, size: 11, weight: 700, anchor: 'start', c: 'bad' }));
         P.text(114, 168, '정답 코드까지 모두', { size: 12, c: 'ink2' });
         person(P, 280, 196, 'dizzy', 0.7);
         P.text(280, 36, '11:00 실습', { size: 13, weight: 700, c: 'ink2' });
