@@ -638,7 +638,7 @@
         toolbox(P, 290, 90, 30, 30, null, 'pink');
         ask(P, 170, 32, 22);
         P.text(70, 168, '하나로 다?', { size: 13, weight: 700 });
-        P.text(270, 168, '좁게 셋?', { size: 13, weight: 700 });
+        P.text(270, 168, '셋으로?', { size: 13, weight: 700 });
       }},
       qb_confirm: { w: 340, h: 200, label: '도구 상자 네 개와 문지기처럼 선 교사, 누구를 멈춰 세울지 고민하는 모습', draw(P) {
         ['sky', 'hi', 'pink', 'good'].forEach((c, i) => toolbox(P, 12 + i * 62, 70, 52, 40, null, c));
