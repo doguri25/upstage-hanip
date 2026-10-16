@@ -548,7 +548,7 @@ function renderHome(opt = {}){
       h('ol', null,
         h('li', null, '레슨에서 설명을 읽고, ', h('b', null, '모의 화면'), '에서 진짜처럼 키를 누르고 버튼을 눌러 봐요.'),
         h('li', null, '단원 끝의 ', h('b', null, '★ 진짜 실습 미션'), '은 업스테이지 콘솔과 내 컴퓨터의 Cursor로 진짜 API를 불러 보고 체크해요.'),
-        h('li', null, h('b', null, '연수 지도'), ' 탭에서 기반연수 15차시마다 어느 단원이 대비되는지 볼 수 있어요.'),
+        h('li', null, h('b', null, '연수 지도'), ' 탭에서 기반연수 15차시마다 어느 단원이 대비되는지 봐요. 2일차는 ', h('b', null, '트랙 A(파이썬 자동채점 + AI튜터)'), ' 중심이에요.'),
         h('li', null, '단축키는 ', h('b', null, OS() === 'mac' ? '⌘(Mac)' : 'Ctrl(Windows)'), ' 기준으로 보여요. 설정에서 바꿀 수 있어요.'),
         h('li', null, '틀려도 괜찮아요. 틀린 문제는 레슨 끝에 한 번 더 나오고, 오답 노트에도 모여요.')),
       h('div', { class:'row' }, h('button', { class:'ghost btn', onclick:() => { store.guideSeen = true; save(); again(); } }, '알겠어요'))) : null,

@@ -394,7 +394,7 @@ function unitChip(id){
 }
 const unitsReady = ids => { const us = [...new Set(ids)].map(id => UNITS.find(u => u.id === id)).filter(Boolean); return [us.filter(u => doneCount(u) === u.items.length).length, us.length]; };
 function mapView(){
-  const T = TRAINING, track = store.track || '';
+  const T = TRAINING, track = store.track == null ? T.myTrack : store.track;
   const meter = (label, [d, n]) => h('div', null, h('div', { class:'meter', 'aria-hidden':'true' }, h('i', { style:`width:${n ? d / n * 100 : 0}%` })), h('div', { class:'meter-label' }, h('span', null, label), h('span', null, `${d} / ${n} 단원`)));
   const day1 = T.days[0], day2 = T.days[1];
   const ids1 = day1.rows.flatMap(r => r.units), idsA = day2.rows.flatMap(r => r.ua), idsB = day2.rows.flatMap(r => r.ub);
@@ -406,10 +406,10 @@ function mapView(){
   const side = h('section', { class:'panel' }, h('h2', null, '연수 지도'),
     h('p', { class:'hint' }, `${T.by} ${T.title}. ${T.kind}. 차시마다 미리 해 두면 좋은 단원을 이어 놨어요.`),
     meter('1일차 대비', unitsReady(ids1)),
-    meter('2일차 트랙 A 대비', unitsReady(idsA)),
-    meter('2일차 트랙 B 대비', unitsReady(idsB)),
+    track === 'B' ? meter('2일차 트랙 B 대비', unitsReady(idsB)) : meter('2일차 트랙 A 대비', unitsReady(idsA)),
     h('div', { class:'side-label' }, '내 2일차 트랙'),
-    h('div', { class:'seg-ctl' }, [['아직', ''], ['트랙 A', 'A'], ['트랙 B', 'B']].map(([t, v]) => h('button', { class:track === v ? 'on' : '', onclick:() => { store.track = v; if (v) store.prep.track = true; save(); renderHome({ keep:true }); } }, t))),
+    h('div', { class:'seg-ctl' }, [['트랙 A', 'A'], ['트랙 B', 'B']].map(([t, v]) => h('button', { class:track === v ? 'on' : '', onclick:() => { store.track = v; save(); renderHome({ keep:true }); } }, t))),
+    h('p', { class:'hint' }, track === 'B' ? '트랙 B 단원(c4u4)은 선택 단원이에요. 앱은 트랙 A 중심으로 짜여 있어요.' : '트랙 A(파이썬 자동채점 + AI튜터)는 과정 4의 단원 1~3이 차례로 대비해요.'),
     h('div', { class:'side-label' }, `연수 전 준비물 ${prepDone}/${T.prep.length}`), prepList);
   const row1 = r => h('li', { class:'srow' + (r.prep ? ' prep-row' : '') },
     h('div', { class:'stime' }, h('b', null, r.time), r.len ? h('small', null, r.len) : null),
@@ -418,9 +418,8 @@ function mapView(){
   const row2 = r => h('li', { class:'srow' },
     h('div', { class:'stime' }, h('b', null, r.time)),
     h('div', { class:'sbody' }, h('small', { class:'stheme' }, wb(r.title)),
-      h('div', { class:'tracks' },
-        h('div', { class:'trk' + (track === 'A' ? ' mine' : track === 'B' ? ' dim' : '') }, h('span', { class:'tname' }, '트랙 A'), h('b', null, r.a), h('div', { class:'uchips' }, r.ua.map(unitChip))),
-        h('div', { class:'trk' + (track === 'B' ? ' mine' : track === 'A' ? ' dim' : '') }, h('span', { class:'tname' }, '트랙 B'), h('b', null, r.b), h('div', { class:'uchips' }, r.ub.map(unitChip))))));
+      h('div', { class:'tracks' }, ...(track === 'B' ? [['B', r.b, r.ub], ['A', r.a, r.ua]] : [['A', r.a, r.ua], ['B', r.b, r.ub]]).map(([k, t, us], i) =>
+        h('div', { class:'trk' + (i ? ' dim' : ' mine') }, h('span', { class:'tname' }, `트랙 ${k}${i ? '' : ' · 내 반'}`), h('b', null, t), i ? null : h('div', { class:'uchips' }, us.map(unitChip)))))));
   const day = (d, rows) => h('section', { class:'panel tday' }, h('div', { class:'eyebrow' }, `${d.name} · ${d.hours}`), h('h2', null, d.sub), h('ol', { class:'sched' }, rows));
   const main = [day(day1, day1.rows.map(row1)), day(day2, day2.rows.map(row2)),
     h('section', { class:'panel tday' }, h('div', { class:'eyebrow' }, '그다음'), h('h2', null, T.after.title), h('p', { class:'hint' }, T.after.p), h('div', { class:'uchips' }, T.after.units.map(unitChip)))];
