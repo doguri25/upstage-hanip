@@ -10,7 +10,7 @@ for (const dir of ['guide']) for (const f of (fs.existsSync(dir) ? fs.readdirSyn
   try { new Function('HANIP', fs.readFileSync(path.join(dir, f), 'utf8'))(HANIP); } catch (e) { err(`${dir}/${f}: 읽지 못함 ${e.message}`); }
 }
 const CATS = ['모델', 'API', '콘솔', '코드', '문제 해결', '용어'];
-const SRC_OK = /^https:\/\/(console\.upstage\.ai|www\.upstage\.ai|upstage\.ai|github\.com\/UpstageAI|pypi\.org|docs\.python\.org|docs\.streamlit\.io|cursor\.com|github\.com\/openai\/openai-python|www\.moe\.go\.kr|www\.msit\.go\.kr|www\.keris\.or\.kr|www\.korea\.kr|www\.pipc\.go\.kr)(\/|$)/;
+const SRC_OK = /^https:\/\/(console\.upstage\.ai|www\.upstage\.ai|upstage\.ai|github\.com\/UpstageAI|pypi\.org|docs\.python\.org|docs\.streamlit\.io|cursor\.com|github\.com\/openai\/openai-python|www\.moe\.go\.kr|www\.msit\.go\.kr|www\.keris\.or\.kr|www\.korea\.kr|www\.pipc\.go\.kr|kace\.re\.kr|www\.kace\.re\.kr)(\/|$)/;
 const kbd = (w, t) => { if (typeof t !== 'string') return;
   for (const m of t.matchAll(/<kbd>([^<]*)<\/kbd>/g)) if (!SIM.valid(m[1])) err(`${w}: <kbd>${m[1]}</kbd>는 단축키 모양이 아니에요`);
   if (/⌘|⇧|⌥|Cmd\s*\+|Ctrl\s*\+/.test(t.replace(/<kbd>[^<]*<\/kbd>/g, ''))) warn(`${w}: 단축키는 <kbd>…</kbd>로: ${t.slice(0, 50)}`); };

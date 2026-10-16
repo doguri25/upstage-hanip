@@ -13,7 +13,7 @@
 - 업스테이지 모델 이름·API 주소·매개변수·요금·화면 메뉴는 **`ref/upstage-docs/`(공식 문서에서 모은 메모, 2026-10-16)** 에 있는 것만 쓴다. 기억이나 추측으로 쓰지 않는다. 메모에 없는 세부(버튼 위치·정확한 메뉴 이름 등)는 "화면 모양은 바뀔 수 있어요"처럼 흐리게 쓰거나 뺀다.
 - 모델 이름(`solar-pro3` 등)과 가격은 자주 바뀐다. 꼭 필요할 때만, "지금은"·"2026년 10월 기준"을 붙여 쓴다. 코드에서는 모델 이름을 **변수 하나**(`MODEL = "…"`)에 모아 두는 습관을 가르친다.
 - 업스테이지 콘솔은 영어 화면이다. 버튼·메뉴 이름은 **영어 그대로** 쓰고 처음 한 번 뜻을 풀어 준다(예: **Create API Key**(API 키 만들기)).
-- 단원 머리에 `checked: { date:'2026-10-16' }`(공식 문서를 확인한 날)과 `sources`(근거 주소 배열)를 넣는다. 허용 주소: `console.upstage.ai/docs…`, `upstage.ai`, `github.com/UpstageAI…`, `pypi.org`, `docs.python.org`, `docs.streamlit.io`, `cursor.com`, 정부·공공기관(`moe.go.kr`, `msit.go.kr`, `keris.or.kr`, `korea.kr`, `pipc.go.kr`), `github.com/openai/openai-python`.
+- 단원 머리에 `checked: { date:'2026-10-16' }`(공식 문서를 확인한 날)과 `sources`(근거 주소 배열)를 넣는다. 허용 주소: `console.upstage.ai/docs…`, `upstage.ai`, `github.com/UpstageAI…`, `pypi.org`, `docs.python.org`, `docs.streamlit.io`, `cursor.com`, 정부·공공기관(`moe.go.kr`, `msit.go.kr`, `keris.or.kr`, `korea.kr`, `pipc.go.kr`), 한국컴퓨터교육학회(`kace.re.kr`), `github.com/openai/openai-python`.
 - 학생 개인정보·저작권·연령 제한 같은 제도 이야기는 `ref/upstage-docs/context.md`에 근거가 있는 것만, 단정하지 말고 "학교·교육청 지침을 먼저 확인해요"로 마무리한다.
 - 앱은 업스테이지 공식 앱이 아니다. 회사·제품을 칭찬하거나 깎아내리지 말고 사실만 쓴다.
 

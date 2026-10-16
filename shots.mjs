@@ -11,5 +11,5 @@ for (const [n, a] of process.argv.slice(2).map(x => x.split('='))) { const [uid,
 const mo = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
 await mo.goto(url); await mo.waitForTimeout(1500);
 await mo.screenshot({ path: 'shots/v3-mo-home.png' });
-await go(mo, 'c0u1', 'L1', 4, 'wrong'); await mo.screenshot({ path: 'shots/v3-mo-wrong.png' });
+await go(mo, 'c1u1', 'L1', 4, 'wrong'); await mo.screenshot({ path: 'shots/v3-mo-wrong.png' });
 await browser.close();

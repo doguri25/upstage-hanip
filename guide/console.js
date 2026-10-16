@@ -1,0 +1,21 @@
+// 찾아보기: 콘솔 (docs/FACTS.md 1절, 화면 모양은 바뀔 수 있음)
+HANIP.guide([
+  { id:'console-home', cat:'콘솔', title:'업스테이지 콘솔', aka:['console.upstage.ai', 'Home', '대시보드'],
+    what:'API 키·Playground·결제를 다루는 웹 화면이에요. 메뉴는 Home, Playground, API keys, Billing 등이에요(화면 모양은 바뀔 수 있어요).',
+    where:'<code>console.upstage.ai</code>', lesson:'c1u1', src:'https://console.upstage.ai/docs/getting-started', checked:'2026-10-16' },
+  { id:'create-key', cat:'콘솔', title:'API 키 만들기', aka:['Create new key', 'Create API Key', 'API keys', 'up_'],
+    what:'API keys 페이지에서 <b>Create new key</b>(예전 문서: Create API Key)를 눌러 만들어요. 키는 <code>up_</code>로 시작해요. 만들자마자 <code>.env</code>에 옮기고, 코드·깃허브·채팅방에 붙이지 않아요.',
+    where:'콘솔 → API keys', lesson:'c1u1', src:'https://console.upstage.ai/docs/getting-started', checked:'2026-10-16' },
+  { id:'playground', cat:'콘솔', title:'Playground', aka:['플레이그라운드', 'Chat', 'Document Parse 체험'],
+    what:'코드 없이 브라우저에서 Solar 대화나 Document Parse를 바로 써 보는 곳이에요. 수업 아이디어를 시험해 보고 코드로 옮겨요.',
+    where:'콘솔 → Playground → Chat / Document Parse', lesson:'c1u1', src:'https://console.upstage.ai/docs/getting-started', checked:'2026-10-16' },
+  { id:'billing', cat:'콘솔', title:'Billing: Usage · Credit', aka:['결제', '사용량', '크레딧', '$10', 'Payment'],
+    what:'Usage에서 얼마나 썼는지, Credit에서 남은 크레딧을 봐요. 새 계정은 무료 크레딧 $10을 받아요. 결제 수단을 넣어 두면 크레딧이 떨어져도 멈추지 않고 청구되니 사용량을 자주 확인해요.',
+    where:'콘솔 → Billing', lesson:'c1u1', src:'https://www.upstage.ai/pricing/api', checked:'2026-10-16' },
+  { id:'rate-limits', cat:'콘솔', title:'속도 제한(RPM·TPM)', aka:['rate limit', '429', 'RPM', 'TPM', '등급', 'tier'],
+    what:'분당 요청 수(RPM)·분당 토큰 수(TPM)에 한도가 있어요. 반 학생 30명이 교사 키 하나로 동시에 부르면 금방 걸릴 수 있어요. 등급별 수치는 문서에서 확인해요.',
+    lesson:'c3u3', src:'https://console.upstage.ai/docs/guides/rate-limits', checked:'2026-10-16' },
+  { id:'pricing', cat:'콘솔', title:'가격 어림', aka:['요금', '비용', 'pricing', '토큰당 가격', '쪽당 가격'],
+    what:'2026년 10월 검색 기준(바뀔 수 있음): <code>solar-pro4</code> 100만 토큰당 입력 $0.30·출력 $1.20, <code>solar-mini4</code> $0.10·$0.40, 임베딩 2 $0.02, Document Parse 쪽당 $0.01(enhanced $0.03), Information Extract 쪽당 $0.04(enhanced $0.06).',
+    lesson:'c1u1', src:'https://www.upstage.ai/pricing/api', checked:'2026-10-16' },
+]);

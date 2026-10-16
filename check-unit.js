@@ -10,7 +10,7 @@ const PYSRC = fs.readFileSync(path.join(__dirname, 'src/pyrun.js'), 'utf8');
 const miniPy = (code, ans) => { const PY = new Function(PYSRC + '\nreturn __hanipPy;')()(); let out = ''; let e = ''; try { e = PY.run(code, ans || [], s => { out += s; }); } catch (x) { e = 'RuntimeError: ' + x.message; } return { out, err:e || '' }; };
 const realPy = (code, ans) => { try { const r = cp.spawnSync('python3', ['-c', code], { input:(ans || []).join('\n') + '\n', encoding:'utf8', timeout:5000 }); return r.error ? null : { out:r.stdout, err:r.stderr }; } catch { return null; } };
 // 근거로 삼을 수 있는 공식 주소
-const SRC_OK = /^https:\/\/(console\.upstage\.ai|www\.upstage\.ai|upstage\.ai|github\.com\/UpstageAI|pypi\.org|docs\.python\.org|docs\.streamlit\.io|streamlit\.io|cursor\.com|github\.com\/openai\/openai-python|python\.langchain\.com|docs\.langchain\.com|www\.moe\.go\.kr|moe\.go\.kr|www\.msit\.go\.kr|msit\.go\.kr|www\.keris\.or\.kr|keris\.or\.kr|www\.korea\.kr|korea\.kr|www\.pipc\.go\.kr|pipc\.go\.kr|www\.kces\.or\.kr|kces\.or\.kr)(\/|$)/;
+const SRC_OK = /^https:\/\/(console\.upstage\.ai|www\.upstage\.ai|upstage\.ai|github\.com\/UpstageAI|pypi\.org|docs\.python\.org|docs\.streamlit\.io|streamlit\.io|cursor\.com|github\.com\/openai\/openai-python|python\.langchain\.com|docs\.langchain\.com|www\.moe\.go\.kr|moe\.go\.kr|www\.msit\.go\.kr|msit\.go\.kr|www\.keris\.or\.kr|keris\.or\.kr|www\.korea\.kr|korea\.kr|www\.pipc\.go\.kr|pipc\.go\.kr|kace\.re\.kr|www\.kace\.re\.kr)(\/|$)/;
 global.HANIP = { unit(u) { if (U) err('HANIP.unit를 두 번 불렀어요'); U = u; } };
 const errors = [], warns = [];
 const err = m => errors.push(m), warn = m => warns.push(m);
