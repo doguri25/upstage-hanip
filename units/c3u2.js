@@ -96,9 +96,9 @@
   function desks(P, n) {
     for (let i = 0; i < 4; i++) {
       const x = 16 + (i % 2) * 84, y = 52 + Math.floor(i / 2) * 76;
+      head(P, x + 28, y - 14, 26, i === n ? 'sad' : 'smile');
       laptop(P, x, y, 56, 34, 'paper');
-      P.face(x + 28, y - 12, 22, { mood: i === n ? 'sad' : 'smile' });
-      if (i === n) { P.line(x + 40, y - 14, x + 50, y - 36, { w: 2.2 }); P.circle(x + 51, y - 40, 9, { fill: 'paper' }); }
+      if (i === n) { P.line(x + 40, y - 16, x + 62, y - 32, { w: 2.2 }); P.circle(x + 64, y - 35, 9, { fill: 'paper' }); }
     }
   }
   // 흩어진 카드(순서 문제용)
@@ -108,6 +108,11 @@
     P.line(cx + r, cy - r, cx - r, cy + r, { c: c || 'bad', w: 3 });
   }
   function tick(P, cx, cy, r) { P.path(`M${cx - r} ${cy} L${cx - r * 0.3} ${cy + r * 0.7} L${cx + r} ${cy - r * 0.7}`, { c: 'good', w: 3.2 }); }
+  // 동그란 머리 + 얼굴
+  function head(P, x, y, d, mood) {
+    P.circle(x, y, d, { fill: 'paper', w: 1.6 });
+    P.face(x, y + d * 0.04, d * 0.8, { mood: mood || 'smile' });
+  }
   function ask(P, x, y, size, c) { P.text(x, y, '?', { size: size || 22, weight: 700, c: c || 'warm' }); }
 
   /* ---------- 모의 화면에서 되풀이하는 조각 ---------- */
@@ -354,7 +359,7 @@
       problemLine: { w: 340, h: 200, label: '손 든 학생 여럿과 다 돌아보지 못해 어지러운 교사', draw(P) {
         for (let i = 0; i < 6; i++) {
           const x = 20 + (i % 3) * 58, y = 62 + Math.floor(i / 3) * 62;
-          P.face(x + 16, y, 30, { mood: i % 2 ? 'sad' : 'wow' });
+          head(P, x + 16, y, 30, i % 2 ? 'sad' : 'wow');
           P.line(x + 30, y - 4, x + 40, y - 26, { w: 2.2 });
           P.circle(x + 41, y - 30, 9, { fill: 'paper' });
         }
@@ -487,9 +492,9 @@
         file(P, 14, 40, 80, 100, 'app.py', null, 'hi', 12);
         P.line(26, 86, 80, 86, { c: 'k', w: 3 });
         P.line(26, 104, 72, 104, { c: 's', w: 3 });
-        P.curveArrow(98, 70, 130, 30, 176, 84, { c: 'bad', w: 2.2, head: 8 });
         browser(P, 150, 40, 176, 120, 'localhost:8501');
         keyIcon(P, 214, 104, 1.2, 'hi');
+        P.curveArrow(98, 70, 140, 24, 196, 92, { c: 'bad', w: 2.2, head: 8 });
         P.drop(300, 80, 7);
         P.text(170, 188, '키가 어디서 샜을까?', { size: 13, c: 'ink2' });
       }},
@@ -525,7 +530,7 @@
         term(P, 12, 20, 206, 104, ['$ python app.py', 'Warning: to view', 'this Streamlit app…'], 10);
         browser(P, 232, 30, 96, 84);
         ask(P, 280, 92, 26);
-        P.face(70, 160, 40, { mood: 'wow' });
+        head(P, 70, 158, 40, 'wow');
         P.text(190, 166, '화면이 안 떠요', { size: 13, c: 'ink2' });
       }},
       qb_teacherView: { w: 340, h: 200, label: '학생 화면과 반 전체 질문 표를 합치려는 모습', draw(P) {
@@ -539,7 +544,6 @@
         [66, 84, 102, 120].forEach(y => P.line(192, y, 316, y, { c: 'soft', w: 2.4 }));
         P.text(85, 170, '학생 화면', { size: 13, weight: 700 });
         P.text(255, 170, '반 전체 질문 표', { size: 13, weight: 700 });
-        P.face(170, 186, 22, { mood: 'wow' });
       }},
 
       /* ---------- L5 설명 그림 ---------- */
@@ -602,7 +606,7 @@
       /* ---------- L5 문제 그림 ---------- */
       q_whereUse: { w: 340, h: 200, label: '실습 시작하자마자 손을 드는 학생과 0분을 가리키는 시계', draw(P) {
         laptop(P, 30, 84, 110, 66, 'paper');
-        P.face(85, 62, 36, { mood: 'wow' });
+        head(P, 85, 60, 36, 'wow');
         P.line(106, 60, 122, 30, { w: 2.4 });
         P.circle(124, 26, 10, { fill: 'paper' });
         P.circle(250, 72, 72, { fill: 'paper', w: 2 });
@@ -620,7 +624,7 @@
         P.text(282, 50, '무엇을 남길까?', { size: 13, weight: 700, c: 'warm' });
       }},
       q_cost: { w: 340, h: 200, label: '반 학생 얼굴들과 물음표가 든 달러 동전', draw(P) {
-        for (let r = 0; r < 3; r++) for (let c = 0; c < 6; c++) P.face(22 + c * 26, 34 + r * 30, 20, { mood: (r + c) % 3 ? 'smile' : 'happy' });
+        for (let r = 0; r < 3; r++) for (let c = 0; c < 5; c++) head(P, 26 + c * 30, 32 + r * 32, 24, (r + c) % 3 ? 'smile' : 'happy');
         P.text(86, 136, '30명 × 질문 10개', { size: 12, weight: 700 });
         P.circle(262, 78, 84, { fill: 'hi', gap: 6, w: 2.4 });
         P.text(262, 88, '$?', { size: 28, weight: 700, c: 'warm' });
@@ -661,7 +665,7 @@
       }},
       t_canvasLine: { w: 340, h: 200, label: '자료 요약 도구의 네 줄 캔버스를 돋보기로 살피는 얼굴', draw(P) {
         memo(P, 'good', 'wink');
-        P.text(292, 52, '이 캔버스, 괜찮아?', { size: 12, weight: 700, c: 'warm' });
+        P.text(292, 52, '어디가 문제?', { size: 13, weight: 700, c: 'warm' });
       }},
       t_sixOrder: { w: 340, h: 200, label: '뒤섞인 카드 여섯 장: 말풍선, 네 칸, 터미널, 창, 두 얼굴, 렌치', draw(P) {
         card(P, 12, 12);
@@ -674,8 +678,8 @@
         card(P, 30, 110);
         win(P, 40, 118, 72, 52);
         card(P, 140, 118);
-        P.face(166, 152, 26, { mood: 'smile' });
-        P.face(206, 152, 26, { mood: 'wink' });
+        head(P, 166, 152, 28, 'smile');
+        head(P, 206, 152, 28, 'wink');
         card(P, 246, 104);
         P.line(268, 160, 310, 118, { w: 4, c: 'ink2' });
         P.circle(312, 116, 14, { c: 'ink2', w: 3 });
@@ -713,8 +717,8 @@
       }},
       t_429: { w: 340, h: 200, label: '여러 얼굴의 화살표가 한 노트북으로 몰리고 화면에 429', draw(P) {
         for (let i = 0; i < 6; i++) {
-          P.face(26, 22 + i * 28, 20, { mood: i % 2 ? 'smile' : 'wow' });
-          P.arrow(40, 22 + i * 28, 140, 92, { c: 'soft', w: 1.4, head: 6 });
+          head(P, 24, 22 + i * 28, 22, i % 2 ? 'smile' : 'wow');
+          P.arrow(42, 22 + i * 28, 140, 92, { c: 'soft', w: 1.4, head: 6 });
         }
         laptop(P, 146, 60, 96, 62, 'paper');
         P.text(194, 100, '429', { size: 22, weight: 700, c: 'bad', mono: true });

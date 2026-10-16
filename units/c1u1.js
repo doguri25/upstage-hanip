@@ -95,10 +95,15 @@
     P.circle(cx, cy, d, { fill: 'sky', gap: 5, w: 2.4 });
     P.line(cx + d * 0.35, cy + d * 0.35, cx + d * 0.62, cy + d * 0.65, { w: 4 });
   }
-  // 작은 얼굴 여러 개(학생들)
+  // 동그란 머리 + 얼굴
+  function head(P, cx, cy, d, mood) {
+    P.circle(cx, cy, d * 1.2, { fill: 'paper' });
+    P.face(cx, cy + d * 0.04, d, { mood: mood || 'smile' });
+  }
+  // 작은 머리 여러 개(학생들)
   function crowd(P, x, y, cols, rows, gap, size) {
     const moods = ['smile', 'happy', 'wink', 'wow', 'smile', 'sleepy'];
-    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) P.face(x + i * gap, y + j * gap, size, { mood: moods[(i + j * cols) % moods.length] });
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) head(P, x + i * gap, y + j * gap, size, moods[(i + j * cols) % moods.length]);
   }
   // 달력(위 띠 + 큰 글자)
   function calendar(P, x, y, w, h, top, big, size) {
@@ -230,9 +235,8 @@
         P.sparkle(324, 196, 6, 'hi');
       }},
       threeRoles: { w: 340, h: 200, label: '도구를 만드는 렌치, 원리를 비추는 돋보기, 학생을 지키는 방패', draw(P) {
-        P.circle(48, 56, 36, { fill: 'hi', gap: 5 });
-        P.circle(48, 56, 14, { fill: 'paper', fs: 'solid' });
-        P.line(60, 68, 88, 98, { w: 8 });
+        P.line(58, 50, 58, 106, { w: 7, c: 'warm' });
+        P.rrect(28, 30, 60, 24, 5, { fill: 'ink2', fs: 'solid' });
         lens(P, 164, 58, 52);
         P.text(164, 64, 'AI', { size: 16, weight: 700 });
         P.path('M282 24 L314 38 Q314 80 282 100 Q250 80 250 38 Z', { fill: 'good', gap: 6 });
@@ -260,14 +264,16 @@
       roadmap: { w: 340, h: 212, label: '과정 1부터 과정 5까지 오르는 징검다리와 자라는 upstage-lab 폴더', draw(P) {
         P.path('M14 26 L14 58 L78 58 L78 26 L42 26 L38 18 L14 18 Z', { fill: 'hi', gap: 6 });
         P.text(86, 44, 'upstage-lab이 자라요', { size: 12, anchor: 'start' });
-        const st = [[40, 150], [105, 125], [170, 100], [235, 75], [300, 50]];
         const names = ['시작', '자료→데이터', '수업도구', '연수 트랙', '에이전트·대회'];
-        st.forEach(([x, y], i) => {
-          P.ellipse(x, y, 56, 26, { fill: i === 0 ? 'hi' : 'sky', gap: 5 });
+        P.path('M10 140 Q90 128 170 140 Q250 152 330 140', { c: 'sky', w: 10 });
+        names.forEach((nm, i) => {
+          const x = 38 + i * 66, y = 128 + (i % 2) * 6;
+          P.ellipse(x, y, 54, 26, { fill: i === 0 ? 'hi' : 'paper', fs: 'solid', w: 1.8 });
           P.text(x, y + 4, '과정 ' + (i + 1), { size: 11, weight: 700 });
-          P.text(x, y + 30, names[i], { size: 11, c: 'ink2' });
+          P.text(x, y + 32, nm, { size: 11, c: 'ink2' });
+          if (i < 4) P.arrow(x + 22, y - 22, x + 44, y - 22, { c: 'soft', w: 1.6, head: 6 });
         });
-        P.face(40, 116, 30, { mood: 'happy' });
+        head(P, 38, 92, 26, 'happy');
         P.text(170, 204, '연수 15차시와 나란히 가요', { size: 13, c: 'accent' });
       }},
 
@@ -278,10 +284,10 @@
         P.text(109, 94, '왜 틀렸을까?', { size: 14 });
         P.robot(240, 64, 0.4, { mood: 'proud' });
         person(P, 300, 196, 'smile', 0.62);
-        P.face(40, 158, 30, { mood: 'wow' });
-        P.face(90, 164, 30, { mood: 'smile' });
-        P.face(140, 158, 30, { mood: 'wink' });
-        P.face(190, 164, 30, { mood: 'happy' });
+        head(P, 40, 158, 30, 'wow');
+        head(P, 90, 164, 30, 'smile');
+        head(P, 140, 158, 30, 'wink');
+        head(P, 190, 164, 30, 'happy');
       }},
       q_roleSafe: { w: 340, h: 200, label: '학생 서른 명과 질문 도우미 로봇, 무엇을 챙길지 고민하는 교사', draw(P) {
         crowd(P, 20, 40, 5, 3, 26, 20);
@@ -303,7 +309,7 @@
         P.path('M86 126 L126 126 L122 148 Q106 160 90 148 Z', { fill: 'hi', gap: 5 });
         P.line(106, 156, 106, 168, { w: 3 });
         P.line(94, 172, 118, 172, { w: 3 });
-        P.face(262, 150, 40, { mood: 'wow' });
+        head(P, 262, 150, 34, 'wow');
         ask(P, 116, 40, 22, 'warm');
         ask(P, 226, 112, 22, 'bad');
         ask(P, 30, 110, 20, 'accent');
@@ -424,7 +430,7 @@
         doc(P, 20, 20, 150, 140, '수업 자료', 'paper', 12);
         P.text(95, 128, '현재 3팀 경쟁 중', { size: 12, weight: 700, c: 'accent' });
         calendar(P, 204, 24, 90, 84, '2026', '10월', 22);
-        P.face(262, 150, 34, { mood: 'wink' });
+        head(P, 262, 150, 30, 'wink');
         ask(P, 312, 136, 24);
         P.text(170, 190, '언제 기준일까?', { size: 13, c: 'ink2' });
       }},
@@ -448,7 +454,7 @@
       }},
       qa_chatApi: { w: 340, h: 200, label: '사람이 직접 쓰는 웹 채팅 창과 코드가 키를 들고 부르는 API', draw(P) {
         chatWin(P, 12, 18, 130, 100);
-        P.face(77, 146, 34, { mood: 'smile' });
+        head(P, 77, 146, 30, 'smile');
         P.text(77, 190, '사람이 화면에서', { size: 12, weight: 700 });
         P.text(170, 80, 'vs', { size: 16, weight: 700, c: 'warm' });
         codeBox(P, 196, 22, 134, ['MODEL = "solar-pro4"', 'ask(MODEL, q)'], 10);
@@ -535,7 +541,7 @@
         P.text(198, 52, '"model":', { mono: true, size: 11, anchor: 'start' });
         P.text(198, 74, '"solar-pro4-260806"', { mono: true, size: 10, anchor: 'start' });
         P.text(260, 124, '응답에 찍힌 이름', { size: 12, weight: 700 });
-        P.face(170, 164, 40, { mood: 'wow' });
+        head(P, 170, 162, 34, 'wow');
       }},
       q_pickDP: { w: 340, h: 200, label: '표가 든 학습지 PDF와 Markdown 쪽지 사이의 물음표 상자', draw(P) {
         P.note(20, 24, 100, 130, { fill: 'paper' });
@@ -825,7 +831,7 @@
         key(P, 262, 50, 0.7, 'good');
         card(P, 56, 116);
         doc(P, 82, 122, 40, 58, '.env', 'hi', 10);
-        P.face(262, 150, 40, { mood: 'wow' });
+        head(P, 262, 150, 34, 'wow');
         ask(P, 116, 40, 22, 'warm');
         ask(P, 226, 112, 22, 'bad');
         ask(P, 30, 110, 20, 'accent');
@@ -918,9 +924,9 @@
         tick(P, 53, 53, 10);
         P.text(171, 60, '403', { size: 18, weight: 700, c: 'bad' });
         tick(P, 289, 53, 10);
-        P.face(53, 124, 34, { mood: 'happy' });
-        P.face(171, 124, 34, { mood: 'wow' });
-        P.face(289, 124, 34, { mood: 'happy' });
+        head(P, 53, 126, 30, 'happy');
+        head(P, 171, 126, 30, 'wow');
+        head(P, 289, 126, 30, 'happy');
         P.text(171, 180, '나만 안 돼요', { size: 14, c: 'ink2' });
       }},
       t_agentPaste: { w: 340, h: 200, label: '에이전트 채팅 입력칸에 키를 붙여 넣으려는 모습과 놀란 로봇', draw(P) {
@@ -936,7 +942,7 @@
       t_version: { w: 340, h: 200, label: '버전 이름의 뒤 여섯 자리를 돋보기로 보는 모습', draw(P) {
         P.rrect(14, 50, 250, 44, 10, { fill: 'sky', gap: 6 });
         P.text(26, 79, 'solar-mini4-', { mono: true, size: 15, weight: 700, anchor: 'start' });
-        P.text(128, 79, '260922', { mono: true, size: 15, weight: 700, anchor: 'start', c: 'warm' });
+        P.text(136, 79, '260922', { mono: true, size: 15, weight: 700, anchor: 'start', c: 'warm' });
         lens(P, 160, 74, 66);
         ask(P, 150, 150, 28);
         person(P, 300, 196, 'wow', 0.62);
@@ -978,9 +984,9 @@
         '이 단원은 연수 1일차 10시 「AI 시대의 정보교사 역할과 소버린 AI의 중요성」을 미리 보는 단원이에요. 차시와 단원의 짝은 <b>연수 지도</b> 탭에서 볼 수 있어요.'
       ]},
       { t: 'q', kind: 'mc', fig: 'q_roleLit', q: '정보 시간에 AI에게 계산 문제를 시켜 틀린 답이 나오는 장면을 보여 주고, 학생들과 "왜 틀렸을까, 어떻게 확인할까"를 이야기했어요. 세 역할 중 어디에 가장 가까울까요?',
-        opts: ['도구 제작자', '안전 책임자', 'AI 리터러시 안내자', '학교운영위원회 심의'], a: 2,
+        opts: ['도구 제작자', '안전 책임자', 'AI 리터러시 안내자', '역할과 상관없는 계산 연습'], a: 2,
         why: 'AI가 어떻게 답을 만들고 어디서 틀리는지, 어떻게 확인하는지 알려 주는 건 <b>AI 리터러시 안내자</b>의 일이에요.',
-        ex: ['이번 활동은 도구를 만든 게 아니라 AI의 한계를 함께 살핀 거예요.', '막는 장치를 만든 게 아니라 AI를 읽는 눈을 길러 준 활동이에요.', '', '학운위 심의는 학교가 도구를 고르는 절차예요. 이 활동은 학생에게 AI 읽는 법을 가르친 거예요.'] },
+        ex: ['이번 활동은 도구를 만든 게 아니라 AI의 한계를 함께 살핀 거예요.', '막는 장치를 만든 게 아니라 AI를 읽는 눈을 길러 준 활동이에요.', '', '계산 문제를 썼지만 목표는 계산이 아니라, AI의 답을 의심하고 확인하는 눈을 기르는 거예요.'] },
       { t: 'q', kind: 'mc', fig: 'q_roleSafe', q: '반 학생 30명이 쓸 질문 도우미를 만들면서, 이름·전화번호는 입력하지 못하게 하고 한 사람당 하루 질문 수를 정했어요. 무엇을 챙긴 걸까요?',
         opts: ['안전 책임자로서 학생 정보와 비용을 지켰다', 'AI 리터러시 안내자로서 원리를 가르쳤다', '도구 제작자로서 화면을 예쁘게 꾸몄다', '학생에게 API 키 쓰는 법을 나눠 주었다'], a: 0,
         why: '개인정보를 받지 않고 사용 횟수를 정하는 건 학생 정보와 비용을 지키는 <b>안전 책임자</b>의 일이에요. 과정 3에서 이런 안전장치를 코드로 만들어요.',
@@ -1016,7 +1022,7 @@
         '1차 평가에서는 "독자" 모델의 기준도 밝혔어요. 해외 모델을 가져와 미세조정만 한 파생 모델은 인정하지 않고, 공개된 구조를 쓰더라도 <b>가중치를 초기화한 뒤 처음부터 학습</b>해야 해요.'
       ], tip: '이런 현황은 금방 바뀌어요. 수업 자료에 쓸 때는 "2026년 10월 기준"처럼 시점을 붙이고, 과기정통부 발표로 다시 확인해요.' },
       { t: 'say', h: '업스테이지가 내놓은 것: 공개 모델과 API 모델', fig: 'openVsApi', p: [
-        '업스테이지는 프로젝트 결과물로 <b>Solar Open</b> 계열 모델을 공개했어요(2026년 1월 Solar Open 100B, 7월 Solar Open 2). 가중치를 누구나 내려받을 수 있는 공개 모델이에요.',
+        '업스테이지는 프로젝트의 1차·2차 결과물로 <b>Solar Open</b> 계열 모델(Solar Open 100B, Solar Open 2)을 공개했어요. 가중치를 누구나 내려받을 수 있는 공개 모델이에요.',
         '이 과정에서 부르는 건 콘솔 API의 <code>solar-pro4</code>예요. 내 컴퓨터에 내려받지 않고, 업스테이지 서버에서 돌아가는 모델을 인터넷으로 불러 써요.',
         '모델을 소개하는 점수는 대부분 <b>회사가 직접 발표한 것</b>이에요. 독립된 곳에서 검증한 점수인지, 어떤 시험인지 함께 읽어요.'
       ]},
@@ -1050,7 +1056,7 @@
     { id: 'QA', type: 'quiz', title: '헷갈림 퀴즈 ①', sub: '공개 모델과 내 컴퓨터, 웹 채팅과 API, 모델과 서비스', min: 4, steps: [
       { t: 'q', kind: 'mc', fig: 'qa_openLocal', q: 'Solar Open 2는 가중치가 공개된 모델이에요. 그러면 학교 노트북에 내려받아 수업에서 바로 돌릴 수 있을까요?',
         opts: ['네. 공개 모델은 어떤 컴퓨터에서든 가볍게 돈다', '아니요. 공개는 "내려받을 수 있다"는 뜻이고, 돌리려면 큰 장비가 필요할 수 있다', '네. 공개 모델은 인터넷 없이 도는 작은 모델만 뜻한다', '아니요. 공개 모델은 업스테이지 콘솔에서만 쓸 수 있다'], a: 1,
-        why: '공개(오픈) 모델은 가중치를 내려받을 수 있다는 뜻이지, 작다는 뜻이 아니에요. Solar Open 2는 매개변수가 2,500억 개 규모라, 압축(양자화)해도 데이터센터용 GPU 2장이 필요하다고 해요.',
+        why: '공개(오픈) 모델은 가중치를 내려받을 수 있다는 뜻이지, 작다는 뜻이 아니에요. Solar Open 2는 매개변수가 2,500억 개 규모라, 압축(양자화)해도 데이터센터용 GPU(H200) 2장은 있어야 돌릴 수 있다고 해요.',
         ex: ['크기에 따라 필요한 장비가 달라요. 큰 공개 모델은 노트북에서 돌리기 어려워요.', '', '공개 모델 중에도 아주 큰 모델이 많아요. 공개와 크기는 다른 이야기예요.', '공개 모델은 내려받아 직접 돌리는 게 핵심이에요. 콘솔 API로만 부르는 건 API 모델 쪽이에요.'] },
       { t: 'q', kind: 'mc', fig: 'qa_chatApi', q: '웹 채팅 서비스에 로그인해서 AI에게 묻는 것과, 내 프로그램이 <b>API</b>로 AI를 부르는 것의 차이로 맞는 것은?',
         opts: ['둘 다 사람이 매번 질문을 직접 쳐야 한다', 'API는 늘 무료이고 웹 채팅은 늘 유료다', '웹 채팅은 사람이 화면에서 쓰고, API는 내 코드가 키를 들고 불러 결과를 이어 쓴다', 'API로 부르면 AI가 지난 대화를 저절로 기억한다'], a: 2,

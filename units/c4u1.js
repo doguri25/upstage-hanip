@@ -113,11 +113,11 @@
   const P2_HEAD = ['  {', '    "id": "p2",', '    "title": "점수 평균(빈 리스트는 0)",', '    "func": "average",', '    "cases": ['];
   const P2_TAIL = ['    ],', '    "points": 3,', '    "hints": ["sum과 len을 떠올려요"]', '  },'];
   const CASE_1 = '      {"args": [[80, 90]], "expected": 85}';
-  const CASES_NEW = ['      {"args": [[80, 90]], "expected": 85},', '      {"args": [[100]], "expected": 100},', '      {"args": [[]], "expected": 0},', '      {"args": [[70, 75]], "expected": 72.5}'];
+  const CASES_NEW = ['      {"args": [[80, 90]], "expected": 85},', '      {"args": [[100]], "expected": 100},', '      {"args": [[]], "expected": 0}'];
   const P2_JSON = src([...P2_HEAD, CASE_1, ...P2_TAIL]);
   const P2_JSON_NEW = src([...P2_HEAD, ...CASES_NEW, ...P2_TAIL]);
-  const AGENT_Q = 'problems.json의 p2(average)에 경계 케이스 3개를 더해 줘. 기대값은 solution.py의 정답 함수로 계산해. 다른 문제는 건드리지 마.';
-  const AGENT_A = '<code>solution.py</code>의 <code>average</code>로 기대값을 계산해 p2에 케이스 3개(점수 하나, 빈 리스트, 소수가 나오는 평균)를 더했어요. 다른 문제는 그대로예요.';
+  const AGENT_Q = 'problems.json의 p2(average)에 경계 케이스 2개(점수가 하나뿐, 빈 리스트)를 더해 줘. 기대값은 solution.py의 정답 함수로 계산해. 다른 문제는 건드리지 마.';
+  const AGENT_A = '<code>solution.py</code>의 <code>average</code>로 기대값을 계산해 p2에 케이스 2개(점수가 하나뿐, 빈 리스트)를 더했어요. 다른 문제는 그대로예요.';
   const RUN_IO = src(['import subprocess, sys', '', 'for name in ["s1.py", "s2.py", "s3.py"]:', '    try:', '        r = subprocess.run(', '            [sys.executable, name],', '            cwd="sandbox", input="5\\n",', '            capture_output=True,', '            text=True, timeout=2)', '    except subprocess.TimeoutExpired:', '        print(name, "시간 초과(2초)")', '        continue', '    out = r.stdout.strip()', '    if out == "15":', '        print(name, "통과")', '    else:', '        print(name, "실패:", out)']);
   const S2 = src(['# 1부터 n까지 더하기', 'n = int(input())', 'total = 0', 'for i in range(1, n + 1):', '    total += i', 'print("합계:", total)']);
   const S3 = src(['# 1부터 n까지 더하기', 'n = int(input())', 'total = 0', 'i = 1', 'while i <= n:', '    total += i', 'print(total)']);
@@ -207,13 +207,12 @@
         [0, 1, 2, 3].forEach(k => P.circle(40 + k * 18, 62, 11, { c: 'ink2', w: 1.4 }));
         P.text(140, 64, 'def f(n):', { mono: true, size: 11, anchor: 'start' });
         [50, 62, 74].forEach((y, k) => P.line(250, y, 312 - k * 10, y, { c: 'soft', w: 3 }));
-        ask(P, 60, 116, 18);
-        ask(P, 170, 116, 18);
-        ask(P, 280, 116, 18);
-        chip(P, 14, 128, 92, 28, '정답 비교', 'sky', 12);
-        chip(P, 124, 128, 92, 28, '테스트 케이스', 'hi', 11);
-        chip(P, 234, 128, 92, 28, '루브릭', 'warm', 12);
-        P.text(170, 188, '어느 문항에 어느 방식?', { size: 12, c: 'ink2' });
+        ask(P, 60, 122, 22);
+        ask(P, 170, 122, 22);
+        ask(P, 280, 122, 22);
+        person(P, 300, 198, 'wow', 0.42);
+        P.text(150, 170, '세 방식 중 어느 것?', { size: 13, weight: 700, c: 'warm' });
+        P.text(150, 192, '어느 문항에 어느 방식?', { size: 12, c: 'ink2' });
       }},
       q_codeText: { w: 340, h: 200, label: '정답 코드와 생김새가 다른 학생 코드 사이의 같지 않음 표시', draw(P) {
         file(P, 14, 20, 120, 90, '정답 코드', null, 'sky', 12);
@@ -845,7 +844,7 @@
         '나눠 두면 다음 학기·다른 반에 파일만 바꿔 쓰고, 동료 교사와 문제를 나누고, c4u2의 AI 튜터도 같은 파일에서 힌트를 읽어요.',
         'JSON은 c2u2에서 Information Extract 결과를 <code>json.loads</code>로 읽을 때 만났죠. 파일은 <code>json.load</code>로 읽으면 리스트·딕셔너리가 돼요.'
       ]},
-      { t: 'say', h: 'problems.json은 문제마다 여섯 칸이에요', code: { lang: 'json', src: src(['[', '  {', '    "id": "p1",', '    "title": "두 수의 합",', '    "func": "add",', '    "cases": [', '      {"args": [1, 2], "expected": 3},', '      {"args": [-1, 1], "expected": 0}', '    ],', '    "points": 3,', '    "hints": ["return을 썼나요?"]', '  }']) }, table: { head: ['칸', '뜻'], rows: [
+      { t: 'say', h: 'problems.json은 문제마다 여섯 칸이에요', code: { lang: 'json', src: src(['{', '  "id": "p1",', '  "title": "두 수의 합",', '  "func": "add",', '  "cases": [', '    {"args": [1, 2], "expected": 3},', '    {"args": [-1, 1], "expected": 0}', '  ],', '  "points": 3,', '  "hints": ["return을 썼나요?"]', '}']) }, table: { head: ['칸', '뜻'], rows: [
         ['<code>id</code>', '문제 번호. 결과표와 튜터가 이 이름으로 가리켜요'],
         ['<code>title</code>', '학생에게 보이는 문제. 조건까지 적어요("빈 리스트는 0")'],
         ['<code>func</code>', '학생이 만들 함수 이름. 채점기가 이 이름으로 불러요'],
@@ -875,9 +874,9 @@
             then: { panel: panel({ msgs: [{ me: AGENT_Q }, { ai: AGENT_A }] }), diff: { line: 6, del: [CASE_1], add: CASES_NEW } },
             say: '편집기에 더한 줄(초록)이 떴어요. 커서한입에서 본 대로, 에이전트의 수정은 이미 파일에 들어가 있어요.' },
           { goal: '바뀐 내용을 읽고 Accept를 눌러요', click: 'btn:accept', then: { diff: null, code: P2_JSON_NEW },
-            say: '빈 리스트 → 0은 문제 title에 적힌 조건과 맞아요. 72.5처럼 소수가 나오는 케이스도 생겼어요.' },
+            say: '빈 리스트 → 0은 문제 title에 적힌 조건과 맞아요. 이제 p2도 보통 값·경계 값·특이한 값이 하나씩이에요.' },
           { goal: '터미널에서 기대값을 확인해요', type: 'python check_cases.py', into: 'term',
-            then: { term: ['$ python check_cases.py', 'p1 add: 3개 모두 일치', 'p2 average: 4개 모두 일치', 'p3 pass_fail: 3개 모두 일치'], prompt: '' },
+            then: { term: ['$ python check_cases.py', 'p1 add: 3개 모두 일치', 'p2 average: 3개 모두 일치', 'p3 pass_fail: 3개 모두 일치'], prompt: '' },
             say: '<code>check_cases.py</code>는 내 정답 함수로 모든 기대값을 다시 계산해요. 하나라도 다르면 케이스나 정답 함수 중 하나가 틀린 거예요.' } ],
         end: 'AI가 만든 케이스도 기대값은 내 정답 코드로 확인해요.' },
       { t: 'try', lang: 'py', h: '문제 데이터를 JSON으로 봐요', p: '문제 하나를 딕셔너리로 만들고 <code>json.dumps</code>로 바꿔 봐요. <code>ensure_ascii=False</code>가 있을 때와 없을 때 한글이 어떻게 보이는지, <code>args</code>가 어떻게 겹쳐 있는지 확인해요.',
