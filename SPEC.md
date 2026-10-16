@@ -126,7 +126,7 @@ Cursor 단축키가 나오면 HTML로 보이는 곳에 **`<kbd>mod+shift+p</kbd>
   src:'def grade(ans, key):\n    return ans == key\n\nprint(grade(" 4", "4"))', note:'(선택) 결과 옆에 보일 한마디' }
 ```
 
-- `lang:'py'`는 **앱 안의 초보자용 파이썬**으로 돈다(인터넷·패키지 없음). 쓸 수 있는 것: 변수, `if/for/while`, `def`(기본값 인자 가능, `*` 뒤 키워드 전용 인자는 안 됨), `try/except/raise`, 리스트·딕셔너리·튜플·집합, 컴프리헨션, `lambda`, `sorted(key=)`, 문자열 메서드, f-string, `import json/math/random/time`. **`class`, `openai`, `requests`, `os`, 파일 읽기는 안 된다** — 그런 코드는 설명(`say`)의 `code`나 미션에서 보여 준다.
+- `lang:'py'`는 **앱 안의 초보자용 파이썬**으로 돈다(인터넷·패키지 없음). 쓸 수 있는 것: 변수, `if/for/while`, `def`(기본값 인자 가능, `*` 뒤 키워드 전용 인자는 안 됨), `try/except/raise`, 리스트·딕셔너리·튜플·집합, 컴프리헨션, `lambda`, `sorted(key=)`, 문자열 메서드, f-string, `import json/math/random/time`(`math.exp`·`log`·`sqrt` 등). **`class`, `openai`, `requests`, `os`, 파일 읽기는 안 된다** — 그런 코드는 설명(`say`)의 `code`나 미션에서 보여 준다.
 - 검사기가 `src`를 앱 연습장과 진짜 `python3`로 둘 다 돌려 본다. 오류가 나면 안 되고(일부러 오류를 보여 줄 때만 `err:true`), 출력이 같아야 한다(무작위는 피한다).
 - API 응답은 **딕셔너리로 흉내** 낸다: `resp = {"choices":[{"message":{"content":"…"}}], "usage":{…}}` → 응답에서 값 꺼내기, 채점·안전장치·검색 로직(코사인 유사도) 연습에 쓴다.
 - `lang:'md'`: 시스템 프롬프트, 안전 규칙, 기획서·README 초안 쓰기. 쓰는 대로 바로 보인다.
